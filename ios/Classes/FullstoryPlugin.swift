@@ -1,5 +1,6 @@
 import Flutter
 import UIKit
+// todo: figure out how to reference the fs SDK without having our own copy of it here
 
 public class FullstoryPlugin: NSObject, FlutterPlugin {
   public static func register(with registrar: FlutterPluginRegistrar) {
