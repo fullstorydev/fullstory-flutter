@@ -1,13 +1,13 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 
-import 'fullstory_platform_interface.dart';
+import 'fullstory_flutter_platform_interface.dart';
 
-/// An implementation of [FullstoryPlatform] that uses method channels.
-class MethodChannelFullstory extends FullstoryPlatform {
+/// An implementation of [FullstoryFlutterPlatform] that uses method channels.
+class MethodChannelFullstoryFlutter extends FullstoryFlutterPlatform {
   /// The method channel used to interact with the native platform.
   @visibleForTesting
-  final methodChannel = const MethodChannel('fullstory');
+  final methodChannel = const MethodChannel('fullstory_flutter');
 
   @override
   Future<String?> getPlatformVersion() async {

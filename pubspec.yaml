@@ -1,7 +1,7 @@
-name: fullstory
-description: "Capture FullStory sessions in Flutter apps"
+name: fullstory_flutter
+description: "A new Flutter plugin project."
 version: 0.0.1
-homepage: "https://www.fullstory.com/"
+homepage:
 
 environment:
   sdk: ^3.5.3
@@ -35,10 +35,10 @@ flutter:
   plugin:
     platforms:
       android:
-        package: com.example.fullstory
-        pluginClass: FullstoryPlugin
+        package: com.example.fullstory_flutter
+        pluginClass: FullstoryFlutterPlugin
       ios:
-        pluginClass: FullstoryPlugin
+        pluginClass: FullstoryFlutterPlugin
 
   # To add assets to your plugin package, add an assets section, like this:
   # assets:

@@ -1,11 +1,10 @@
 import Flutter
 import UIKit
-// todo: figure out how to reference the fs SDK without having our own copy of it here
 
-public class FullstoryPlugin: NSObject, FlutterPlugin {
+public class FullstoryFlutterPlugin: NSObject, FlutterPlugin {
   public static func register(with registrar: FlutterPluginRegistrar) {
-    let channel = FlutterMethodChannel(name: "fullstory", binaryMessenger: registrar.messenger())
-    let instance = FullstoryPlugin()
+    let channel = FlutterMethodChannel(name: "fullstory_flutter", binaryMessenger: registrar.messenger())
+    let instance = FullstoryFlutterPlugin()
     registrar.addMethodCallDelegate(instance, channel: channel)
   }
 

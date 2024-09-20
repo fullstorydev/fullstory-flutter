@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:async';
 
 import 'package:flutter/services.dart';
-import 'package:fullstory/fullstory.dart';
+import 'package:fullstory_flutter/fullstory_flutter.dart';
 
 void main() {
   runApp(const MyApp());
@@ -17,7 +17,7 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   String _platformVersion = 'Unknown';
-  final _fullstoryPlugin = Fullstory();
+  final _fullstoryFlutterPlugin = FullstoryFlutter();
 
   @override
   void initState() {
@@ -32,7 +32,7 @@ class _MyAppState extends State<MyApp> {
     // We also handle the message potentially returning null.
     try {
       platformVersion =
-          await _fullstoryPlugin.getPlatformVersion() ?? 'Unknown platform version';
+          await _fullstoryFlutterPlugin.getPlatformVersion() ?? 'Unknown platform version';
     } on PlatformException {
       platformVersion = 'Failed to get platform version.';
     }

@@ -1,6 +1,6 @@
-# fullstory_example
+# fullstory_flutter_example
 
-Demonstrates how to use the fullstory plugin.
+Demonstrates how to use the fullstory_flutter plugin.
 
 ## Getting Started
 

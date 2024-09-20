@@ -93,7 +93,7 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
-  fullstory:
+  fullstory_flutter:
     dependency: "direct main"
     description:
       path: ".."

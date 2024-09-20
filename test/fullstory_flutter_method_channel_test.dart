@@ -1,12 +1,12 @@
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:fullstory/fullstory_method_channel.dart';
+import 'package:fullstory_flutter/fullstory_flutter_method_channel.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
-  MethodChannelFullstory platform = MethodChannelFullstory();
-  const MethodChannel channel = MethodChannel('fullstory');
+  MethodChannelFullstoryFlutter platform = MethodChannelFullstoryFlutter();
+  const MethodChannel channel = MethodChannel('fullstory_flutter');
 
   setUp(() {
     TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger.setMockMethodCallHandler(
