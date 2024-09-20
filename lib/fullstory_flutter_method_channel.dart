@@ -11,7 +11,62 @@ class MethodChannelFullstoryFlutter extends FullstoryFlutterPlatform {
 
   @override
   Future<String?> getPlatformVersion() async {
-    final version = await methodChannel.invokeMethod<String>('getPlatformVersion');
+    final version =
+        await methodChannel.invokeMethod<String>('getPlatformVersion');
     return version;
+  }
+
+  @override
+  Future<void> shutdown() async {
+    await methodChannel.invokeMethod<void>('shutdown');
+  }
+
+  @override
+  Future<void> restart() async {
+    await methodChannel.invokeMethod<void>('restart');
+  }
+
+  @override
+  Future<void> log() async {
+    await methodChannel.invokeMethod<void>('log');
+  }
+
+  @override
+  Future<void> resetIdleTimer() async {
+    await methodChannel.invokeMethod<void>('resetIdleTimer');
+  }
+
+  @override
+  Future<void> event() async {
+    await methodChannel.invokeMethod<void>('event');
+  }
+
+  @override
+  Future<void> consent() async {
+    await methodChannel.invokeMethod<void>('consent');
+  }
+
+  @override
+  Future<void> identity() async {
+    await methodChannel.invokeMethod<void>('identity');
+  }
+
+  @override
+  Future<void> anonymize() async {
+    await methodChannel.invokeMethod<void>('anonymize');
+  }
+
+  @override
+  Future<void> setUserVars() async {
+    await methodChannel.invokeMethod<void>('setUserVars');
+  }
+
+  Future<String?> getCurrentSession([bool now = false]) async {
+    return await methodChannel.invokeMethod<String>('setUserVars', now);
+  }
+
+  @override
+  Future<String?> getCurrentSessionURL() async {
+    return await methodChannel.invokeMethod<String>('getCurrentSessionURL');
   }
 }
