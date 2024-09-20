@@ -17,7 +17,8 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   String _platformVersion = 'Unknown';
-  final _fullstoryFlutterPlugin = FullstoryFlutter();
+  final _fs =
+      FullstoryFlutter(); // todo: make this static instead of an instance
 
   @override
   void initState() {
@@ -32,7 +33,7 @@ class _MyAppState extends State<MyApp> {
     // We also handle the message potentially returning null.
     try {
       platformVersion =
-          await _fullstoryFlutterPlugin.getPlatformVersion() ?? 'Unknown platform version';
+          await _fs.getPlatformVersion() ?? 'Unknown platform version';
     } on PlatformException {
       platformVersion = 'Failed to get platform version.';
     }
@@ -55,7 +56,12 @@ class _MyAppState extends State<MyApp> {
           title: const Text('Plugin example app'),
         ),
         body: Center(
-          child: Text('Running on: $_platformVersion\n'),
+          child: Column(
+            children: [
+              TextButton(onPressed: _fs.shutdown, child: Text("shutdown")),
+              Text('Running on: $_platformVersion\n'),
+            ],
+          ),
         ),
       ),
     );
