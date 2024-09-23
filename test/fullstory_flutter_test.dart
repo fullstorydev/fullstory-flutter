@@ -7,13 +7,13 @@ import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 class MockFullstoryFlutterPlatform
     with MockPlatformInterfaceMixin
     implements FullstoryFlutterPlatform {
-
   @override
   Future<String?> getPlatformVersion() => Future.value('42');
 }
 
 void main() {
-  final FullstoryFlutterPlatform initialPlatform = FullstoryFlutterPlatform.instance;
+  final FullstoryFlutterPlatform initialPlatform =
+      FullstoryFlutterPlatform.instance;
 
   test('$MethodChannelFullstoryFlutter is the default instance', () {
     expect(initialPlatform, isInstanceOf<MethodChannelFullstoryFlutter>());
