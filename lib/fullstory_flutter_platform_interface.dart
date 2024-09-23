@@ -1,6 +1,7 @@
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 
 import 'fullstory_flutter_method_channel.dart';
+import 'fs_log_level.dart';
 
 abstract class FullstoryFlutterPlatform extends PlatformInterface {
   /// Constructs a FullstoryFlutterPlatform.
@@ -35,7 +36,8 @@ abstract class FullstoryFlutterPlatform extends PlatformInterface {
     throw UnimplementedError('restart() has not been implemented.');
   }
 
-  Future<void> log() {
+  Future<void> log(
+      {FSLogLevel level = FSLogLevel.info, required String message}) {
     throw UnimplementedError('log() has not been implemented.');
   }
 

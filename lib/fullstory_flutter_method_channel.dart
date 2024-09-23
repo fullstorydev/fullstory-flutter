@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 
+import 'fs_log_level.dart';
 import 'fullstory_flutter_platform_interface.dart';
 
 /// An implementation of [FullstoryFlutterPlatform] that uses method channels.
@@ -27,8 +28,10 @@ class MethodChannelFullstoryFlutter extends FullstoryFlutterPlatform {
   }
 
   @override
-  Future<void> log() async {
-    await methodChannel.invokeMethod<void>('log');
+  Future<void> log(
+      {FSLogLevel level = FSLogLevel.info, required String message}) async {
+    await methodChannel
+        .invokeMethod<void>('log', {'level': level.index, 'message': message});
   }
 
   @override
