@@ -1,4 +1,6 @@
 import 'fullstory_flutter_platform_interface.dart';
+import 'fs_log_level.dart';
+export 'fs_log_level.dart';
 
 class FullstoryFlutter {
   Future<String?> getPlatformVersion() {
@@ -13,8 +15,10 @@ class FullstoryFlutter {
     return FullstoryFlutterPlatform.instance.restart();
   }
 
-  Future<void> log() {
-    return FullstoryFlutterPlatform.instance.log();
+  Future<void> log(
+      {FSLogLevel level = FSLogLevel.info, required String message}) {
+    return FullstoryFlutterPlatform.instance
+        .log(level: level, message: message);
   }
 
   Future<void> resetIdleTimer() {
