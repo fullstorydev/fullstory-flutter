@@ -64,6 +64,7 @@ class MethodChannelFullstoryFlutter extends FullstoryFlutterPlatform {
     await methodChannel.invokeMethod<void>('setUserVars');
   }
 
+  @override
   Future<String?> getCurrentSession([bool now = false]) async {
     return await methodChannel.invokeMethod<String>('setUserVars', now);
   }
