@@ -9,6 +9,73 @@ class MockFullstoryFlutterPlatform
     implements FullstoryFlutterPlatform {
   @override
   Future<String?> getPlatformVersion() => Future.value('42');
+
+  @override
+  Future<void> anonymize() {
+    // TODO: implement anonymize
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> consent() {
+    // TODO: implement consent
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> event() {
+    // TODO: implement event
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> getCurrentSession([bool now = false]) {
+    // TODO: implement getCurrentSession
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> getCurrentSessionURL() {
+    // TODO: implement getCurrentSessionURL
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> identity() {
+    // TODO: implement identity
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> log(
+      {FSLogLevel level = FSLogLevel.info, required String message}) {
+    // TODO: implement log
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> resetIdleTimer() {
+    // TODO: implement resetIdleTimer
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> restart() {
+    // TODO: implement restart
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> setUserVars() {
+    // TODO: implement setUserVars
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> shutdown() {
+    // TODO: implement shutdown
+    throw UnimplementedError();
+  }
 }
 
 void main() {
