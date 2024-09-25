@@ -2,30 +2,30 @@ import 'fullstory_flutter_platform_interface.dart';
 import 'fs_log_level.dart';
 export 'fs_log_level.dart';
 
-class FullstoryFlutter {
-  Future<String?> getPlatformVersion() {
+class FS {
+  static Future<String?> getPlatformVersion() {
     return FullstoryFlutterPlatform.instance.getPlatformVersion();
   }
 
-  Future<void> shutdown() {
+  static Future<void> shutdown() {
     return FullstoryFlutterPlatform.instance.shutdown();
   }
 
-  Future<void> restart() {
+  static Future<void> restart() {
     return FullstoryFlutterPlatform.instance.restart();
   }
 
-  Future<void> log(
+  static Future<void> log(
       {FSLogLevel level = FSLogLevel.info, required String message}) {
     return FullstoryFlutterPlatform.instance
         .log(level: level, message: message);
   }
 
-  Future<void> resetIdleTimer() {
+  static Future<void> resetIdleTimer() {
     return FullstoryFlutterPlatform.instance.resetIdleTimer();
   }
 
-  Future<void> event({
+  static Future<void> event({
     required String name,
     Map<String, Object?> properties = const {},
   }) {
@@ -33,27 +33,27 @@ class FullstoryFlutter {
         .event(name: name, properties: properties);
   }
 
-  Future<void> consent() {
+  static Future<void> consent() {
     return FullstoryFlutterPlatform.instance.consent();
   }
 
-  Future<void> identity() {
+  static Future<void> identity() {
     return FullstoryFlutterPlatform.instance.identity();
   }
 
-  Future<void> anonymize() {
+  static Future<void> anonymize() {
     return FullstoryFlutterPlatform.instance.anonymize();
   }
 
-  Future<void> setUserVars() {
+  static Future<void> setUserVars() {
     return FullstoryFlutterPlatform.instance.anonymize();
   }
 
-  Future<void> getCurrentSession([bool now = false]) {
+  static Future<void> getCurrentSession([bool now = false]) {
     return FullstoryFlutterPlatform.instance.getCurrentSession(now);
   }
 
-  Future<void> getCurrentSessionURL() {
+  static Future<void> getCurrentSessionURL() {
     return FullstoryFlutterPlatform.instance.getCurrentSessionURL();
   }
 }

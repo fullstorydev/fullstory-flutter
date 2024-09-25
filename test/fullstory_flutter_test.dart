@@ -90,10 +90,9 @@ void main() {
   });
 
   test('getPlatformVersion', () async {
-    FullstoryFlutter fullstoryFlutterPlugin = FullstoryFlutter();
     MockFullstoryFlutterPlatform fakePlatform = MockFullstoryFlutterPlatform();
     FullstoryFlutterPlatform.instance = fakePlatform;
 
-    expect(await fullstoryFlutterPlugin.getPlatformVersion(), '42');
+    expect(await FS.getPlatformVersion(), '42');
   });
 }
