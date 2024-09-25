@@ -54,7 +54,7 @@ public class FullstoryFlutterPlugin: NSObject, FlutterPlugin {
       result(nil)
     case "event":
           guard let args = call.arguments as? [String: Any],
-                let eventName = args["eventName"] as? String,
+                let eventName = args["name"] as? String,
                 let properties = args["properties"] as? [String: Any] else {
               result(FlutterError(code: "INVALID_ARGUMENTS",
                                   message: "Invalid arguments for event",
@@ -62,6 +62,7 @@ public class FullstoryFlutterPlugin: NSObject, FlutterPlugin {
               return
           }
 
+          print("FS.event:", eventName, properties);
           FS.event(eventName, properties: properties)
           result(nil)
   //  case "consent":

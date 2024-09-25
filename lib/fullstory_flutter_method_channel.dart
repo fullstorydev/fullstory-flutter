@@ -40,8 +40,12 @@ class MethodChannelFullstoryFlutter extends FullstoryFlutterPlatform {
   }
 
   @override
-  Future<void> event() async {
-    await methodChannel.invokeMethod<void>('event');
+  Future<void> event({
+    required String name,
+    Map<String, Object?> properties = const {},
+  }) async {
+    final args = {"name": name, "properties": properties};
+    await methodChannel.invokeMethod<void>('event', args);
   }
 
   @override

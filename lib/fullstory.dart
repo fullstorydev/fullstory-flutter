@@ -25,8 +25,12 @@ class FullstoryFlutter {
     return FullstoryFlutterPlatform.instance.resetIdleTimer();
   }
 
-  Future<void> event() {
-    return FullstoryFlutterPlatform.instance.event();
+  Future<void> event({
+    required String name,
+    Map<String, Object?> properties = const {},
+  }) {
+    return FullstoryFlutterPlatform.instance
+        .event(name: name, properties: properties);
   }
 
   Future<void> consent() {

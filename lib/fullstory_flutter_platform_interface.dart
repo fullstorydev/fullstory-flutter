@@ -45,7 +45,10 @@ abstract class FullstoryFlutterPlatform extends PlatformInterface {
     throw UnimplementedError('resetIdleTimer() has not been implemented.');
   }
 
-  Future<void> event() {
+  Future<void> event({
+    required String name,
+    Map<String, Object?> properties = const {},
+  }) {
     throw UnimplementedError('event() has not been implemented.');
   }
 
