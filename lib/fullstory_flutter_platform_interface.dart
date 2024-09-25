@@ -56,7 +56,7 @@ abstract class FullstoryFlutterPlatform extends PlatformInterface {
     throw UnimplementedError('consent() has not been implemented.');
   }
 
-  Future<void> identity() {
+  Future<void> identify(Map<String, dynamic> args) {
     throw UnimplementedError('identity() has not been implemented.');
   }
 
@@ -64,7 +64,7 @@ abstract class FullstoryFlutterPlatform extends PlatformInterface {
     throw UnimplementedError('anonymize() has not been implemented.');
   }
 
-  Future<void> setUserVars() {
+  Future<void> setUserVars(Map<String, Object?> userVars) {
     throw UnimplementedError('anonymize() has not been implemented.');
   }
 

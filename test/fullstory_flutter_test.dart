@@ -44,7 +44,7 @@ class MockFullstoryFlutterPlatform
   }
 
   @override
-  Future<void> identity() {
+  Future<void> identify(Map<String, dynamic> args) {
     // TODO: implement identity
     throw UnimplementedError();
   }
@@ -69,7 +69,7 @@ class MockFullstoryFlutterPlatform
   }
 
   @override
-  Future<void> setUserVars() {
+  Future<void> setUserVars(Map<String, Object?> userVars) {
     // TODO: implement setUserVars
     throw UnimplementedError();
   }
