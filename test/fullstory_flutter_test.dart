@@ -23,7 +23,10 @@ class MockFullstoryFlutterPlatform
   }
 
   @override
-  Future<void> event() {
+  Future<void> event({
+    required String name,
+    Map<String, Object?> properties = const {},
+  }) {
     // TODO: implement event
     throw UnimplementedError();
   }
