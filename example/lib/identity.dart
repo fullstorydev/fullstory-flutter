@@ -10,7 +10,8 @@ class Identity extends StatefulWidget {
 
 class _IdentityState extends State<Identity> {
   var level = FSLogLevel.info;
-  var message = "";
+  var uid = "";
+  var displayName = "";
 
   @override
   Widget build(BuildContext context) {
@@ -18,29 +19,55 @@ class _IdentityState extends State<Identity> {
       TextField(
         decoration: const InputDecoration(
           border: OutlineInputBorder(),
-          hintText: 'Log message...',
+          hintText: 'displayName',
         ),
-        onChanged: (value) => message = value,
+        onChanged: (value) => displayName = value,
         // allow the keyboard to be hidden - why is this not the default behavior?
         onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
       ),
-      Row(
+      TextField(
+        decoration: const InputDecoration(
+          border: OutlineInputBorder(),
+          hintText: 'uid',
+        ),
+        onChanged: (value) => uid = value,
+        // allow the keyboard to be hidden - why is this not the default behavior?
+        onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
+      ),
+      Wrap(
         children: [
-          const Text("Level:"),
-          DropdownMenu(
-            dropdownMenuEntries: FSLogLevel.values
-                .map<DropdownMenuEntry<FSLogLevel>>((FSLogLevel level) {
-              return DropdownMenuEntry<FSLogLevel>(
-                  value: level, label: level.name);
-            }).toList(),
-            initialSelection: level,
-            onSelected: (value) => level = value!,
+          TextButton(
+            onPressed: () {
+              FS.identify(uid);
+            },
+            child: const Text('Identify'),
           ),
           TextButton(
-              onPressed: () {
-                FS.log(message: message, level: level);
-              },
-              child: const Text('Log'))
+            onPressed: () {
+              FS.identify(uid, {
+                "source": "identify",
+                "when": DateTime.now().toString(),
+                "displayName": displayName,
+              });
+            },
+            child: const Text('Identify w/ userVars'),
+          ),
+          TextButton(
+            onPressed: () {
+              FS.setUserVars({
+                "source": "setUserVars",
+                "when": DateTime.now().toString(),
+                "displayName": displayName,
+              });
+            },
+            child: const Text('setUserVars'),
+          ),
+          TextButton(
+            onPressed: () {
+              FS.anonymize();
+            },
+            child: const Text('Anonymize'),
+          ),
         ],
       ),
     ]);
