@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:fullstory_flutter/fs.dart';
 
 import 'capture_status.dart';
+import 'identity.dart';
 import 'log.dart';
 import 'events.dart';
 
@@ -61,6 +62,8 @@ class _MyAppState extends State<MyApp> {
           padding: const EdgeInsets.all(8),
           children: [
             const CaptureStatus(),
+            const Divider(),
+            const Identity(),
             const Divider(),
             const Log(),
             const Divider(),
