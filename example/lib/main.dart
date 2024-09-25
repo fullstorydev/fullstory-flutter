@@ -60,7 +60,9 @@ class _MyAppState extends State<MyApp> {
           children: [
             CaptureStatus(fs: _fs),
             const Divider(),
-            Log(),
+            const Log(),
+            const Divider(),
+            Events(fs: _fs),
             const Divider(),
             Text('Running on: $_platformVersion\n'),
           ],
@@ -70,7 +72,61 @@ class _MyAppState extends State<MyApp> {
   }
 }
 
+class Events extends StatelessWidget {
+  const Events({
+    super.key,
+    required FullstoryFlutter fs,
+  }) : _fs = fs;
+
+  final FullstoryFlutter _fs;
+
+  @override
+  Widget build(BuildContext context) {
+    return Wrap(
+      children: [
+        TextButton(
+          onPressed: () => _fs.event(name: "Name-only event"),
+          child: const Text("Name-only event"),
+        ),
+        TextButton(
+          onPressed: () =>
+              _fs.event(name: "Many properties event", properties: {
+            "string_val": "a string value",
+            "int_val": 42,
+            "double_val": 0.1,
+            "bool_val": true,
+            "null_val": null,
+            "list_val": [1, 2, 3],
+            "map_val": {
+              "nested_string": "nested string",
+              "nested_map": {"val": true},
+            },
+            //"mixed_list_val": [4, "a", false], // not supported, error in playback
+          }),
+          child: const Text("Many properties event"),
+        ),
+        TextButton(
+          onPressed: () => _fs.event(name: 'Order Completed', properties: {
+            'orderId': '23f3er3d',
+
+            // The products are silently dropped:
+            // "Note: Order Completed Events are not supported in Native Mobile as objects and arrays within arrays are not supported."
+            // https://help.fullstory.com/hc/en-us/articles/360020623274-Sending-custom-event-data-into-Fullstory#Order%20Completed%20Events:~:text=Note%3A%20Order%20Completed%20Events%20are%20not%20supported%20in%20Native%20Mobile%20as%20objects%20and%20arrays%20within%20arrays%20are%20not%20supported.
+            'products': [
+              {'productId': '9v87h4f8', 'price': 20.00, 'quantity': 0.75},
+              {'productId': '4738b43z', 'price': 12.87, 'quantity': 6},
+            ],
+          }),
+          child: const Text('Order Completed event'),
+        )
+      ],
+    );
+  }
+}
+
 class Log extends StatefulWidget {
+  const Log({super.key});
+
   @override
   State<Log> createState() => _LogState();
 }
@@ -126,8 +182,8 @@ class CaptureStatus extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       children: [
-        TextButton(onPressed: _fs.shutdown, child: const Text("shutdown")),
-        TextButton(onPressed: _fs.restart, child: const Text("restart")),
+        TextButton(onPressed: _fs.shutdown, child: const Text("Shutdown")),
+        TextButton(onPressed: _fs.restart, child: const Text("Restart")),
       ],
     );
   }
