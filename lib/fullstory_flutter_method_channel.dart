@@ -54,8 +54,8 @@ class MethodChannelFullstoryFlutter extends FullstoryFlutterPlatform {
   }
 
   @override
-  Future<void> identity() async {
-    await methodChannel.invokeMethod<void>('identity');
+  Future<void> identify(Map<String, dynamic> args) async {
+    await methodChannel.invokeMethod<void>('identify', args);
   }
 
   @override
@@ -64,8 +64,8 @@ class MethodChannelFullstoryFlutter extends FullstoryFlutterPlatform {
   }
 
   @override
-  Future<void> setUserVars() async {
-    await methodChannel.invokeMethod<void>('setUserVars');
+  Future<void> setUserVars(Map<String, Object?> userVars) async {
+    await methodChannel.invokeMethod<void>('setUserVars', userVars);
   }
 
   @override

@@ -57,7 +57,7 @@ public class FullstoryFlutterPlugin: NSObject, FlutterPlugin {
                 let eventName = args["name"] as? String,
                 let properties = args["properties"] as? [String: Any] else {
               result(FlutterError(code: "INVALID_ARGUMENTS",
-                                  message: "Invalid arguments for event",
+                                  message: "Invalid arguments for event: expected name and properties, got \(call.arguments)",
                                   details: nil))
               return
           }
@@ -69,15 +69,35 @@ public class FullstoryFlutterPlugin: NSObject, FlutterPlugin {
   //    // todo: handle param
   //    FS.consent()
   //    result(nil)
-  //  case "identity":
-  //    FS.identity()
-  //    result(nil)
+   case "identify":
+    // todo: consider handling null or false uid as FS.anonymize()
+      guard let args = call.arguments as? [String: Any],
+          let uid = args["uid"] as? String,
+          let userVars = args["userVars"] as? [String: Any]? else {
+        result(FlutterError(code: "INVALID_ARGUMENTS",
+                            message: "Invalid arguments for identify: expected string uid and optional map userVars, got \(call.arguments)",
+                            details: nil))
+        return
+      }
+      if (userVars != nil) {
+        FS.identify(uid, userVars: userVars!)
+      } else {
+        FS.identify(uid)
+      }
+      
+     result(nil)
    case "anonymize":
      FS.anonymize()
      result(nil)
-  //  case "setUserVars":
-  //    FS.setUserVars()
-  //    result(nil)
+   case "setUserVars":
+         guard let userVars = call.arguments as? [String: Any] else {
+        result(FlutterError(code: "INVALID_ARGUMENTS",
+                            message: "Invalid argument for setUserVars",
+                            details: "Expected Map<String, Any>, got \(call.arguments)"))
+        return
+      }
+     FS.setUserVars(userVars)
+     result(nil)
   //  case "getCurrentSession":
   //   // todo: handle `now` param
   //    result(FS.getCurrentSession())

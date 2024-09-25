@@ -37,16 +37,20 @@ class FS {
     return FullstoryFlutterPlatform.instance.consent();
   }
 
-  static Future<void> identity() {
-    return FullstoryFlutterPlatform.instance.identity();
+  static Future<void> identify(String uid, [Map<String, Object?>? userVars]) {
+    Map<String, dynamic> args = {"uid": uid};
+    if (userVars != null) {
+      args["userVars"] = userVars;
+    }
+    return FullstoryFlutterPlatform.instance.identify(args);
   }
 
   static Future<void> anonymize() {
     return FullstoryFlutterPlatform.instance.anonymize();
   }
 
-  static Future<void> setUserVars() {
-    return FullstoryFlutterPlatform.instance.anonymize();
+  static Future<void> setUserVars(Map<String, Object?> userVars) {
+    return FullstoryFlutterPlatform.instance.setUserVars(userVars);
   }
 
   static Future<void> getCurrentSession([bool now = false]) {
