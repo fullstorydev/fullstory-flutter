@@ -17,8 +17,6 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   String _platformVersion = 'Unknown';
-  final _fs =
-      FullstoryFlutter(); // todo: make this static instead of an instance
 
   @override
   void initState() {
@@ -33,7 +31,7 @@ class _MyAppState extends State<MyApp> {
     // We also handle the message potentially returning null.
     try {
       platformVersion =
-          await _fs.getPlatformVersion() ?? 'Unknown platform version';
+          await FS.getPlatformVersion() ?? 'Unknown platform version';
     } on PlatformException {
       platformVersion = 'Failed to get platform version.';
     }
@@ -58,11 +56,11 @@ class _MyAppState extends State<MyApp> {
         body: ListView(
           padding: const EdgeInsets.all(8),
           children: [
-            CaptureStatus(fs: _fs),
+            const CaptureStatus(),
             const Divider(),
             const Log(),
             const Divider(),
-            Events(fs: _fs),
+            const Events(),
             const Divider(),
             Text('Running on: $_platformVersion\n'),
           ],
@@ -75,22 +73,18 @@ class _MyAppState extends State<MyApp> {
 class Events extends StatelessWidget {
   const Events({
     super.key,
-    required FullstoryFlutter fs,
-  }) : _fs = fs;
-
-  final FullstoryFlutter _fs;
+  });
 
   @override
   Widget build(BuildContext context) {
     return Wrap(
       children: [
         TextButton(
-          onPressed: () => _fs.event(name: "Name-only event"),
+          onPressed: () => FS.event(name: "Name-only event"),
           child: const Text("Name-only event"),
         ),
         TextButton(
-          onPressed: () =>
-              _fs.event(name: "Many properties event", properties: {
+          onPressed: () => FS.event(name: "Many properties event", properties: {
             "string_val": "a string value",
             "int_val": 42,
             "double_val": 0.1,
@@ -106,7 +100,7 @@ class Events extends StatelessWidget {
           child: const Text("Many properties event"),
         ),
         TextButton(
-          onPressed: () => _fs.event(name: 'Order Completed', properties: {
+          onPressed: () => FS.event(name: 'Order Completed', properties: {
             'orderId': '23f3er3d',
 
             // The products are silently dropped:
@@ -134,8 +128,6 @@ class Log extends StatefulWidget {
 class _LogState extends State<Log> {
   var level = FSLogLevel.info;
   var message = "";
-  final _fs =
-      FullstoryFlutter(); // todo: make this static instead of an instance
 
   @override
   Widget build(BuildContext context) {
@@ -146,6 +138,8 @@ class _LogState extends State<Log> {
           hintText: 'Log message...',
         ),
         onChanged: (value) => message = value,
+        // allow the keyboard to be hidden - why is this not the default behavior?
+        onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
       ),
       Row(
         children: [
@@ -161,7 +155,7 @@ class _LogState extends State<Log> {
           ),
           TextButton(
               onPressed: () {
-                _fs.log(message: message, level: level);
+                FS.log(message: message, level: level);
               },
               child: const Text('Log'))
         ],
@@ -173,17 +167,14 @@ class _LogState extends State<Log> {
 class CaptureStatus extends StatelessWidget {
   const CaptureStatus({
     super.key,
-    required FullstoryFlutter fs,
-  }) : _fs = fs;
-
-  final FullstoryFlutter _fs;
+  });
 
   @override
   Widget build(BuildContext context) {
-    return Row(
+    return const Row(
       children: [
-        TextButton(onPressed: _fs.shutdown, child: const Text("Shutdown")),
-        TextButton(onPressed: _fs.restart, child: const Text("Restart")),
+        TextButton(onPressed: FS.shutdown, child: Text("Shutdown")),
+        TextButton(onPressed: FS.restart, child: Text("Restart")),
       ],
     );
   }
