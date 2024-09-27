@@ -1,7 +1,7 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
+import 'package:fullstory_flutter/fs.dart';
 
-import 'fs_log_level.dart';
 import 'fullstory_flutter_platform_interface.dart';
 
 /// An implementation of [FullstoryFlutterPlatform] that uses method channels.
@@ -9,6 +9,38 @@ class MethodChannelFullstoryFlutter extends FullstoryFlutterPlatform {
   /// The method channel used to interact with the native platform.
   @visibleForTesting
   final methodChannel = const MethodChannel('fullstory_flutter');
+
+  FSStatusListener? statusListener;
+
+  MethodChannelFullstoryFlutter() {
+    WidgetsFlutterBinding.ensureInitialized();
+    methodChannel.setMethodCallHandler(handle);
+  }
+
+  Future<Object?> handle(MethodCall call) {
+    // ignore: avoid_print
+    print(
+      "call from native => dart: ${call.method}(${call.arguments})",
+    );
+    switch (call.method) {
+      case 'onSession':
+        statusListener?.onFSSession(call.arguments as String);
+      case 'onStop': // todo: consider renaming
+        statusListener?.onFSShutdown();
+      case 'onError':
+        statusListener?.onFSError();
+      default:
+        // ignore: avoid_print
+        print(
+            "WARNING: unhandled command sent from native Fullstory SDK to Flutter library: $call");
+    }
+    return Future.value(null);
+  }
+
+  @override
+  void setStatusListener(FSStatusListener? listener) {
+    statusListener = listener;
+  }
 
   @override
   Future<String?> getPlatformVersion() async {
@@ -69,12 +101,13 @@ class MethodChannelFullstoryFlutter extends FullstoryFlutterPlatform {
   }
 
   @override
-  Future<String?> getCurrentSession([bool now = false]) async {
-    return await methodChannel.invokeMethod<String>('setUserVars', now);
+  Future<String?> getCurrentSession() async {
+    return await methodChannel.invokeMethod<String>('getCurrentSession');
   }
 
   @override
-  Future<String?> getCurrentSessionURL() async {
-    return await methodChannel.invokeMethod<String>('getCurrentSessionURL');
+  Future<String?> getCurrentSessionURL([bool now = false]) async {
+    return await methodChannel.invokeMethod<String>(
+        'getCurrentSessionURL', now);
   }
 }
