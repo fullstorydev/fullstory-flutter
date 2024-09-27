@@ -78,7 +78,7 @@ class _CaptureStatusState extends State<CaptureStatus> with FSStatusListener {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Row(
+        Wrap(
           children: [
             const TextButton(onPressed: FS.shutdown, child: Text("Shutdown")),
             const TextButton(onPressed: FS.restart, child: Text("Restart")),
