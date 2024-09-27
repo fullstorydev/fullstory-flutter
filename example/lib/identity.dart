@@ -21,7 +21,9 @@ class _IdentityState extends State<Identity> {
           border: OutlineInputBorder(),
           hintText: 'displayName',
         ),
-        onChanged: (value) => displayName = value,
+        onChanged: (value) => setState(() {
+          displayName = value;
+        }),
         // allow the keyboard to be hidden - why is this not the default behavior?
         onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
       ),
@@ -30,7 +32,9 @@ class _IdentityState extends State<Identity> {
           border: OutlineInputBorder(),
           hintText: 'uid',
         ),
-        onChanged: (value) => uid = value,
+        onChanged: (value) => setState(() {
+          uid = value;
+        }),
         // allow the keyboard to be hidden - why is this not the default behavior?
         onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
       ),

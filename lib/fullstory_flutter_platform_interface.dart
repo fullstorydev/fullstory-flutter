@@ -1,3 +1,4 @@
+import 'package:fullstory_flutter/fs_status_listener.dart';
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 
 import 'fullstory_flutter_method_channel.dart';
@@ -68,15 +69,17 @@ abstract class FullstoryFlutterPlatform extends PlatformInterface {
     throw UnimplementedError('anonymize() has not been implemented.');
   }
 
-  Future<void> getCurrentSession([bool now = false]) {
+  Future<String?> getCurrentSession() {
     throw UnimplementedError('getCurrentSession() has not been implemented.');
   }
 
-  Future<void> getCurrentSessionURL() {
+  Future<String?> getCurrentSessionURL([bool now = false]) {
     throw UnimplementedError(
         'getCurrentSessionURL() has not been implemented.');
   }
 
-  // todo: start/stop/terminate callbacks
+  void setStatusListener(FSStatusListener? listener) {
+    throw UnimplementedError('setStatusListener() has not been implemented.');
+  }
   // todo: webview injection disable
 }

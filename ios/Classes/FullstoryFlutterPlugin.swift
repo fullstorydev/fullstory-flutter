@@ -2,15 +2,23 @@ import Flutter
 import UIKit
 import FullStory
 
-public class FullstoryFlutterPlugin: NSObject, FlutterPlugin {
+public class FullstoryFlutterPlugin: NSObject, FlutterPlugin, FSDelegate {
+  var channel: FlutterMethodChannel
+
+  init(channel: FlutterMethodChannel) {
+      self.channel = channel;
+      super.init()
+      FS.delegate = self;
+  }
+
   public static func register(with registrar: FlutterPluginRegistrar) {
     let channel = FlutterMethodChannel(name: "fullstory_flutter", binaryMessenger: registrar.messenger())
-    let instance = FullstoryFlutterPlugin()
+    let instance = FullstoryFlutterPlugin(channel: channel)
     registrar.addMethodCallDelegate(instance, channel: channel)
   }
 
   public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
-    print("FullStory method call received:", call.method, call.arguments)
+      print("FullStory method call received:", call.method, call.arguments)
     switch call.method {
     case "getPlatformVersion":
       result("iOS " + UIDevice.current.systemVersion)
@@ -57,7 +65,7 @@ public class FullstoryFlutterPlugin: NSObject, FlutterPlugin {
                 let eventName = args["name"] as? String,
                 let properties = args["properties"] as? [String: Any] else {
               result(FlutterError(code: "INVALID_ARGUMENTS",
-                                  message: "Invalid arguments for event: expected name and properties, got \(call.arguments)",
+                                  message: "Invalid arguments for event: expected name and properties, got \(String(describing: call.arguments))",
                                   details: nil))
               return
           }
@@ -75,7 +83,7 @@ public class FullstoryFlutterPlugin: NSObject, FlutterPlugin {
           let uid = args["uid"] as? String,
           let userVars = args["userVars"] as? [String: Any]? else {
         result(FlutterError(code: "INVALID_ARGUMENTS",
-                            message: "Invalid arguments for identify: expected string uid and optional map userVars, got \(call.arguments)",
+                            message: "Invalid arguments for identify: expected string uid and optional map userVars, got \(String(describing: call.arguments))",
                             details: nil))
         return
       }
@@ -93,18 +101,35 @@ public class FullstoryFlutterPlugin: NSObject, FlutterPlugin {
          guard let userVars = call.arguments as? [String: Any] else {
         result(FlutterError(code: "INVALID_ARGUMENTS",
                             message: "Invalid argument for setUserVars",
-                            details: "Expected Map<String, Any>, got \(call.arguments)"))
+                            details: "Expected Map<String, Any>, got \(String(describing: call.arguments))"))
         return
       }
      FS.setUserVars(userVars)
      result(nil)
-  //  case "getCurrentSession":
-  //   // todo: handle `now` param
-  //    result(FS.getCurrentSession())
-  //  case "getCurrentSessionURL":
-  //    result(FS.getCurrentSessionURL())
+   case "getCurrentSession":
+     result(FS.currentSession)
+   case "getCurrentSessionURL":
+        guard let now = call.arguments as? Bool else {
+            result(FS.currentSessionURL)
+            return
+        }
+        result(FS.currentSessionURL(now))
     default:
       result(FlutterMethodNotImplemented)
     }
   }
+
+    // FSDelegate methods to receive status events from Fullstory
+    public func fullstoryDidStartSession(_ sessionUrl: String) {
+     print("Fullstory did start session with URL " + sessionUrl)
+        self.channel.invokeMethod("onSession", arguments: sessionUrl)
+    }
+    public func fullstoryDidStopSession() {
+     print("Fullstory has stopped session")
+        self.channel.invokeMethod("onStop", arguments:nil)
+    }
+    public func fullstoryDidTerminateWithError(_ error: Error) {
+     print("Fullstory did terminate with error: " + error.localizedDescription)
+        self.channel.invokeMethod("onError", arguments: error)
+    }
 }

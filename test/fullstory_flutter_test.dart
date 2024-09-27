@@ -12,13 +12,11 @@ class MockFullstoryFlutterPlatform
 
   @override
   Future<void> anonymize() {
-    // TODO: implement anonymize
     throw UnimplementedError();
   }
 
   @override
   Future<void> consent() {
-    // TODO: implement consent
     throw UnimplementedError();
   }
 
@@ -27,56 +25,52 @@ class MockFullstoryFlutterPlatform
     required String name,
     Map<String, Object?> properties = const {},
   }) {
-    // TODO: implement event
     throw UnimplementedError();
   }
 
   @override
-  Future<void> getCurrentSession([bool now = false]) {
-    // TODO: implement getCurrentSession
+  Future<String?> getCurrentSession() {
     throw UnimplementedError();
   }
 
   @override
-  Future<void> getCurrentSessionURL() {
-    // TODO: implement getCurrentSessionURL
+  Future<String?> getCurrentSessionURL([bool now = false]) {
     throw UnimplementedError();
   }
 
   @override
   Future<void> identify(Map<String, dynamic> args) {
-    // TODO: implement identity
     throw UnimplementedError();
   }
 
   @override
   Future<void> log(
       {FSLogLevel level = FSLogLevel.info, required String message}) {
-    // TODO: implement log
     throw UnimplementedError();
   }
 
   @override
   Future<void> resetIdleTimer() {
-    // TODO: implement resetIdleTimer
     throw UnimplementedError();
   }
 
   @override
   Future<void> restart() {
-    // TODO: implement restart
     throw UnimplementedError();
   }
 
   @override
   Future<void> setUserVars(Map<String, Object?> userVars) {
-    // TODO: implement setUserVars
     throw UnimplementedError();
   }
 
   @override
   Future<void> shutdown() {
-    // TODO: implement shutdown
+    throw UnimplementedError();
+  }
+
+  @override
+  void setStatusListener(FSStatusListener? listener) {
     throw UnimplementedError();
   }
 }

@@ -1,6 +1,8 @@
 import 'fullstory_flutter_platform_interface.dart';
 import 'fs_log_level.dart';
 export 'fs_log_level.dart';
+import 'fs_status_listener.dart';
+export 'fs_status_listener.dart';
 
 class FS {
   static Future<String?> getPlatformVersion() {
@@ -53,11 +55,15 @@ class FS {
     return FullstoryFlutterPlatform.instance.setUserVars(userVars);
   }
 
-  static Future<void> getCurrentSession([bool now = false]) {
-    return FullstoryFlutterPlatform.instance.getCurrentSession(now);
+  static Future<String?> getCurrentSession() {
+    return FullstoryFlutterPlatform.instance.getCurrentSession();
   }
 
-  static Future<void> getCurrentSessionURL() {
-    return FullstoryFlutterPlatform.instance.getCurrentSessionURL();
+  static Future<String?> getCurrentSessionURL([bool now = false]) {
+    return FullstoryFlutterPlatform.instance.getCurrentSessionURL(now);
+  }
+
+  static void setStatusListener(FSStatusListener? listener) {
+    FullstoryFlutterPlatform.instance.setStatusListener(listener);
   }
 }
