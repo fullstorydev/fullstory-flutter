@@ -3,7 +3,17 @@ plugins {
     id "kotlin-android"
     // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
     id "dev.flutter.flutter-gradle-plugin"
+    id 'fullstory'
 }
+
+fullstory {
+  org "KWH"
+  enabledVariants 'all'
+  logcatLevel 'error'
+  serverUrl "https://staging.fullstory.com"
+  verboseLogging true
+}
+
 
 android {
     namespace = "com.example.fullstory_flutter_example"
