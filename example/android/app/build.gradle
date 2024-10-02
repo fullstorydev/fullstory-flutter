@@ -3,6 +3,25 @@ plugins {
     id "kotlin-android"
     // The Flutter Gradle Plugin must be applied after the Android and Kotlin Gradle plugins.
     id "dev.flutter.flutter-gradle-plugin"
+    id 'fullstory'
+}
+
+def localProperties = new Properties()
+localProperties.load(new FileInputStream(rootProject.file("local.properties")))
+if (!localProperties.containsKey('FSOrgId')) {
+    throw new GradleException('Please add a FSOrgId=<Your Fullstory OrgID> line to example/android/local.properties');
+}
+
+fullstory {
+  org localProperties['FSOrgId']
+  enabledVariants 'all'
+  logcatLevel 'error'
+  logLevel 'log'
+  if (localProperties.containsKey('FSServerUrl')) {
+    // This is for Fullstory internal testing and should not be needed when building your own app.
+    serverUrl localProperties['FSServerUrl']
+  }
+  verboseLogging true
 }
 
 android {
@@ -35,6 +54,9 @@ android {
             // TODO: Add your own signing config for the release build.
             // Signing with the debug keys for now, so `flutter run --release` works.
             signingConfig = signingConfigs.debug
+            minifyEnabled true
+            shrinkResources true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt')
         }
     }
 }

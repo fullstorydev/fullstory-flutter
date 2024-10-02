@@ -16,3 +16,16 @@ subprojects {
 tasks.register("clean", Delete) {
     delete rootProject.buildDir
 }
+
+buildscript {
+    // todo: figure out why I need this here instead of in ./settings.gradle
+  repositories {
+    google()
+    mavenCentral()
+    gradlePluginPortal()
+    maven { url "https://maven.fullstory.com" }
+  }
+  dependencies {
+    classpath 'com.fullstory:gradle-plugin-local:1.53.0'
+  }
+}
