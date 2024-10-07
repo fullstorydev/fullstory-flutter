@@ -24,14 +24,23 @@ class FullstoryFlutterPlugin: FlutterPlugin, MethodCallHandler {
   }
 
   override fun onMethodCall(call: MethodCall, result: Result) {
-    if (call.method == "getPlatformVersion") {
-      result.success("Android ${android.os.Build.VERSION.RELEASE}")
-    } else if (call.method == "getCurrentSession") {
-      result.success(FS.getCurrentSession())
-    } else if (call.method == "getCurrentSessionURL") {
-      result.success("test session url")
-    } else {
-      result.notImplemented()
+    println("FullStory method call received: ${call.method}, ${call.arguments}")
+    when (call.method) {
+      "getPlatformVersion" -> result.success("Android ${android.os.Build.VERSION.RELEASE}")
+      "shutdown" -> {
+        FS.shutdown()
+        result.success(null)
+      }
+      "restart" -> {
+        FS.restart()
+        result.success(null)
+      }
+      "getCurrentSession" -> result.success(FS.getCurrentSession())
+      "getCurrentSessionURL" -> {
+        val now = call.arguments as Boolean
+        result.success(FS.getCurrentSessionURL(now))
+      }
+      else -> result.notImplemented()
     }
   }
 
