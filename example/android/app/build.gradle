@@ -24,7 +24,6 @@ fullstory {
   verboseLogging true
 }
 
-
 android {
     namespace = "com.example.fullstory_flutter_example"
     compileSdk = flutter.compileSdkVersion

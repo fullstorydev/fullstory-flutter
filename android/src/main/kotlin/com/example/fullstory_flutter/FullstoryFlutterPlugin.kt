@@ -24,7 +24,7 @@ class FullstoryFlutterPlugin: FlutterPlugin, MethodCallHandler {
   }
 
   override fun onMethodCall(call: MethodCall, result: Result) {
-    println("FullStory method call received: ${call.method}, ${call.arguments}")
+    println("\n\nFullStory method call received: ${call.method}, ${call.arguments}\n\n")
     when (call.method) {
       "getPlatformVersion" -> result.success("Android ${android.os.Build.VERSION.RELEASE}")
       "shutdown" -> {
@@ -33,6 +33,21 @@ class FullstoryFlutterPlugin: FlutterPlugin, MethodCallHandler {
       }
       "restart" -> {
         FS.restart()
+        result.success(null)
+      }
+      "log" -> {
+        val levelB = call.argument<Int>("level")
+        val message = call.argument<String>("message")
+        val level = when (levelB) {
+          0 -> FS.LogLevel.LOG // A.K.A. Verbose
+          1 -> FS.LogLevel.DEBUG
+          2 -> FS.LogLevel.INFO
+          3 -> FS.LogLevel.WARN
+          4 -> FS.LogLevel.ERROR
+          5 -> FS.LogLevel.ERROR // Assert on iOS; not actually enabled at the moment because it's a reserved keyword in dart.
+          else -> FS.LogLevel.INFO // default. Alternatively we could error here.
+        }
+        FS.log(level, message)
         result.success(null)
       }
       "getCurrentSession" -> result.success(FS.getCurrentSession())
