@@ -50,6 +50,59 @@ class FullstoryFlutterPlugin: FlutterPlugin, MethodCallHandler {
         FS.log(level, message)
         result.success(null)
       }
+      "resetIdleTimer" -> {
+        FS.resetIdleTimer()
+        result.success(null)
+      }
+      "event" -> {
+        val name = call.argument<String>("name")
+        val properties = call.argument<Map<String, *>>("properties")
+        if (name == null) {
+          result.error(
+            "INVALID_ARGUMENTS",
+            "Invalid arguments for event: expected name and properties, got ${call.arguments})",
+            null
+          )
+          return
+        }
+        FS.event(name, properties)
+        result.success(null)
+      }
+      "identify" -> {
+        val uid = call.argument<String>("uid")
+        val userVars = call.argument<Map<String, *>>("userVars")
+        if (uid == null) {
+          result.error(
+            "INVALID_ARGUMENTS",
+            "Invalid arguments for identify: expected string uid and optional map userVars, got ${call.arguments})",
+            null
+          )
+          return
+        }
+        if (userVars != null) {
+          FS.identify(uid, userVars)
+        } else {
+          FS.identify(uid)
+        }
+        result.success(null)
+      }
+      "anonymize" -> {
+        FS.anonymize()
+        result.success(null)
+      }
+      "setUserVars" -> {
+        val userVars: Map<String, *>? = call.arguments as? Map<String, *>
+        if(userVars != null) {
+          FS.setUserVars(userVars)
+          result.success(null)
+        } else {
+          result.error(
+            "INVALID_ARGUMENTS",
+            "Invalid argument for setUserVars. Expected Map<String, *>, got ${call.arguments})",
+            null
+          )
+        }
+      }
       "getCurrentSession" -> result.success(FS.getCurrentSession())
       "getCurrentSessionURL" -> {
         val now = call.arguments as Boolean
