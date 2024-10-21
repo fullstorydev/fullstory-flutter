@@ -1,6 +1,7 @@
 package com.example.fullstory_flutter
 
-import androidx.annotation.NonNull
+import android.util.Log
+import com.fullstory.DefaultFSStatusListener
 
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.plugin.common.MethodCall
@@ -9,18 +10,23 @@ import io.flutter.plugin.common.MethodChannel.MethodCallHandler
 import io.flutter.plugin.common.MethodChannel.Result
 
 import com.fullstory.FS
+import com.fullstory.FSSessionData
+import com.fullstory.FSStatusListener
 
 /** FullstoryFlutterPlugin */
-class FullstoryFlutterPlugin: FlutterPlugin, MethodCallHandler {
+class FullstoryFlutterPlugin() : FlutterPlugin, MethodCallHandler {
   /// The MethodChannel that will the communication between Flutter and native Android
   ///
   /// This local reference serves to register the plugin with the Flutter Engine and unregister it
   /// when the Flutter Engine is detached from the Activity
   private lateinit var channel : MethodChannel
+  private lateinit var statusListener : FSStatusListener
 
   override fun onAttachedToEngine(flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
     channel = MethodChannel(flutterPluginBinding.binaryMessenger, "fullstory_flutter")
     channel.setMethodCallHandler(this)
+    statusListener = StatusListener(channel)
+    FS.registerStatusListener(statusListener)
   }
 
   override fun onMethodCall(call: MethodCall, result: Result) {
@@ -114,5 +120,29 @@ class FullstoryFlutterPlugin: FlutterPlugin, MethodCallHandler {
 
   override fun onDetachedFromEngine(binding: FlutterPlugin.FlutterPluginBinding) {
     channel.setMethodCallHandler(null)
+  }
+
+  private class StatusListener(private var channel: MethodChannel) : DefaultFSStatusListener() {
+
+    override fun onSession(sessionData: FSSessionData) {
+      Log.d("Fullstory", "FS session URL: ${sessionData.currentSessionURL}")
+      channel.invokeMethod("onSession", sessionData.currentSessionURL)
+    }
+
+    // omitting these for now since they don't align perfectly with the iOS version
+    // override fun onSessionDisabled(reason: FSReason) {
+    //   Log.d("Fullstory", "Session disabled (${reason.code}): ${reason.message}")
+    //   channel.invokeMethod("onError", reason)
+    // }
+
+    // override fun onFSError(error: FSReason) {
+    //   Log.d("Fullstory", "FS Error (${error.code}): ${error.message}")
+    //   channel.invokeMethod("onError", error)
+    // }
+
+    // override fun onFSDisabled(reason: FSReason) {
+    //   Log.d("Fullstory", "FS disabled (${reason.code}): ${reason.message}")
+    //   channel.invokeMethod("onError", reason)
+    // }
   }
 }

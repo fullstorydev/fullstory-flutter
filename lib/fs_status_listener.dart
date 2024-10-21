@@ -5,13 +5,14 @@ mixin FSStatusListener {
     // session started
   }
 
-  void onFSShutdown() {
-    // session ended cleanly
-  }
+  // Omitting these for now since shutdown is iOS only and error has some differences between Android and iOS
+  // void onFSShutdown() {
+  //   // session ended cleanly
+  // }
 
-  // todo: reason code
-  void onFSError() {
-    // an error occurred, likely ending the session
-  }
-  // todo: disabled (or just reuse error?)
+  // // todo: reason code
+  // void onFSError() {
+  //   // an error occurred, likely ending the session
+  // }
+  // // todo: disabled (or just reuse error?)
 }

@@ -125,12 +125,14 @@ public class FullstoryFlutterPlugin: NSObject, FlutterPlugin, FSDelegate {
         print("Fullstory did start session with URL " + sessionUrl)
         self.channel.invokeMethod("onSession", arguments: sessionUrl)
     }
-    public func fullstoryDidStopSession() {
-        print("Fullstory has stopped session")
-        self.channel.invokeMethod("onStop", arguments:nil)
-    }
-    public func fullstoryDidTerminateWithError(_ error: Error) {
-        print("Fullstory did terminate with error: " + error.localizedDescription)
-        self.channel.invokeMethod("onError", arguments: error)
-    }
+
+    // omitting these for now since they don't align perfectly with the Android version
+    // public func fullstoryDidStopSession() {
+    //     print("Fullstory has stopped session")
+    //     self.channel.invokeMethod("onStop", arguments:nil)
+    // }
+    // public func fullstoryDidTerminateWithError(_ error: Error) {
+    //     print("Fullstory did terminate with error: " + error.localizedDescription)
+    //     self.channel.invokeMethod("onError", arguments: error)
+    // }
 }

@@ -25,10 +25,10 @@ class MethodChannelFullstoryFlutter extends FullstoryFlutterPlatform {
     switch (call.method) {
       case 'onSession':
         statusListener?.onFSSession(call.arguments as String);
-      case 'onStop': // todo: consider renaming
-        statusListener?.onFSShutdown();
-      case 'onError':
-        statusListener?.onFSError();
+      // case 'onStop':
+      //   statusListener?.onFSShutdown();
+      // case 'onError':
+      //   statusListener?.onFSError();
       default:
         // ignore: avoid_print
         print(

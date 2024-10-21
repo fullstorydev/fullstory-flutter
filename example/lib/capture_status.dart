@@ -54,23 +54,23 @@ class _CaptureStatusState extends State<CaptureStatus> with FSStatusListener {
     });
   }
 
-  @override
-  void onFSShutdown() {
-    setState(() {
-      status = "Shutdown";
-      url = "";
-      id = "";
-    });
-  }
+  // @override
+  // void onFSShutdown() {
+  //   setState(() {
+  //     status = "Shutdown";
+  //     url = "";
+  //     id = "";
+  //   });
+  // }
 
-  @override
-  void onFSError() {
-    setState(() {
-      status = "Error";
-      url = "";
-      id = "";
-    });
-  }
+  // @override
+  // void onFSError() {
+  //   setState(() {
+  //     status = "Error";
+  //     url = "";
+  //     id = "";
+  //   });
+  // }
 
   // todo onFSDisabled
 
@@ -80,7 +80,17 @@ class _CaptureStatusState extends State<CaptureStatus> with FSStatusListener {
       children: [
         Wrap(
           children: [
-            const TextButton(onPressed: FS.shutdown, child: Text("Shutdown")),
+            TextButton(
+                onPressed: () {
+                  FS.shutdown();
+                  // manually do this one since only the iOS SDK has a callback for it
+                  setState(() {
+                    status = "Shutdown";
+                    url = "";
+                    id = "";
+                  });
+                },
+                child: const Text("Shutdown")),
             const TextButton(onPressed: FS.restart, child: Text("Restart")),
             TextButton(
                 onPressed: () {
