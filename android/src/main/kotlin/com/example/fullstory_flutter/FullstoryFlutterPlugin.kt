@@ -1,6 +1,5 @@
 package com.example.fullstory_flutter
 
-import android.util.Log
 import com.fullstory.DefaultFSStatusListener
 
 import io.flutter.embedding.engine.plugins.FlutterPlugin
@@ -30,7 +29,7 @@ class FullstoryFlutterPlugin() : FlutterPlugin, MethodCallHandler {
   }
 
   override fun onMethodCall(call: MethodCall, result: Result) {
-    println("\n\nFullStory method call received: ${call.method}, ${call.arguments}\n\n")
+    //println("\n\nFullStory method call received: ${call.method}, ${call.arguments}\n\n")
     when (call.method) {
       "getPlatformVersion" -> result.success("Android ${android.os.Build.VERSION.RELEASE}")
       "shutdown" -> {
@@ -125,23 +124,23 @@ class FullstoryFlutterPlugin() : FlutterPlugin, MethodCallHandler {
   private class StatusListener(private var channel: MethodChannel) : DefaultFSStatusListener() {
 
     override fun onSession(sessionData: FSSessionData) {
-      Log.d("Fullstory", "FS session URL: ${sessionData.currentSessionURL}")
+      //println("Fullstory", "FS session URL: ${sessionData.currentSessionURL}")
       channel.invokeMethod("onSession", sessionData.currentSessionURL)
     }
 
     // omitting these for now since they don't align perfectly with the iOS version
     // override fun onSessionDisabled(reason: FSReason) {
-    //   Log.d("Fullstory", "Session disabled (${reason.code}): ${reason.message}")
+    //   println("Fullstory", "Session disabled (${reason.code}): ${reason.message}")
     //   channel.invokeMethod("onError", reason)
     // }
 
     // override fun onFSError(error: FSReason) {
-    //   Log.d("Fullstory", "FS Error (${error.code}): ${error.message}")
+    //   println("Fullstory", "FS Error (${error.code}): ${error.message}")
     //   channel.invokeMethod("onError", error)
     // }
 
     // override fun onFSDisabled(reason: FSReason) {
-    //   Log.d("Fullstory", "FS disabled (${reason.code}): ${reason.message}")
+    //   println("Fullstory", "FS disabled (${reason.code}): ${reason.message}")
     //   channel.invokeMethod("onError", reason)
     // }
   }

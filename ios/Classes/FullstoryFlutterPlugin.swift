@@ -18,8 +18,7 @@ public class FullstoryFlutterPlugin: NSObject, FlutterPlugin, FSDelegate {
     }
 
     public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
-        // todo: delete this & other print() calls here
-        print("FullStory method call received:", call.method, call.arguments ?? "")
+        // print("FullStory method call received:", call.method, call.arguments ?? "")
         switch call.method {
         case "getPlatformVersion":
             result("iOS " + UIDevice.current.systemVersion)
@@ -122,7 +121,7 @@ public class FullstoryFlutterPlugin: NSObject, FlutterPlugin, FSDelegate {
 
     // FSDelegate methods to receive status events from Fullstory
     public func fullstoryDidStartSession(_ sessionUrl: String) {
-        print("Fullstory did start session with URL " + sessionUrl)
+        //print("Fullstory did start session with URL " + sessionUrl)
         self.channel.invokeMethod("onSession", arguments: sessionUrl)
     }
 

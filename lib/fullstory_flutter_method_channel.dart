@@ -19,9 +19,9 @@ class MethodChannelFullstoryFlutter extends FullstoryFlutterPlatform {
 
   Future<Object?> handle(MethodCall call) {
     // ignore: avoid_print
-    print(
-      "call from native => dart: ${call.method}(${call.arguments})",
-    );
+    // print(
+    //   "call from native => dart: ${call.method}(${call.arguments})",
+    // );
     switch (call.method) {
       case 'onSession':
         statusListener?.onFSSession(call.arguments as String);
