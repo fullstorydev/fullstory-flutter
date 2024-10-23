@@ -35,9 +35,9 @@ class FS {
         .event(name: name, properties: properties);
   }
 
-  static Future<void> consent() {
-    return FullstoryFlutterPlatform.instance.consent();
-  }
+  // static Future<void> consent() {
+  //   return FullstoryFlutterPlatform.instance.consent();
+  // }
 
   static Future<void> identify(String uid, [Map<String, Object?>? userVars]) {
     Map<String, dynamic> args = {"uid": uid};

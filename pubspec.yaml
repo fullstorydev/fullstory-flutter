@@ -1,11 +1,11 @@
 name: fullstory_flutter
-description: "A new Flutter plugin project."
+description: "Fullstory for Flutter mobile apps"
 version: 0.0.1
-homepage:
+homepage: "https://www.fullstory.com/platform/mobile-apps/"
 
 environment:
   sdk: ^3.5.3
-  flutter: '>=3.3.0'
+  flutter: ">=3.3.0"
 
 dependencies:
   flutter:
