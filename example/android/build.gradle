@@ -23,8 +23,8 @@ buildscript {
     google()
     mavenCentral()
     gradlePluginPortal()
-    //maven { url "https://maven.fullstory.com" }
-    mavenLocal()
+    // mavenLocal()
+    maven { url "https://maven.fullstory.com" }
   }
   dependencies {
     classpath 'com.fullstory:gradle-plugin-local:9.9.9'

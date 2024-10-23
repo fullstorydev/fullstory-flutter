@@ -18,8 +18,8 @@ allprojects {
     repositories {
         google()
         mavenCentral()
-        //maven { url "https://maven.fullstory.com" }
-        mavenLocal()
+        // mavenLocal()
+        maven { url "https://maven.fullstory.com" }
     }
 }
 
