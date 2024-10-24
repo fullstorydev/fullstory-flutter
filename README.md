@@ -1,14 +1,14 @@
-# FullStory Flutter Package
+# Fullstory Flutter Package
 
 [![Test](https://github.com/fullstorydev/fullstory-flutter/actions/workflows/test.yml/badge.svg)](https://github.com/fullstorydev/fullstory-flutter/actions/workflows/test.yml)
 
-FullStory's Flutter package exposes access to the FullStory Native Mobile SDK from within a Flutter app. This plug-in is intended to be used in conjunction with [FullStory for Mobile Apps](https://www.fullstory.com/mobile-apps/).
+Fullstory's Flutter package exposes access to the Fullstory Native Mobile SDK from within a Flutter app. This plug-in is intended to be used in conjunction with [Fullstory for Mobile Apps](https://www.fullstory.com/mobile-apps/).
 
 ⚠️ This is a preview release, some breaking changes are likely before the 1.0.0 release.
 
 ## Quick Links
 
-- [FullStory API](https://developer.fullstory.com)
+- [Fullstory API](https://developer.fullstory.com)
 - [Email us](mailto:mobile-support@fullstory.com)
 
 ## What's supported
