@@ -28,3 +28,11 @@ Most non-visual Fullstory APIs are supported:
 - `FS.resetIdleTimer()`
 
 Visual session replay is not currently supported, but is planned for a future release.
+
+## Getting Started
+
+After installing this flutter library you will need to configure the native Fullstory Android and iOS frameworks.
+
+For Android, you will need to start at the beginning of our [Getting Started with Android Data Capture](https://help.fullstory.com/hc/en-us/articles/360040596093-Getting-Started-with-Android-Data-Capture) guide.
+
+For iOS, the CocoaPods Pod is automatically installed as a dependency, so you can skip to step 2 of our Getting Started with iOS Data Capture guide: [Add the Plugin Properties](https://help.fullstory.com/hc/en-us/articles/360042772333-Getting-Started-with-iOS-Data-Capture#01FX61TBJ8FAD9CWBMY31DWSTH)
