@@ -1,13 +1,10 @@
 import 'package:flutter/material.dart';
-import 'dart:async';
-
-import 'package:flutter/services.dart';
-import 'package:fullstory_flutter/fs.dart';
 
 import 'capture_status.dart';
 import 'identity.dart';
 import 'log.dart';
 import 'events.dart';
+import 'platform_version.dart';
 
 void main() {
   runApp(const MyApp());
@@ -21,33 +18,19 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  String _platformVersion = 'Unknown';
+  int _selectedIndex = 0;
 
-  @override
-  void initState() {
-    super.initState();
-    initPlatformState();
-  }
+  static const List<Widget> _pages = <Widget>[
+    CaptureStatus(),
+    Identity(),
+    Log(),
+    Events(),
+    PlatformVersion(),
+  ];
 
-  // Platform messages are asynchronous, so we initialize in an async method.
-  Future<void> initPlatformState() async {
-    String platformVersion;
-    // Platform messages may fail, so we use a try/catch PlatformException.
-    // We also handle the message potentially returning null.
-    try {
-      platformVersion =
-          await FS.getPlatformVersion() ?? 'Unknown platform version';
-    } on PlatformException {
-      platformVersion = 'Failed to get platform version.';
-    }
-
-    // If the widget was removed from the tree while the asynchronous platform
-    // message was in flight, we want to discard the reply rather than calling
-    // setState to update our non-existent appearance.
-    if (!mounted) return;
-
+  void _onItemTapped(int index) {
     setState(() {
-      _platformVersion = platformVersion;
+      _selectedIndex = index;
     });
   }
 
@@ -57,21 +40,43 @@ class _MyAppState extends State<MyApp> {
       home: Scaffold(
         appBar: AppBar(
           title: const Text('Fullstory Flutter test app'),
+          leading: Builder(
+            builder: (context) {
+              return IconButton(
+                icon: const Icon(Icons.menu),
+                onPressed: () {
+                  Scaffold.of(context).openDrawer();
+                },
+              );
+            },
+          ),
         ),
-        body: ListView(
-          padding: const EdgeInsets.all(8),
-          children: [
-            const CaptureStatus(),
-            const Divider(),
-            const Identity(),
-            const Divider(),
-            const Log(),
-            const Divider(),
-            const Events(),
-            const Divider(),
-            Text('Running on: $_platformVersion\n'),
-          ],
-        ),
+        body: _pages[_selectedIndex],
+        drawer: Builder(builder: (context) {
+          return Drawer(
+            // Add a ListView to the drawer. This ensures the user can scroll
+            // through the options in the drawer if there isn't enough vertical
+            // space to fit everything.
+            child: ListView(
+              // Important: Remove any padding from the ListView.
+              //padding: EdgeInsets.zero,
+              children: [
+                // generate a list of menu entries from the list of pages
+                for (var i = 0; i < _pages.length; i++)
+                  ListTile(
+                    title: Text(_pages[i].toString()),
+                    selected: _selectedIndex == i,
+                    onTap: () {
+                      // Update the state of the app
+                      _onItemTapped(i);
+                      // Then close the drawer
+                      Navigator.pop(context);
+                    },
+                  ),
+              ],
+            ),
+          );
+        }),
       ),
     );
   }
