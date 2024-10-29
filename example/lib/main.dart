@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fullstory_flutter_example/webview.dart';
 
 import 'capture_status.dart';
 import 'identity.dart';
@@ -26,6 +27,7 @@ class _MyAppState extends State<MyApp> {
     Log(),
     Events(),
     PlatformVersion(),
+    WebView(),
   ];
 
   void _onItemTapped(int index) {
