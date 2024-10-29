@@ -1,0 +1,3 @@
+${PODS_ROOT}/Target Support Files/Pods-Runner/Pods-Runner-frameworks.sh
+${BUILT_PRODUCTS_DIR}/fullstory_flutter/fullstory_flutter.framework
+${BUILT_PRODUCTS_DIR}/integration_test/integration_test.framework

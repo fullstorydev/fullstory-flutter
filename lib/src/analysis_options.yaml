@@ -1,0 +1,5 @@
+include: ../analysis_options.yaml
+
+linter:
+  rules:
+    - public_member_api_docs: false # these are not public, but the rule doesn't seem to realize this

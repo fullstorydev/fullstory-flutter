@@ -1,0 +1,8 @@
+From the bottom of example/ios/Pods/Target Support Files/Pods-Runner/Pods-Runner-frameworks-Debug-input-files.xcfilelist
+
+${PODS_XCFRAMEWORKS_BUILD_DIR}/FullStory/FullStory.framework/FullStory
+
+From the bottom of example/ios/Pods/Target Support Files/Pods-Runner/Pods-Runner-frameworks-Debug-output-files.xcfilelist
+
+
+${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FullStory.framework

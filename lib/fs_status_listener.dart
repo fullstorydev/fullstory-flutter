@@ -1,6 +1,10 @@
 // Note: all methods here are no-ops.
 // API users can override the ones they care about and leave the default no-op implementation for the others
+
+/// Fullstory session status listener mixin
 mixin FSStatusListener {
+  /// Override this to be notified when the Fullstory session has begun
+  /// Note: If FS.getCurrentSessionURL() is currently returning a URL, then the session has already begun and onFSSession will not be called unless a new session is started.
   void onFSSession(String url) {
     // session started
   }

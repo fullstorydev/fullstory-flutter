@@ -1,0 +1,190 @@
+// swift-interface-format-version: 1.0
+// swift-compiler-version: Apple Swift version 5.9.2 (swiftlang-5.9.2.2.56 clang-1500.1.0.2.5)
+// swift-module-flags: -target x86_64-apple-ios12.2-simulator -enable-objc-interop -enable-library-evolution -swift-version 5 -enforce-exclusivity=checked -O -module-name FullStory
+// swift-module-flags-ignorable: -enable-bare-slash-regex
+import Combine
+@_exported import FullStory
+import Swift
+import SwiftUI
+import UIKit
+import _Concurrency
+import _StringProcessing
+import _SwiftConcurrencyShims
+@available(iOS 13, *)
+public protocol FSSelectableView {
+}
+@available(iOS 13, *)
+extension SwiftUI.View {
+  public func fsSelectable(_ name: Swift.String) -> some SwiftUI.View
+  
+  public func fsAddClass(_ className: Swift.String?) -> some SwiftUI.View
+  
+  @inlinable public func fsAddClass(_ className: FullStory.FSViewClass?) -> some SwiftUI.View {
+        self.fsAddClass(className?.rawValue)
+    }
+  
+  public func fsAddClasses(_ classNames: [Swift.String]) -> some SwiftUI.View
+  
+  @inlinable public func fsAddClasses(_ classNames: [FullStory.FSViewClass]) -> some SwiftUI.View {
+        self.fsAddClasses(classNames.map(\.rawValue))
+    }
+  
+  @available(*, deprecated, message: "The 'modify:' parameter is no longer used in fsAddClass.")
+  public func fsAddClass(_ className: Swift.String?, modify: @escaping (UIKit.UIView) -> Swift.Void) -> some SwiftUI.View
+  
+  @available(*, deprecated, message: "The 'modify:' parameter is no longer used in fsAddClass.")
+  @inlinable public func fsAddClass(_ className: FullStory.FSViewClass?, modify: @escaping (UIKit.UIView) -> Swift.Void) -> some SwiftUI.View {
+        self.fsAddClass(className?.rawValue, modify: modify)
+    }
+  
+  @available(*, deprecated, message: "The 'modify:' parameter is no longer used in fsAddClasses.")
+  public func fsAddClasses(_ classNames: [Swift.String], modify: @escaping (UIKit.UIView) -> Swift.Void) -> some SwiftUI.View
+  
+  @available(*, deprecated, message: "The 'modify:' parameter is no longer used in fsAddClasses.")
+  @inlinable public func fsAddClasses(_ classNames: [FullStory.FSViewClass], modify: @escaping (UIKit.UIView) -> Swift.Void) -> some SwiftUI.View {
+        self.fsAddClasses(classNames.map(\.rawValue), modify: modify)
+    }
+  
+  @inlinable public func fsMask() -> some SwiftUI.View {
+        fsAddClass(.mask)
+    }
+  
+  @inlinable public func fsMaskWithoutConsent() -> some SwiftUI.View {
+        fsAddClass(.maskWithoutConsent)
+    }
+  
+  @inlinable public func fsUnmask() -> some SwiftUI.View {
+        fsAddClass(.unmask)
+    }
+  
+  @inlinable public func fsUnmaskWithConsent() -> some SwiftUI.View {
+        fsAddClass(.unmaskWithConsent)
+    }
+  
+  @inlinable public func fsExclude() -> some SwiftUI.View {
+        fsAddClass(.exclude)
+    }
+  
+  @inlinable public func fsExcludeWithoutConsent() -> some SwiftUI.View {
+        fsAddClass(.excludeWithoutConsent)
+    }
+  
+  public func fsSetAttribute(name: Swift.String, value: Swift.String) -> some SwiftUI.View
+  
+  public func fsSetAttributes(_ attrs: [Swift.String : Swift.String]) -> some SwiftUI.View
+  
+}
+@available(iOS 16.0, macOS 13.0, tvOS 16.0, watchOS 9.0, *)
+@frozen public struct FSGrid<Content> where Content : SwiftUI.View {
+  @usableFromInline
+  internal var _tree: SwiftUI._VariadicView.Tree<SwiftUI.GridLayout, Content>
+  public typealias Body = Swift.Never
+}
+@available(iOS 16.0, macOS 13.0, tvOS 16.0, watchOS 9.0, *)
+@frozen public struct FSGridRow<Content> where Content : SwiftUI.View {
+  @usableFromInline
+  internal var alignment: SwiftUI.VerticalAlignment?
+  @usableFromInline
+  internal var content: Content
+  public typealias Body = Swift.Never
+}
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
+@frozen public struct FSHStack<Content> : SwiftUI.View where Content : SwiftUI.View {
+  @_Concurrency.MainActor(unsafe) public var body: Swift.Never {
+    get
+  }
+  @usableFromInline
+  internal var _tree: SwiftUI._VariadicView.Tree<SwiftUI._HStackLayout, Content>
+  @inlinable public init(alignment: SwiftUI.VerticalAlignment = .center, spacing: CoreFoundation.CGFloat? = nil, @SwiftUI.ViewBuilder content: () -> Content) {
+      _tree = _VariadicView.Tree.init(
+            _HStackLayout(alignment: alignment, spacing: spacing), content: content)
+    }
+  public typealias Body = Swift.Never
+}
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
+@frozen public struct FSVStack<Content> : SwiftUI.View where Content : SwiftUI.View {
+  @_Concurrency.MainActor(unsafe) public var body: Swift.Never {
+    get
+  }
+  @usableFromInline
+  internal var _tree: SwiftUI._VariadicView.Tree<SwiftUI._VStackLayout, Content>
+  @inlinable public init(alignment: SwiftUI.HorizontalAlignment = .center, spacing: CoreFoundation.CGFloat? = nil, @SwiftUI.ViewBuilder content: () -> Content) {
+      _tree = _VariadicView.Tree.init(
+            _VStackLayout(alignment: alignment, spacing: spacing), content: content)
+    }
+  public typealias Body = Swift.Never
+}
+@available(iOS 13.0, macOS 10.15, tvOS 13.0, watchOS 6.0, *)
+@frozen public struct _FSConditionalContent<TrueContent, FalseContent> {
+  @usableFromInline
+  @frozen internal enum Storage {
+    case trueContent(TrueContent)
+    case falseContent(FalseContent)
+  }
+  @usableFromInline
+  internal let storage: FullStory._FSConditionalContent<TrueContent, FalseContent>.Storage
+}
+@_inheritsConvenienceInitializers @objc(FSSwiftStuff) public class FSSwiftStuff : ObjectiveC.NSObject {
+  @objc public static var radiusToValue: Foundation.NSMutableDictionary
+  @objc public static var offsetToValue: Foundation.NSMutableDictionary
+  @objc public static var viewPropertiesToType: Foundation.NSMutableDictionary
+  @objc override dynamic public init()
+  @objc deinit
+}
+extension FullStory.FSViewClass : Swift.ExpressibleByStringLiteral {
+  @inlinable public init(stringLiteral value: Swift.String) {
+        self.init(value)
+    }
+  @inlinable public init(unicodeScalarLiteral value: Swift.String) {
+        self.init(value)
+    }
+  @inlinable public init(extendedGraphemeClusterLiteral value: Swift.String) {
+        self.init(value)
+    }
+  public typealias ExtendedGraphemeClusterLiteralType = Swift.String
+  public typealias StringLiteralType = Swift.String
+  public typealias UnicodeScalarLiteralType = Swift.String
+}
+extension FullStory.FSViewClass : Swift.ExpressibleByStringInterpolation {
+  @inlinable public init(stringInterpolation: Swift.DefaultStringInterpolation) {
+        self.init(String(stringInterpolation: stringInterpolation))
+    }
+  public typealias StringInterpolation = Swift.DefaultStringInterpolation
+}
+extension FullStory.FS {
+  @inlinable public static func addClass(_ view: UIKit.UIView, className name: Swift.String) {
+        self.addClass(view, className: FSViewClass(name))
+    }
+  @inlinable public static func removeClass(_ view: UIKit.UIView, className name: Swift.String) {
+        self.removeClass(view, className: FSViewClass(name))
+    }
+  @inlinable public static func addClasses(_ view: UIKit.UIView, classNames names: [Swift.String]) {
+        self.addClasses(view, classNames: names.map(FSViewClass.init(rawValue:)))
+    }
+  @inlinable public static func removeClasses(_ view: UIKit.UIView, classNames names: [Swift.String]) {
+        self.removeClasses(view, classNames: names.map(FSViewClass.init(rawValue:)))
+    }
+}
+extension UIKit.UIView {
+  @inlinable @_Concurrency.MainActor(unsafe) public func fsAddClass(_ name: Swift.String) {
+        self.fsAddClass(FSViewClass(name))
+    }
+  @inlinable @_Concurrency.MainActor(unsafe) public func fsRemoveClass(_ name: Swift.String) {
+        self.fsRemoveClass(FSViewClass(name))
+    }
+  @inlinable @_Concurrency.MainActor(unsafe) public func fsAddClasses(_ names: [Swift.String]) {
+        self.fsAddClasses(names.map(FSViewClass.init(rawValue:)))
+    }
+  @inlinable @_Concurrency.MainActor(unsafe) public func fsRemoveClasses(_ names: [Swift.String]) {
+        self.fsRemoveClasses(names.map(FSViewClass.init(rawValue:)))
+    }
+}
+extension FullStory.FSEventLogLevel : Swift.CaseIterable {
+  public static let allCases: [FullStory.FSEventLogLevel]
+  public typealias AllCases = [FullStory.FSEventLogLevel]
+}
+extension FullStory.FSEventLogLevel : Swift.CustomStringConvertible {
+  public var description: Swift.String {
+    get
+  }
+}
