@@ -35,7 +35,7 @@ flutter:
   plugin:
     platforms:
       android:
-        package: com.example.fullstory_flutter
+        package: com.fullstory.fullstory_flutter
         pluginClass: FullstoryFlutterPlugin
       ios:
         pluginClass: FullstoryFlutterPlugin

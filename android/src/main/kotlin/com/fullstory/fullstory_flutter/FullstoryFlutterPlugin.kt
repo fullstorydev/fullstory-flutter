@@ -1,4 +1,4 @@
-package com.example.fullstory_flutter
+package com.fullstory.fullstory_flutter
 
 import com.fullstory.DefaultFSStatusListener
 
