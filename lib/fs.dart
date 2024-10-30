@@ -4,8 +4,10 @@ export 'fs_log_level.dart';
 import 'fs_status_listener.dart';
 export 'fs_status_listener.dart';
 
-/// Fullstory
-/// Note that all methods are static, but may drop data if called when there is no Fullstory session active
+/// Fullstory API
+///
+/// Note that all methods are static.
+/// Also note that methods may drop data if called when there is no Fullstory session active.
 class FS {
   /// For testing only, likely to be removed in a future release
   static Future<String?> getPlatformVersion() {
@@ -37,10 +39,8 @@ class FS {
   }
 
   /// Create a custom event that will appear in the event list in playback and can be used in segments, funnels, etc.
-  static Future<void> event({
-    required String name,
-    Map<String, Object?> properties = const {},
-  }) {
+  static Future<void> event(String name,
+      [Map<String, Object?> properties = const {}]) {
     return FullstoryFlutterPlatform.instance
         .event(name: name, properties: properties);
   }
@@ -51,7 +51,7 @@ class FS {
 
   /// Identify a user and associate current and future sessions with that user.
   /// Will end the current session and begin a new one if a different uid was previously set.
-  /// Also allows custom userVars, see FS.setUserVars()
+  /// Also allows custom userVars, see [FS.setUserVars()]
   static Future<void> identify(String uid, [Map<String, Object?>? userVars]) {
     Map<String, dynamic> args = {"uid": uid};
     if (userVars != null) {
@@ -60,7 +60,7 @@ class FS {
     return FullstoryFlutterPlatform.instance.identify(args);
   }
 
-  /// If a user ID was previously set via FS.identify(), this will end the session, clear the user ID, and begin a new anonymous session.
+  /// If a user ID was previously set via [FS.identify()], this will end the session, clear the user ID, and begin a new anonymous session.
   static Future<void> anonymize() {
     return FullstoryFlutterPlatform.instance.anonymize();
   }
@@ -73,7 +73,7 @@ class FS {
   }
 
   /// Returns the ID of the current Fullstory session.
-  /// See also: FS.getCurrentSessionURL()
+  /// See also: [FS.getCurrentSessionURL()]
   static Future<String?> getCurrentSession() {
     return FullstoryFlutterPlatform.instance.getCurrentSession();
   }

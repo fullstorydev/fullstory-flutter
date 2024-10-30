@@ -11,11 +11,11 @@ class Events extends StatelessWidget {
     return Wrap(
       children: [
         TextButton(
-          onPressed: () => FS.event(name: "Name-only event"),
+          onPressed: () => FS.event("Name-only event"),
           child: const Text("Name-only event"),
         ),
         TextButton(
-          onPressed: () => FS.event(name: "Many properties event", properties: {
+          onPressed: () => FS.event("Many properties event", {
             "string_val": "a string value",
             "int_val": 42,
             "double_val": 0.1,
@@ -31,7 +31,7 @@ class Events extends StatelessWidget {
           child: const Text("Many properties event"),
         ),
         TextButton(
-          onPressed: () => FS.event(name: 'Order Completed', properties: {
+          onPressed: () => FS.event('Order Completed', {
             'orderId': '23f3er3d',
 
             // The products are silently dropped:

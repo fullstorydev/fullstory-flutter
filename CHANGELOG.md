@@ -1,3 +1,7 @@
+## 0.0.3
+
+- Breaking: changed FS.event() to use positional parameters rather than named parameters to better match other Fullstory APIs
+
 ## 0.0.2
 
 - Documented public APIs, move non-public parts to lib/src/
