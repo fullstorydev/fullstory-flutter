@@ -15,7 +15,7 @@ Fullstory's Flutter package exposes access to the Fullstory Native Mobile SDK fr
 
 Most non-visual Fullstory APIs are supported:
 
-- `FS.event({required String name, Map<String, Object?> properties = const {}})`
+- `FS.event(String name, [Map<String, Object?> properties = const {}])`
 - `FS.log({FSLogLevel level = FSLogLevel.info, required String message})`
 - `FS.identify(String uid, [Map<String, Object?>? userVars])`
 - `FS.setUserVars(Map<String, Object?> userVars)`

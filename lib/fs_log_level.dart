@@ -5,7 +5,7 @@ enum FSLogLevel {
   /// Verbose on Android, clamps to Debug on iOS
   log,
 
-  /// Debug log level
+  /// Debug log level, currently combined with [Log] in Fullstory's console.
   debug,
 
   /// Info log level, default

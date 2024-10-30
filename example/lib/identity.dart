@@ -41,36 +41,38 @@ class _IdentityState extends State<Identity> {
       Wrap(
         children: [
           TextButton(
+            child: const Text('Identify'),
             onPressed: () {
               FS.identify(uid);
             },
-            child: const Text('Identify'),
           ),
           TextButton(
+            child: const Text('Identify w/ userVars'),
             onPressed: () {
               FS.identify(uid, {
                 "source": "identify",
                 "when": DateTime.now().toString(),
                 "displayName": displayName,
+                'extraInfo': 'foo'
               });
             },
-            child: const Text('Identify w/ userVars'),
           ),
           TextButton(
+            child: const Text('setUserVars'),
             onPressed: () {
               FS.setUserVars({
                 "source": "setUserVars",
                 "when": DateTime.now().toString(),
-                "displayName": displayName,
+                'displayName': displayName,
+                'membershipLevel': 'bar'
               });
             },
-            child: const Text('setUserVars'),
           ),
           TextButton(
+            child: const Text('Anonymize'),
             onPressed: () {
               FS.anonymize();
             },
-            child: const Text('Anonymize'),
           ),
         ],
       ),
