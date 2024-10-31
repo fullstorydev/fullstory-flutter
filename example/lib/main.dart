@@ -5,7 +5,7 @@ import 'capture_status.dart';
 import 'identity.dart';
 import 'log.dart';
 import 'events.dart';
-import 'platform_version.dart';
+import 'fs_version.dart';
 
 void main() {
   runApp(const MyApp());
@@ -26,7 +26,7 @@ class _MyAppState extends State<MyApp> {
     Identity(),
     Log(),
     Events(),
-    PlatformVersion(),
+    FSVersion(),
     WebView(),
   ];
 

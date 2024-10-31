@@ -43,9 +43,8 @@ class MethodChannelFullstoryFlutter extends FullstoryFlutterPlatform {
   }
 
   @override
-  Future<String?> getPlatformVersion() async {
-    final version =
-        await methodChannel.invokeMethod<String>('getPlatformVersion');
+  Future<String?> fsVersion() async {
+    final version = await methodChannel.invokeMethod<String>('fsVersion');
     return version;
   }
 

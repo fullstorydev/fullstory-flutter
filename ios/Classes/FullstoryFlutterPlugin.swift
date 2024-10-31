@@ -20,8 +20,8 @@ public class FullstoryFlutterPlugin: NSObject, FlutterPlugin, FSDelegate {
     public func handle(_ call: FlutterMethodCall, result: @escaping FlutterResult) {
         // print("FullStory method call received:", call.method, call.arguments ?? "")
         switch call.method {
-        case "getPlatformVersion":
-            result("iOS " + UIDevice.current.systemVersion)
+        case "fsVersion":
+            result(FS.fsVersion())
         case "shutdown":
             FS.shutdown()
             result(nil)

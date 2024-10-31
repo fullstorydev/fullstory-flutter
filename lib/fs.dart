@@ -9,9 +9,9 @@ export 'fs_status_listener.dart';
 /// Note that all methods are static.
 /// Also note that methods may drop data if called when there is no Fullstory session active.
 class FS {
-  /// For testing only, likely to be removed in a future release
-  static Future<String?> getPlatformVersion() {
-    return FullstoryFlutterPlatform.instance.getPlatformVersion();
+  /// Version of the underlying native Fullstory framework, e.g. '1.54.0'
+  static Future<String?> fsVersion() {
+    return FullstoryFlutterPlatform.instance.fsVersion();
   }
 
   /// End Fullstory session.

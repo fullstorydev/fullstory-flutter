@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fullstory_flutter/fs.dart';
 
-class PlatformVersion extends StatefulWidget {
-  const PlatformVersion({super.key});
+class FSVersion extends StatefulWidget {
+  const FSVersion({super.key});
   @override
-  State<PlatformVersion> createState() => _PlatformVersionState();
+  State<FSVersion> createState() => _FSVersionState();
 }
 
-class _PlatformVersionState extends State<PlatformVersion> {
-  String platformVersion = 'Unknown';
+class _FSVersionState extends State<FSVersion> {
+  String fsVersion = 'Unknown';
   @override
   void initState() {
     super.initState();
@@ -18,14 +18,13 @@ class _PlatformVersionState extends State<PlatformVersion> {
 
   // Platform messages are asynchronous, so we initialize in an async method.
   Future<void> initPlatformState() async {
-    String platformVersion;
+    String fsVersion;
     // Platform messages may fail, so we use a try/catch PlatformException.
     // We also handle the message potentially returning null.
     try {
-      platformVersion =
-          await FS.getPlatformVersion() ?? 'Unknown platform version';
+      fsVersion = await FS.fsVersion() ?? 'Unknown Fullstory version';
     } on PlatformException {
-      platformVersion = 'Failed to get platform version.';
+      fsVersion = 'Failed to get Fullstory version.';
     }
 
     // If the widget was removed from the tree while the asynchronous platform
@@ -34,12 +33,12 @@ class _PlatformVersionState extends State<PlatformVersion> {
     if (!mounted) return;
 
     setState(() {
-      this.platformVersion = platformVersion;
+      this.fsVersion = fsVersion;
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    return Text('Running on: $platformVersion\n');
+    return Text('Fullstory version: $fsVersion\n');
   }
 }

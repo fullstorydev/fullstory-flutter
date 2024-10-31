@@ -8,7 +8,7 @@ class MockFullstoryFlutterPlatform
     with MockPlatformInterfaceMixin
     implements FullstoryFlutterPlatform {
   @override
-  Future<String?> getPlatformVersion() => Future.value('42');
+  Future<String?> fsVersion() => Future.value('42');
 
   @override
   Future<void> anonymize() {
@@ -87,6 +87,6 @@ void main() {
     MockFullstoryFlutterPlatform fakePlatform = MockFullstoryFlutterPlatform();
     FullstoryFlutterPlatform.instance = fakePlatform;
 
-    expect(await FS.getPlatformVersion(), '42');
+    expect(await FS.fsVersion(), '42');
   });
 }
