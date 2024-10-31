@@ -25,7 +25,7 @@ abstract class FullstoryFlutterPlatform extends PlatformInterface {
     _instance = instance;
   }
 
-  Future<String?> getPlatformVersion() {
+  Future<String?> fsVersion() {
     throw UnimplementedError('platformVersion() has not been implemented.');
   }
 
