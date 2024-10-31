@@ -5,17 +5,17 @@
 Pod::Spec.new do |s|
   s.name             = 'fullstory_flutter'
   s.version          = '0.0.1'
-  s.summary          = 'A new Flutter plugin project.'
+  s.summary          = 'Fullstory for Flutter Mobile Apps'
   s.description      = <<-DESC
-A new Flutter plugin project.
+Fullstory for Flutter Mobile Apps.
                        DESC
-  s.homepage         = 'http://example.com'
+  s.homepage         = 'https://www.fullstory.com'
   s.license          = { :file => '../LICENSE' }
-  s.author           = { 'Your Company' => 'email@example.com' }
+  s.author           = { 'Fullstory, Inc.' => 'mobile-support@fullstory.com' }
   s.source           = { :path => '.' }
   s.source_files = 'Classes/**/*'
   s.dependency 'Flutter'
-  s.dependency 'FullStory'
+  s.dependency 'FullStory', '~> 1.54'
   s.platform = :ios, '12.0'
 
   # Flutter.framework does not contain a i386 slice.
