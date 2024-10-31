@@ -42,8 +42,11 @@ jobs:
       - name: Analyze project source
         run: dart analyze --fatal-infos
 
-      - name: Run tests
+      - name: Run library tests
         run: flutter test
+
+      - name: Run example app tests
+        run: cd example && flutter test
 
   publish:
     # only run tags, after the tests have passed
