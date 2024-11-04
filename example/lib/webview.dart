@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
+// Basic webview example.
+// No Fullstory APIs are used here, and the webview's contents are not currently visible in playback.
+
 class WebView extends StatefulWidget {
   const WebView({super.key});
 

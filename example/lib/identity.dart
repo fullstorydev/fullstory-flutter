@@ -10,8 +10,9 @@ class Identity extends StatefulWidget {
 
 class _IdentityState extends State<Identity> {
   var level = FSLogLevel.info;
-  var uid = "";
-  var displayName = "";
+  var uid = '';
+  var displayName = '';
+  var email = '';
 
   @override
   Widget build(BuildContext context) {
@@ -30,12 +31,21 @@ class _IdentityState extends State<Identity> {
       TextField(
         decoration: const InputDecoration(
           border: OutlineInputBorder(),
+          hintText: 'email',
+        ),
+        onChanged: (value) => setState(() {
+          email = value;
+        }),
+        onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
+      ),
+      TextField(
+        decoration: const InputDecoration(
+          border: OutlineInputBorder(),
           hintText: 'uid',
         ),
         onChanged: (value) => setState(() {
           uid = value;
         }),
-        // allow the keyboard to be hidden - why is this not the default behavior?
         onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
       ),
       Wrap(
@@ -50,9 +60,11 @@ class _IdentityState extends State<Identity> {
             child: const Text('Identify w/ userVars'),
             onPressed: () {
               FS.identify(uid, {
-                "source": "identify",
-                "when": DateTime.now().toString(),
-                "displayName": displayName,
+                // email and displayName are used by Fullstory, everything else is arbitrary
+                'source': 'identify',
+                'when': DateTime.now().toString(),
+                'displayName': displayName,
+                'email': email,
                 'extraInfo': 'foo'
               });
             },
@@ -61,9 +73,11 @@ class _IdentityState extends State<Identity> {
             child: const Text('setUserVars'),
             onPressed: () {
               FS.setUserVars({
-                "source": "setUserVars",
-                "when": DateTime.now().toString(),
+                // ditto above: email and displayName are used by Fullstory, everything else is arbitrary
+                'source': 'setUserVars',
+                'when': DateTime.now().toString(),
                 'displayName': displayName,
+                'email': email,
                 'membershipLevel': 'bar'
               });
             },

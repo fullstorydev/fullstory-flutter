@@ -7,6 +7,8 @@ import 'log.dart';
 import 'events.dart';
 import 'fs_version.dart';
 
+// Example app that demonstrates use of most Fullstory APIs
+
 void main() {
   runApp(const MyApp());
 }
