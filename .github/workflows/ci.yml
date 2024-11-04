@@ -51,6 +51,11 @@ jobs:
       - name: Test docs generation
         run: dart doc --dry-run
 
+      # dry run publish
+      - run: ./generate_example_md.sh > example/example.md
+      - run: cat example/example.md
+      - run: flutter pub publish --dry-run
+
   publish:
     # only run tags, after the tests have passed
     if: startsWith(github.ref, 'refs/tags/v')
