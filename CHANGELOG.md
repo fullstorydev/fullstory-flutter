@@ -1,3 +1,8 @@
+## 0.1.1
+
+- Added a new `fullstory_flutter.dart` file so that https://pub.dev/packages/fullstory_flutter/install will only suggest importing a single file. It just re-exports `fs.dart`, so importing either one is functionally equivalent.
+- Improved docs and examples, including a script to generate an example.md for https://pub.dev/packages/fullstory_flutter/example
+
 ## 0.1.0
 
 - Breaking: removed `getPlatformVersion()` API
