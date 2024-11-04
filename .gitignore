@@ -1,3 +1,6 @@
+# see generate_example_md.sh
+example/example.md
+
 # Miscellaneous
 *.class
 *.log
