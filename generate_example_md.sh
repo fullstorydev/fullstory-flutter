@@ -8,8 +8,10 @@
 # (This is automatically run by .github/workflows/ci.yml when publishing a new release to pub.dev)
 
 # this assumes the script is run from the root of the project
-pushd example/lib/
+cd example/lib/
 
+echo '<!-- this file is generated, see ../generate_example_md.sh -->'
+echo ''
 echo '# fullstory_flutter Examples'
 echo 'From https://github.com/fullstorydev/fullstory-flutter/tree/main/example/lib'
 echo ''
@@ -35,5 +37,3 @@ for file in *; do
 done
 
 echo ''
-
-popd
