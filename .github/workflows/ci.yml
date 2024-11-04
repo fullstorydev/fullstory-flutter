@@ -48,6 +48,9 @@ jobs:
       - name: Run example app tests
         run: cd example && flutter test
 
+      - name: Test docs generation
+        run: dart doc --dry-run
+
   publish:
     # only run tags, after the tests have passed
     if: startsWith(github.ref, 'refs/tags/v')
