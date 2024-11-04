@@ -1,3 +1,7 @@
+## 0.1.2
+
+- Second attempt at generating example.md, apparently `flutter pub publish` omits files that are .gitignore'd
+
 ## 0.1.1
 
 - Added a new `fullstory_flutter.dart` file so that https://pub.dev/packages/fullstory_flutter/install will only suggest importing a single file. It just re-exports `fs.dart`, so importing either one is functionally equivalent.
