@@ -1,11 +1,11 @@
-/// Log levels. Controls how logs appear in the Dev tools > Console section of Fullstory
+/// Log levels. Controls how logs appear in the Dev tools > Console section of a Fullstory session replay
 enum FSLogLevel {
   // Note: the order matters; the index is used to match to the appropriate value in the android and ios platform code
 
   /// Verbose on Android, clamps to Debug on iOS
   log,
 
-  /// Debug log level, currently combined with [Log] in Fullstory's console.
+  /// Debug log level, currently combined with `log` in Fullstory's console.
   debug,
 
   /// Info log level, default
