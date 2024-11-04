@@ -72,8 +72,9 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
 
-      # Here you can insert custom steps you need
-      # - run: dart tool/generate-code.dart
+      # create an example/example.md file with all of the example code
+      # otherwise pub.dev defaults to the contents of lib/main.md which is fairly unhelpful
+      - run: ./generate_example_md.sh > example/example.md
 
       - name: Publish
         # --force is required because otherwise it asks for a confirmation and times out waiting
