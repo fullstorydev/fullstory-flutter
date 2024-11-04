@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fullstory_flutter/fs.dart';
 
+// Get the version of the underlying native Fullstory SDK (e.g. '1.54.0')
+
 class FSVersion extends StatefulWidget {
   const FSVersion({super.key});
   @override

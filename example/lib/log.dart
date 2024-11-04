@@ -12,6 +12,10 @@ class _LogState extends State<Log> {
   var level = FSLogLevel.info;
   var message = "";
 
+  // Write extra messages to the Fullstory log
+  // What is captured depends on the logLevel setting in iOS & Android
+  // All captured logs appear in
+
   @override
   Widget build(BuildContext context) {
     return Column(children: [

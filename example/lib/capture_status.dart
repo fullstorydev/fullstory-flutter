@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:fullstory_flutter/fs.dart';
 
+// This uses FS.getCurrentSessionURL() to check if the session has already started
+// and creates a FSStatusListener to be notified when a session starts
+
 class CaptureStatus extends StatefulWidget {
   const CaptureStatus({
     super.key,
@@ -10,6 +13,7 @@ class CaptureStatus extends StatefulWidget {
   State<CaptureStatus> createState() => _CaptureStatusState();
 }
 
+// Use the FSStatusListener mixin on this class
 class _CaptureStatusState extends State<CaptureStatus> with FSStatusListener {
   var status = "Loading...";
   var url = "";
@@ -23,9 +27,9 @@ class _CaptureStatusState extends State<CaptureStatus> with FSStatusListener {
     // grab the current session URL & ID in case it has already started
     FS.getCurrentSessionURL().then((url) => setState(() {
           if (url != null) {
+            // if there is a url, we know the session started
             this.url = url;
-            status =
-                "Started"; // if there is a url, we know the session started
+            status = "Started";
           }
         }));
     FS.getCurrentSession().then((id) => setState(() {
@@ -39,10 +43,11 @@ class _CaptureStatusState extends State<CaptureStatus> with FSStatusListener {
   @override
   void dispose() {
     super.dispose();
-    FS.setStatusListener(
-        null); // clear the current status listener (there can be only one!)
+    // clear the current status listener (there can be only one!)
+    FS.setStatusListener(null);
   }
 
+  // This comes from FSStatusListener - the default implementation is a no-op
   @override
   void onFSSession(String url) {
     setState(() {
@@ -53,26 +58,7 @@ class _CaptureStatusState extends State<CaptureStatus> with FSStatusListener {
           }));
     });
   }
-
-  // @override
-  // void onFSShutdown() {
-  //   setState(() {
-  //     status = "Shutdown";
-  //     url = "";
-  //     id = "";
-  //   });
-  // }
-
-  // @override
-  // void onFSError() {
-  //   setState(() {
-  //     status = "Error";
-  //     url = "";
-  //     id = "";
-  //   });
-  // }
-
-  // todo onFSDisabled
+  // Other events (session ended, disabled, error, etc.) are not currently supported, but may be added in a future version of the library
 
   @override
   Widget build(BuildContext context) {
