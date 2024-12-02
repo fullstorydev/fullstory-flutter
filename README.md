@@ -10,7 +10,7 @@ Fullstory's Flutter package exposes access to the Fullstory Native Mobile SDK fr
 
 - [Getting Started guide](https://help.fullstory.com/hc/en-us/articles/27461129353239)
 - [Usage examples](https://github.com/fullstorydev/fullstory-flutter/tree/main/example/lib)
-- [Fullstory API](https://developer.fullstory.com)
+- [Fullstory API](https://developer.fullstory.com/mobile/flutter/)
 - [Email us](mailto:mobile-support@fullstory.com)
 
 ## What's supported
