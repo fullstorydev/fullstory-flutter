@@ -1,3 +1,7 @@
+## 0.1.3
+
+- Update with links to developer docs.
+
 ## 0.1.2
 
 - Second attempt at generating example.md, apparently `flutter pub publish` omits files that are .gitignore'd

@@ -1,6 +1,6 @@
 name: fullstory_flutter
 description: "Fullstory for Flutter mobile apps. Fullstory provides insightful analytics and near-magical session replay for web and mobile apps."
-version: 0.1.2
+version: 0.1.3
 homepage: "https://www.fullstory.com/platform/mobile-apps/"
 
 environment:
