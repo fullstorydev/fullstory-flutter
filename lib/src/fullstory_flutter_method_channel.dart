@@ -112,12 +112,14 @@ class MethodChannelFullstoryFlutter extends FullstoryFlutterPlatform {
 
   // FS Pages apis
   @override
-  Future<FSPage> page(String pageName, Map<String, dynamic> pageVars) async {
-    final result = await methodChannel.invokeMethod<int>('page', {
+  FSPage page(String pageName, Map<String, dynamic> pageVars) {
+    final idFuture = methodChannel.invokeMethod<int>('page', {
       'pageName': pageName,
       'pageVars': pageVars,
     });
-    return new FSPage(result!);
+    return new FSPage(idFuture.then(
+      (value) => value!,
+    ));
   }
 
   @override

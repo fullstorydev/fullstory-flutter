@@ -20,25 +20,17 @@ class _PagesState extends State<Pages> {
   @override
   void initState() {
     super.initState();
-    _initializePage();
-  }
-
-  Future<void> _initializePage() async {
-    // Create a new page with initial properties
-    // todo: is await allowed inside a setState callback?
-    var nextPage = await FS.page('DemoPage$_pageCounter',
-        pageVars: {'initialKey': 'initialValue'});
-    setState(() {
-      _currentPage = nextPage;
-      _pageCounter++;
-    });
+    _createNewPage();
   }
 
   void _createNewPage() {
-    // Dispose of the current page before creating a new one
-    _currentPage?.dispose();
+    // Create a new page with initial properties
     setState(() {
-      _initializePage();
+      // Dispose of the current page before creating a new one
+      _currentPage?.dispose();
+      _currentPage = FS.page('DemoPage$_pageCounter',
+          pageVars: {'initialKey': 'initialValue'});
+      _pageCounter++;
     });
   }
 

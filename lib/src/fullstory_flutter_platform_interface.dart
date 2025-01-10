@@ -84,7 +84,7 @@ abstract class FullstoryFlutterPlatform extends PlatformInterface {
   }
   // todo: webview injection disable
 
-  Future<FSPage> page(String pageName, Map<String, dynamic> pageVars);
+  FSPage page(String pageName, Map<String, dynamic> pageVars);
   Future<void> startPage(int pageId);
   Future<void> endPage(int pageId);
   Future<void> updatePageProperties(

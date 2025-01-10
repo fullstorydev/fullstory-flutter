@@ -80,7 +80,7 @@ class MockFullstoryFlutterPlatform
   }
 
   @override
-  Future<FSPage> page(String pageName, Map<String, dynamic> pageVars) {
+  FSPage page(String pageName, Map<String, dynamic> pageVars) {
     throw UnimplementedError();
   }
 

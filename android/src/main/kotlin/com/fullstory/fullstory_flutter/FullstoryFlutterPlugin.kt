@@ -124,7 +124,7 @@ class FullstoryFlutterPlugin() : FlutterPlugin, MethodCallHandler {
           val pageId = nextPageID++
           pages[pageId] = page
           result.success(pageId)
-          println("\n\nPage created: ${pageName}, ${pageId}, number of pages: ${pages.count()}\n\n")
+          //println("\n\nPage created: ${pageName}, ${pageId}, number of pages: ${pages.count()}\n\n")
         } else {
           result.error("INVALID_ARGUMENT", "Page name is required", null)
         }
@@ -164,6 +164,7 @@ class FullstoryFlutterPlugin() : FlutterPlugin, MethodCallHandler {
         val pageId: Int? = call.arguments as? Int;
         if (pages.remove(pageId) != null) {
           result.success(null)
+          //println("\n\nPage disposed: ${pageId}, number of pages: ${pages.count()}\n\n")
         } else {
           result.error("INVALID_PAGE", "No active page found with the given ID", null)
         }
