@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:fullstory_flutter_example/pages.dart';
 import 'package:fullstory_flutter_example/webview.dart';
 
 import 'capture_status.dart';
@@ -28,6 +29,7 @@ class _MyAppState extends State<MyApp> {
     Identity(),
     Log(),
     Events(),
+    Pages(),
     FSVersion(),
     WebView(),
   ];
