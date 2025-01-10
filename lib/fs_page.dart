@@ -5,7 +5,9 @@ class FSPage {
   // The ID is used to ensure match the Dart page object to it's counterpart in Swift/Kotlin
   final int _id;
 
-  //
+  // This should ensure the matching FSPage from the Android/iOS SDK is released.
+  // Dart's documentation stresses that this is unreliable, but it seems to work well enough in practice.
+  // (Also, pages typically last the duration of the app.)
   static final Finalizer<int> _finalizer = Finalizer((pageId) {
     FullstoryFlutterPlatform.instance.releasePage(pageId);
   });
@@ -16,7 +18,7 @@ class FSPage {
     _finalizer.attach(this, _id, detach: this);
   }
 
-  /// Start the current page. Must be called to use the Pages API
+  /// Start the current page. May be called multiple times if the page is visited more than once.
   Future<void> start() {
     return FullstoryFlutterPlatform.instance.startPage(_id);
   }
@@ -26,13 +28,16 @@ class FSPage {
     return FullstoryFlutterPlatform.instance.endPage(_id);
   }
 
-  /// Merge the given properties into the page's existing properties (if any)
+  /// Merge the given properties into the page's existing properties (if any).
   Future<void> updateProperties(Map<String, dynamic> properties) {
     return FullstoryFlutterPlatform.instance
         .updatePageProperties(_id, properties);
   }
 
-  /// This should only be called when a page is no longer needed, to allow the swift/kotlin counterpart to be garbage collected
+  /// Free the native Fullstory Android/iOS SDK FSPage object that is linked to this Dart object.
+  ///
+  /// This should only be called when a page is no longer needed, to allow the native counterpart to be garbage collected.
+  /// This call is optional - usually Dart automatically handles this correctly.
   void dispose() {
     _finalizer.detach(this);
     FullstoryFlutterPlatform.instance.releasePage(_id);

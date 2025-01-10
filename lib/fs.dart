@@ -126,6 +126,13 @@ class FS {
     FullstoryFlutterPlatform.instance.setStatusListener(listener);
   }
 
+  /// Create a Fullstory Page object
+  ///
+  /// Pages can be created for each screen or logical section of your app to segment analytics and enable page-specific features such as Heatmaps and Journeys
+  ///
+  /// Call [FSPage.start()] on on the returned [FSPage] object to mark the page as active.
+  ///
+  /// For more information, see https://help.fullstory.com/hc/en-us/articles/14795945510295-Mobile-App-Pages-in-Fullstory
   static Future<FSPage> page(String pageName,
       {Map<String, dynamic>? pageVars}) async {
     return FullstoryFlutterPlatform.instance.page(pageName, pageVars ?? {});
