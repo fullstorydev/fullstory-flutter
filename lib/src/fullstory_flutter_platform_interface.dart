@@ -3,6 +3,7 @@ import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 
 import 'fullstory_flutter_method_channel.dart';
 import '../fs_log_level.dart';
+import '../fs_page.dart';
 
 abstract class FullstoryFlutterPlatform extends PlatformInterface {
   /// Constructs a FullstoryFlutterPlatform.
@@ -82,4 +83,11 @@ abstract class FullstoryFlutterPlatform extends PlatformInterface {
     throw UnimplementedError('setStatusListener() has not been implemented.');
   }
   // todo: webview injection disable
+
+  Future<FSPage> page(String pageName, Map<String, dynamic> pageVars);
+  Future<void> startPage(int pageId);
+  Future<void> endPage(int pageId);
+  Future<void> updatePageProperties(
+      int pageId, Map<String, dynamic> properties);
+  Future<void> releasePage(int pageId);
 }

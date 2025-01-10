@@ -3,6 +3,8 @@ import 'fs_log_level.dart';
 export 'fs_log_level.dart';
 import 'fs_status_listener.dart';
 export 'fs_status_listener.dart';
+import 'fs_page.dart';
+export 'fs_page.dart';
 
 /// Fullstory API
 ///
@@ -122,5 +124,10 @@ class FS {
   /// For more information, see https://developer.fullstory.com/mobile/flutter/fullcapture/callbacks-and-delegates/
   static void setStatusListener(FSStatusListener? listener) {
     FullstoryFlutterPlatform.instance.setStatusListener(listener);
+  }
+
+  static Future<FSPage> page(String pageName,
+      {Map<String, dynamic>? pageVars}) async {
+    return FullstoryFlutterPlatform.instance.page(pageName, pageVars ?? {});
   }
 }

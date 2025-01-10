@@ -109,4 +109,38 @@ class MethodChannelFullstoryFlutter extends FullstoryFlutterPlatform {
     return await methodChannel.invokeMethod<String>(
         'getCurrentSessionURL', now);
   }
+
+  // FS Pages apis
+  @override
+  Future<FSPage> page(String pageName, Map<String, dynamic> pageVars) async {
+    final result = await methodChannel.invokeMethod<int>('page', {
+      'pageName': pageName,
+      'pageVars': pageVars,
+    });
+    return new FSPage(result!);
+  }
+
+  @override
+  Future<void> startPage(int pageId) {
+    return methodChannel.invokeMethod('startPage', pageId);
+  }
+
+  @override
+  Future<void> endPage(int pageId) {
+    return methodChannel.invokeMethod('endPage', pageId);
+  }
+
+  @override
+  Future<void> updatePageProperties(
+      int pageId, Map<String, dynamic> properties) {
+    return methodChannel.invokeMethod('updatePageProperties', {
+      'pageId': pageId,
+      'properties': properties,
+    });
+  }
+
+  @override
+  Future<void> releasePage(int pageId) {
+    return methodChannel.invokeMethod('releasePage', pageId);
+  }
 }
