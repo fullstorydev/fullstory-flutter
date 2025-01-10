@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:fullstory_flutter_example/pages.dart';
-import 'package:fullstory_flutter_example/webview.dart';
+import 'package:fullstory_flutter/fs.dart';
 
 import 'capture_status.dart';
 import 'identity.dart';
 import 'log.dart';
 import 'events.dart';
 import 'fs_version.dart';
+import 'webview.dart';
+import 'pages.dart';
 
 // Example app that demonstrates use of most Fullstory APIs
 
@@ -24,7 +25,7 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   int _selectedIndex = 0;
 
-  static const List<Widget> _pages = <Widget>[
+  static const List<Widget> _screens = <Widget>[
     CaptureStatus(),
     Identity(),
     Log(),
@@ -34,9 +35,19 @@ class _MyAppState extends State<MyApp> {
     WebView(),
   ];
 
+  // Create a list of FSPage objects to represent the different screens in the app
+  // We'll call .start() on each one when it's associated screen is displayed
+  static final List<FSPage> _pages =
+      _screens.map((s) => FS.page(s.toString())).toList();
+
+  _MyAppState() {
+    _pages[_selectedIndex].start();
+  }
+
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
+      _pages[_selectedIndex].start();
     });
   }
 
@@ -57,7 +68,7 @@ class _MyAppState extends State<MyApp> {
             },
           ),
         ),
-        body: _pages[_selectedIndex],
+        body: _screens[_selectedIndex],
         drawer: Builder(builder: (context) {
           return Drawer(
             // Add a ListView to the drawer. This ensures the user can scroll
@@ -68,9 +79,9 @@ class _MyAppState extends State<MyApp> {
               //padding: EdgeInsets.zero,
               children: [
                 // generate a list of menu entries from the list of pages
-                for (var i = 0; i < _pages.length; i++)
+                for (var i = 0; i < _screens.length; i++)
                   ListTile(
-                    title: Text(_pages[i].toString()),
+                    title: Text(_screens[i].toString()),
                     selected: _selectedIndex == i,
                     onTap: () {
                       // Update the state of the app

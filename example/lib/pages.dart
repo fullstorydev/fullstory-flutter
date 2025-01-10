@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fullstory_flutter/fs.dart';
 
 // Note: this is a somewhat odd usage of the Fullstory Pages API, but it exercises the full API.
-// todo: create a more normal example that has a page for each screen of this example app
+// See _pages in main.dart for a more typical usage.
 
 class Pages extends StatefulWidget {
   const Pages({
