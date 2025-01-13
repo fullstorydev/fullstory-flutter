@@ -10,7 +10,7 @@ export 'fs_status_listener.dart';
 /// Also note that methods may drop data if called when there is no Fullstory session active.
 class FS {
   /// Version of the underlying native Fullstory framework, e.g. '1.54.0'
-  static Future<String?> fsVersion() {
+  static Future<String?> get fsVersion {
     return FullstoryFlutterPlatform.instance.fsVersion();
   }
 
@@ -62,7 +62,7 @@ class FS {
   /// Identify a user and associate current and future sessions with that user.
   ///
   /// Will end the current session and begin a new one if a different uid was previously set.
-  /// Also allows custom userVars, see [FS.setUserVars()]
+  /// Also allows custom userVars, see [FS.setUserVars]
   ///
   /// For more information, see https://developer.fullstory.com/mobile/flutter/identification/identify-users/
   static Future<void> identify(String uid, [Map<String, Object?>? userVars]) {
@@ -73,7 +73,7 @@ class FS {
     return FullstoryFlutterPlatform.instance.identify(args);
   }
 
-  /// If a user ID was previously set via [FS.identify()], this will end the session, clear the user ID, and begin a new anonymous session.
+  /// If a user ID was previously set via [FS.identify], this will end the session, clear the user ID, and begin a new anonymous session.
   ///
   /// For more information, see https://developer.fullstory.com/mobile/flutter/identification/anonymize-users/
   static Future<void> anonymize() {
@@ -93,19 +93,19 @@ class FS {
 
   /// Returns the ID of the current Fullstory session.
   ///
-  /// See also: [FS.getCurrentSessionURL()]
+  /// See also: [FS.getCurrentSessionURL]
   ///
   /// For more information, see https://developer.fullstory.com/mobile/flutter/get-session-details/
-  static Future<String?> getCurrentSession() {
+  static Future<String?> get currentSession {
     return FullstoryFlutterPlatform.instance.getCurrentSession();
   }
 
   /// Returns the URL to view the current Fullstory session.
   ///
-  /// If the optional `now` parameter is set to `true`, the URL will begin the session from the current timestamp rather than the start of the session.
+  /// If the optional [now] parameter is set to `true`, the URL will begin the session from the current timestamp rather than the start of the session.
   ///
   /// For more information, see https://developer.fullstory.com/mobile/flutter/get-session-details/
-  static Future<String?> getCurrentSessionURL([bool now = false]) {
+  static Future<String?> getCurrentSessionURL({bool now = false}) {
     return FullstoryFlutterPlatform.instance.getCurrentSessionURL(now);
   }
 

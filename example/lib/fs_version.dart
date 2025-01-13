@@ -24,7 +24,7 @@ class _FSVersionState extends State<FSVersion> {
     // Platform messages may fail, so we use a try/catch PlatformException.
     // We also handle the message potentially returning null.
     try {
-      fsVersion = await FS.fsVersion() ?? 'Unknown Fullstory version';
+      fsVersion = await FS.fsVersion ?? 'Unknown Fullstory version';
     } on PlatformException {
       fsVersion = 'Failed to get Fullstory version.';
     }

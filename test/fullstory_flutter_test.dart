@@ -87,6 +87,6 @@ void main() {
     MockFullstoryFlutterPlatform fakePlatform = MockFullstoryFlutterPlatform();
     FullstoryFlutterPlatform.instance = fakePlatform;
 
-    expect(await FS.fsVersion(), '42');
+    expect(await FS.fsVersion, '42');
   });
 }
