@@ -58,7 +58,7 @@ abstract class FullstoryFlutterPlatform extends PlatformInterface {
     throw UnimplementedError('consent() has not been implemented.');
   }
 
-  Future<void> identify(Map<String, dynamic> args) {
+  Future<void> identify(Map<String, Object?> args) {
     throw UnimplementedError('identity() has not been implemented.');
   }
 
@@ -84,10 +84,10 @@ abstract class FullstoryFlutterPlatform extends PlatformInterface {
   }
   // todo: webview injection disable
 
-  FSPage page(String pageName, Map<String, dynamic> pageVars);
+  FSPage page(String pageName, Map<String, Object?> pageVars);
   Future<void> startPage(int pageId);
   Future<void> endPage(int pageId);
   Future<void> updatePageProperties(
-      int pageId, Map<String, dynamic> properties);
+      int pageId, Map<String, Object?> properties);
   Future<void> releasePage(int pageId);
 }

@@ -33,7 +33,7 @@ class FSPage {
   }
 
   /// Merge the given properties into the page's existing properties (if any).
-  Future<void> updateProperties(Map<String, dynamic> properties) async {
+  Future<void> updateProperties(Map<String, Object?> properties) async {
     return FullstoryFlutterPlatform.instance
         .updatePageProperties(await _id, properties);
   }

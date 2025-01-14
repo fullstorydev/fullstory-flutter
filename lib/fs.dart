@@ -74,7 +74,7 @@ class FS {
   ///
   /// For more information, see https://developer.fullstory.com/mobile/flutter/identification/identify-users/
   static Future<void> identify(String uid, [Map<String, Object?>? userVars]) {
-    Map<String, dynamic> args = {"uid": uid};
+    Map<String, Object?> args = {"uid": uid};
     if (userVars != null) {
       args["userVars"] = userVars;
     }
@@ -133,7 +133,7 @@ class FS {
   /// Call [FSPage.start()] on on the returned [FSPage] object to mark the page as active.
   ///
   /// For more information, see https://help.fullstory.com/hc/en-us/articles/14795945510295-Mobile-App-Pages-in-Fullstory
-  static FSPage page(String pageName, {Map<String, dynamic>? pageVars}) {
+  static FSPage page(String pageName, {Map<String, Object?>? pageVars}) {
     return FullstoryFlutterPlatform.instance.page(pageName, pageVars ?? {});
   }
 }

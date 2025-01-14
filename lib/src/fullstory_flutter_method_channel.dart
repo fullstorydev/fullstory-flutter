@@ -85,7 +85,7 @@ class MethodChannelFullstoryFlutter extends FullstoryFlutterPlatform {
   }
 
   @override
-  Future<void> identify(Map<String, dynamic> args) async {
+  Future<void> identify(Map<String, Object?> args) async {
     await methodChannel.invokeMethod<void>('identify', args);
   }
 
@@ -112,7 +112,7 @@ class MethodChannelFullstoryFlutter extends FullstoryFlutterPlatform {
 
   // FS Pages apis
   @override
-  FSPage page(String pageName, Map<String, dynamic> pageVars) {
+  FSPage page(String pageName, Map<String, Object?> pageVars) {
     final idFuture = methodChannel.invokeMethod<int>('page', {
       'pageName': pageName,
       'pageVars': pageVars,
@@ -134,7 +134,7 @@ class MethodChannelFullstoryFlutter extends FullstoryFlutterPlatform {
 
   @override
   Future<void> updatePageProperties(
-      int pageId, Map<String, dynamic> properties) {
+      int pageId, Map<String, Object?> properties) {
     return methodChannel.invokeMethod('updatePageProperties', {
       'pageId': pageId,
       'properties': properties,
