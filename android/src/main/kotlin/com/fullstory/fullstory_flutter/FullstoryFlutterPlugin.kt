@@ -48,7 +48,7 @@ class FullstoryFlutterPlugin() : FlutterPlugin, MethodCallHandler {
           1 -> FS.LogLevel.INFO
           2 -> FS.LogLevel.WARN
           3 -> FS.LogLevel.ERROR
-          else -> FS.LogLevel.INFO // default. Alternatively we could error here.
+          else -> result.error("INVALID_ARGUMENTS", "Invaliid level for log, expected level in 1-3, got ${levelB}")
         }
         FS.log(level, message)
         result.success(null)
