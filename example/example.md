@@ -9,6 +9,7 @@ From https://github.com/fullstorydev/fullstory-flutter/tree/main/example/lib
 * [identity.dart](#identitydart)
 * [log.dart](#logdart)
 * [main.dart](#maindart)
+* [pages.dart](#pagesdart)
 * [webview.dart](#webviewdart)
 
 ## capture_status.dart
@@ -378,13 +379,15 @@ class _LogState extends State<Log> {
 ## main.dart
 ```dart
 import 'package:flutter/material.dart';
-import 'package:fullstory_flutter_example/webview.dart';
+import 'package:fullstory_flutter/fs.dart';
 
 import 'capture_status.dart';
 import 'identity.dart';
 import 'log.dart';
 import 'events.dart';
 import 'fs_version.dart';
+import 'webview.dart';
+import 'pages.dart';
 
 // Example app that demonstrates use of most Fullstory APIs
 
@@ -402,18 +405,29 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   int _selectedIndex = 0;
 
-  static const List<Widget> _pages = <Widget>[
+  static const List<Widget> _screens = <Widget>[
     CaptureStatus(),
     Identity(),
     Log(),
     Events(),
+    Pages(),
     FSVersion(),
     WebView(),
   ];
 
+  // Create a list of FSPage objects to represent the different screens in the app
+  // We'll call .start() on each one when it's associated screen is displayed
+  static final List<FSPage> _pages =
+      _screens.map((s) => FS.page(s.toString())).toList();
+
+  _MyAppState() {
+    _pages[_selectedIndex].start();
+  }
+
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
+      _pages[_selectedIndex].start();
     });
   }
 
@@ -434,7 +448,7 @@ class _MyAppState extends State<MyApp> {
             },
           ),
         ),
-        body: _pages[_selectedIndex],
+        body: _screens[_selectedIndex],
         drawer: Builder(builder: (context) {
           return Drawer(
             // Add a ListView to the drawer. This ensures the user can scroll
@@ -445,9 +459,9 @@ class _MyAppState extends State<MyApp> {
               //padding: EdgeInsets.zero,
               children: [
                 // generate a list of menu entries from the list of pages
-                for (var i = 0; i < _pages.length; i++)
+                for (var i = 0; i < _screens.length; i++)
                   ListTile(
-                    title: Text(_pages[i].toString()),
+                    title: Text(_screens[i].toString()),
                     selected: _selectedIndex == i,
                     onTap: () {
                       // Update the state of the app
@@ -460,6 +474,100 @@ class _MyAppState extends State<MyApp> {
             ),
           );
         }),
+      ),
+    );
+  }
+}
+```
+
+## pages.dart
+```dart
+import 'package:flutter/material.dart';
+import 'package:fullstory_flutter/fs.dart';
+
+// Note: this is a somewhat odd usage of the Fullstory Pages API, but it exercises the full API.
+// See _pages in main.dart for a more typical usage.
+
+class Pages extends StatefulWidget {
+  const Pages({
+    super.key,
+  });
+
+  @override
+  State<Pages> createState() => _PagesState();
+}
+
+class _PagesState extends State<Pages> {
+  FSPage? _currentPage;
+  int _pageCounter = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    _createNewPage();
+  }
+
+  void _createNewPage() {
+    // Create a new page with initial properties
+    setState(() {
+      // Dispose of the current page before creating a new one
+      _currentPage?.dispose();
+      _currentPage = FS.page('DemoPage$_pageCounter',
+          pageVars: {'initialKey': 'initialValue'});
+      _pageCounter++;
+    });
+  }
+
+  void _startPageSession() {
+    _currentPage?.start();
+  }
+
+  void _endPageSession() {
+    _currentPage?.end();
+  }
+
+  void _updatePageProperties() async {
+    if (_currentPage != null) {
+      await _currentPage!.updateProperties({'updatedKey': 'updatedValue'});
+    }
+  }
+
+  @override
+  void dispose() {
+    // Dispose of the current page to release the associated Swift/Kotlin page.
+    // (This should happen automatically, but Dart's Finalizer doesn't guarantee it. Manually disposing guarantees that creating many short-lived pages won't cause a memory leak.)
+    _currentPage?.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('FullStory Pages API'),
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            ElevatedButton(
+              onPressed: _createNewPage,
+              child: const Text('Create New Page'),
+            ),
+            ElevatedButton(
+              onPressed: _startPageSession,
+              child: Text("Start Page $_pageCounter"),
+            ),
+            ElevatedButton(
+              onPressed: _endPageSession,
+              child: Text("End Page $_pageCounter"),
+            ),
+            ElevatedButton(
+              onPressed: _updatePageProperties,
+              child: const Text('Update Page Properties'),
+            ),
+          ],
+        ),
       ),
     );
   }
