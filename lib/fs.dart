@@ -9,6 +9,12 @@ export 'fs_status_listener.dart';
 /// Note that all methods are static.
 /// Also note that methods may drop data if called when there is no Fullstory session active.
 class FS {
+  // This is dead code, but it prevents `dart doc` from making up a FS() constructor.
+  FS._() {
+    throw UnsupportedError(
+        "FS is a static class, do not create instances of it.");
+  }
+
   /// Version of the underlying native Fullstory framework, e.g. '1.54.0'
   static Future<String?> fsVersion() {
     return FullstoryFlutterPlatform.instance.fsVersion();
