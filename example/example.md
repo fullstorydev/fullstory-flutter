@@ -47,7 +47,7 @@ class _CaptureStatusState extends State<CaptureStatus> with FSStatusListener {
             status = "Started";
           }
         }));
-    FS.getCurrentSession().then((id) => setState(() {
+    FS.currentSession.then((id) => setState(() {
           this.id = id ?? "";
         }));
 
@@ -68,7 +68,7 @@ class _CaptureStatusState extends State<CaptureStatus> with FSStatusListener {
     setState(() {
       status = "Started";
       this.url = url;
-      FS.getCurrentSession().then((id) => setState(() {
+      FS.currentSession.then((id) => setState(() {
             this.id = id ?? "";
           }));
     });
@@ -95,7 +95,7 @@ class _CaptureStatusState extends State<CaptureStatus> with FSStatusListener {
             const TextButton(onPressed: FS.restart, child: Text("Restart")),
             TextButton(
                 onPressed: () {
-                  FS.getCurrentSessionURL(true).then((url) => setState(() {
+                  FS.getCurrentSessionURL(now: true).then((url) => setState(() {
                         urlNow = url ?? "";
                       }));
                 },
@@ -198,7 +198,7 @@ class _FSVersionState extends State<FSVersion> {
     // Platform messages may fail, so we use a try/catch PlatformException.
     // We also handle the message potentially returning null.
     try {
-      fsVersion = await FS.fsVersion() ?? 'Unknown Fullstory version';
+      fsVersion = await FS.fsVersion ?? 'Unknown Fullstory version';
     } on PlatformException {
       fsVersion = 'Failed to get Fullstory version.';
     }
