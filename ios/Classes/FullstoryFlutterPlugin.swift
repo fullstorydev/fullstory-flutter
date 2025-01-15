@@ -39,19 +39,17 @@ public class FullstoryFlutterPlugin: NSObject, FlutterPlugin, FSDelegate {
             }
             var levelValue: FSEventLogLevel;
             switch level {
-            case 0, 1:
+            case 0:
                 levelValue = FSLOG_DEBUG
-            case 2:
+            case 1:
                 levelValue = FSLOG_INFO
-            case 3:
+            case 2:
                 levelValue = FSLOG_WARNING
-            case 4:
+            case 3:
                 levelValue = FSLOG_ERROR
-            case 5:
-                levelValue = FSLOG_ASSERT
             default:
                 result(FlutterError(code: "INVALID_ARGUMENTS",
-                                    message: "Unexpected log level, expected value 0-5, got \(level)",
+                                    message: "Unexpected log level, expected value 0-3, got \(level)",
                                     details: nil))
                 return
             }
