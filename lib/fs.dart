@@ -128,7 +128,7 @@ class FS {
   ///
   /// Pages can be created for each screen or logical section of your app to segment analytics and enable page-specific features such as Heatmaps and Journeys
   ///
-  /// Call [FSPage.start()] on on the returned [FSPage] object to mark the page as active.
+  /// Call [FSPage.start()] on the returned [FSPage] object to mark the page as active.
   ///
   /// For more information, see https://help.fullstory.com/hc/en-us/articles/14795945510295-Mobile-App-Pages-in-Fullstory
   static FSPage page(String pageName, {Map<String, Object?>? pageVars}) {
@@ -177,8 +177,8 @@ class FSPage {
   ///
   /// This should only be called when a page is no longer needed, to allow the native counterpart to be garbage collected.
   /// This call is optional - usually Dart automatically handles this correctly.
-  void dispose() {
+  void dispose() async {
     _finalizer.detach(this);
-    _id.then((value) => FullstoryFlutterPlatform.instance.releasePage(value));
+    await FullstoryFlutterPlatform.instance.releasePage(await _id);
   }
 }

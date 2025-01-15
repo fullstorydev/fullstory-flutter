@@ -25,7 +25,7 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   int _selectedIndex = 0;
 
-  static const List<Widget> _screens = <Widget>[
+  static const _screens = <Widget>[
     CaptureStatus(),
     Identity(),
     Log(),
