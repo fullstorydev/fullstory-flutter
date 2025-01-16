@@ -83,10 +83,24 @@ abstract class FullstoryFlutterPlatform extends PlatformInterface {
   }
   // todo: webview injection disable
 
-  Future<int> page(String pageName, Map<String, Object?> pageVars);
-  Future<void> startPage(int pageId);
-  Future<void> endPage(int pageId);
+  Future<int> page(String pageName, Map<String, dynamic> pageVars) {
+    throw UnimplementedError();
+  }
+
+  Future<void> startPage(int pageId) {
+    throw UnimplementedError();
+  }
+
+  Future<void> endPage(int pageId) {
+    throw UnimplementedError();
+  }
+
   Future<void> updatePageProperties(
-      int pageId, Map<String, Object?> properties);
-  Future<void> releasePage(int pageId);
+      int pageId, Map<String, dynamic> properties) {
+    throw UnimplementedError();
+  }
+
+  Future<void> releasePage(int pageId) {
+    throw UnimplementedError();
+  }
 }
