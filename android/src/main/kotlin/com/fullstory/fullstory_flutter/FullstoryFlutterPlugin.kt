@@ -20,7 +20,6 @@ class FullstoryFlutterPlugin() : FlutterPlugin, MethodCallHandler {
   private lateinit var channel : MethodChannel
   private lateinit var statusListener : FSStatusListener
   private val pages = mutableMapOf<Int, FSPage>()
-  private var nextPageID = 0
 
   override fun onAttachedToEngine(flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
     channel = MethodChannel(flutterPluginBinding.binaryMessenger, "fullstory_flutter")
@@ -116,12 +115,12 @@ class FullstoryFlutterPlugin() : FlutterPlugin, MethodCallHandler {
       }
       // Pages API
       "page" -> {
+        val pageId = call.argument<Int>("id")
         val pageName = call.argument<String>("pageName")
         val pageVars = call.argument<Map<String, Any>>("pageVars")
 
-        if (pageName != null) {
+        if (pageId != null && pageName != null) {
           val page = FS.page(pageName, pageVars)
-          val pageId = nextPageID++
           pages[pageId] = page
           result.success(pageId)
         } else {

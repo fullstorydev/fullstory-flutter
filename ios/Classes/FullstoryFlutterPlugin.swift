@@ -5,7 +5,6 @@ import FullStory
 public class FullstoryFlutterPlugin: NSObject, FlutterPlugin, FSDelegate {
     var channel: FlutterMethodChannel
     private var pages: [Int: FullStory.FSPage] = [:]
-    private var nextPageID: Int = 0
 
     init(channel: FlutterMethodChannel) {
         self.channel = channel;
@@ -118,13 +117,13 @@ public class FullstoryFlutterPlugin: NSObject, FlutterPlugin, FSDelegate {
             result(FS.currentSessionURL(now))
         case "page":
             if let args = call.arguments as? [String: Any],
+               let pageId = args["id"] as? Int,
                let pageName = args["pageName"] as? String,
                let pageVars = args["pageVars"] as? [String: Any] {
                 let page = FS.page(withName: pageName, properties: pageVars)
-                let pageId = self.nextPageID
-                self.nextPageID += 1
                 self.pages[pageId] = page
                 result(pageId)
+                print("created page \(pageName) with ID \(pageId), pages count: \(self.pages.count)")
             } else {
                 result(FlutterError(code: "INVALID_ARGUMENT", message: "Page name and pageVars are required", details: nil))
             }
@@ -158,6 +157,7 @@ public class FullstoryFlutterPlugin: NSObject, FlutterPlugin, FSDelegate {
             if let pageId = call.arguments as? Int {
                 self.pages.removeValue(forKey: pageId)
                 result(nil)
+                print("deleted page \(pageId), pages count: \(self.pages.count)")
             } else {
                 result(FlutterError(code: "INVALID_PAGE", message: "No active page found with the given ID", details: nil))
             }

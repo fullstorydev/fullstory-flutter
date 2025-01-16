@@ -132,8 +132,7 @@ class FS {
   ///
   /// For more information, see https://help.fullstory.com/hc/en-us/articles/14795945510295-Mobile-App-Pages-in-Fullstory
   static FSPage page(String pageName, {Map<String, Object?>? pageVars}) {
-    return FSPage._(
-        FullstoryFlutterPlatform.instance.page(pageName, pageVars ?? {}));
+    return FSPage._(pageName, pageVars: pageVars);
   }
 }
 
@@ -141,8 +140,9 @@ class FS {
 ///
 /// See [FS.page()]
 class FSPage {
-  // The ID is used to ensure match the Dart page object to it's counterpart in Swift/Kotlin
-  final Future<int> _id;
+  // The ID is used to match the Dart page object to it's counterpart in Swift/Kotlin
+  static int _counter = 0;
+  final int _id = _counter++;
 
   // This should ensure the matching FSPage from the Android/iOS SDK is released.
   // Dart's documentation stresses that this is unreliable, but it seems to work well enough in practice.
@@ -153,24 +153,25 @@ class FSPage {
 
   // Private constructor
   // (This is the reason this class is in fs.dart instead of it's own file)
-  FSPage._(this._id) {
-    _id.then((value) => _finalizer.attach(this, value, detach: this));
+  FSPage._(String pageName, {Map<String, Object?>? pageVars}) {
+    FullstoryFlutterPlatform.instance.page(_id, pageName, pageVars ?? {});
+    _finalizer.attach(this, _id, detach: this);
   }
 
   /// Start the current page. May be called multiple times if the page is visited more than once.
   Future<void> start() async {
-    return FullstoryFlutterPlatform.instance.startPage(await _id);
+    return FullstoryFlutterPlatform.instance.startPage(_id);
   }
 
   /// End the current page. Optional. Starting a different page implicitly ends the current one.
   Future<void> end() async {
-    return FullstoryFlutterPlatform.instance.endPage(await _id);
+    return FullstoryFlutterPlatform.instance.endPage(_id);
   }
 
   /// Merge the given properties into the page's existing properties (if any).
   Future<void> updateProperties(Map<String, Object?> properties) async {
     return FullstoryFlutterPlatform.instance
-        .updatePageProperties(await _id, properties);
+        .updatePageProperties(_id, properties);
   }
 
   /// Free the native Fullstory Android/iOS SDK FSPage object that is linked to this Dart object.
@@ -179,6 +180,6 @@ class FSPage {
   /// This call is optional - usually Dart automatically handles this correctly.
   void dispose() async {
     _finalizer.detach(this);
-    await FullstoryFlutterPlatform.instance.releasePage(await _id);
+    await FullstoryFlutterPlatform.instance.releasePage(_id);
   }
 }
