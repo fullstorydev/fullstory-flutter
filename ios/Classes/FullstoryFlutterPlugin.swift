@@ -4,6 +4,8 @@ import FullStory
 
 public class FullstoryFlutterPlugin: NSObject, FlutterPlugin, FSDelegate {
     var channel: FlutterMethodChannel
+    private var pages: [Int: FullStory.FSPage] = [:]
+    private var nextPageID: Int = 0
 
     init(channel: FlutterMethodChannel) {
         self.channel = channel;
@@ -112,6 +114,51 @@ public class FullstoryFlutterPlugin: NSObject, FlutterPlugin, FSDelegate {
                 return
             }
             result(FS.currentSessionURL(now))
+        case "page":
+            if let args = call.arguments as? [String: Any],
+               let pageName = args["pageName"] as? String,
+               let pageVars = args["pageVars"] as? [String: Any] {
+                let page = FS.page(withName: pageName, properties: pageVars)
+                let pageId = self.nextPageID
+                self.nextPageID += 1
+                self.pages[pageId] = page
+                result(pageId)
+            } else {
+                result(FlutterError(code: "INVALID_ARGUMENT", message: "Page name and pageVars are required", details: nil))
+            }
+        case "startPage":
+            if let pageId = call.arguments as? Int,
+               let page = self.pages[pageId] {
+                page.start()
+                result(nil)
+            } else {
+                result(FlutterError(code: "INVALID_PAGE", message: "No active page found with the given ID", details: nil))
+            }
+        case "endPage":
+            if let pageId = call.arguments as? Int,
+               let page = self.pages[pageId] {
+                page.end()
+                result(nil)
+            } else {
+                result(FlutterError(code: "INVALID_PAGE", message: "No active page found with the given ID", details: nil))
+            }
+        case "updatePageProperties":
+            if let args = call.arguments as? [String: Any],
+               let pageId = args["pageId"] as? Int,
+               let properties = args["properties"] as? [String: Any],
+               let page = self.pages[pageId] {
+                page.updateProperties(properties)
+                result(nil)
+            } else {
+                result(FlutterError(code: "INVALID_PAGE", message: "No active page found with the given ID", details: nil))
+            }
+        case "releasePage":
+            if let pageId = call.arguments as? Int {
+                self.pages.removeValue(forKey: pageId)
+                result(nil)
+            } else {
+                result(FlutterError(code: "INVALID_PAGE", message: "No active page found with the given ID", details: nil))
+            }
         default:
             result(FlutterMethodNotImplemented)
         }

@@ -73,6 +73,32 @@ class MockFullstoryFlutterPlatform
   void setStatusListener(FSStatusListener? listener) {
     throw UnimplementedError();
   }
+
+  @override
+  Future<void> endPage(int pageId) {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<int> page(String pageName, Map<String, dynamic> pageVars) {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> releasePage(int pageId) {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> startPage(int pageId) {
+    throw UnimplementedError();
+  }
+
+  @override
+  Future<void> updatePageProperties(
+      int pageId, Map<String, dynamic> properties) {
+    throw UnimplementedError();
+  }
 }
 
 void main() {

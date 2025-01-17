@@ -85,7 +85,7 @@ class MethodChannelFullstoryFlutter extends FullstoryFlutterPlatform {
   }
 
   @override
-  Future<void> identify(Map<String, dynamic> args) async {
+  Future<void> identify(Map<String, Object?> args) async {
     await methodChannel.invokeMethod<void>('identify', args);
   }
 
@@ -108,5 +108,42 @@ class MethodChannelFullstoryFlutter extends FullstoryFlutterPlatform {
   Future<String?> getCurrentSessionURL([bool now = false]) async {
     return await methodChannel.invokeMethod<String>(
         'getCurrentSessionURL', now);
+  }
+
+  // FS Pages apis
+
+  // page() here asynchronously returns the ID of the native page object
+  // FS.page() will use the ID future to synchronously create a new FSPage object
+  @override
+  Future<int> page(String pageName, Map<String, Object?> pageVars) async {
+    final id = await methodChannel.invokeMethod<int>('page', {
+      'pageName': pageName,
+      'pageVars': pageVars,
+    });
+    return id!;
+  }
+
+  @override
+  Future<void> startPage(int pageId) {
+    return methodChannel.invokeMethod('startPage', pageId);
+  }
+
+  @override
+  Future<void> endPage(int pageId) {
+    return methodChannel.invokeMethod('endPage', pageId);
+  }
+
+  @override
+  Future<void> updatePageProperties(
+      int pageId, Map<String, Object?> properties) {
+    return methodChannel.invokeMethod('updatePageProperties', {
+      'pageId': pageId,
+      'properties': properties,
+    });
+  }
+
+  @override
+  Future<void> releasePage(int pageId) {
+    return methodChannel.invokeMethod('releasePage', pageId);
   }
 }

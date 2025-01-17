@@ -57,7 +57,7 @@ abstract class FullstoryFlutterPlatform extends PlatformInterface {
     throw UnimplementedError('consent() has not been implemented.');
   }
 
-  Future<void> identify(Map<String, dynamic> args) {
+  Future<void> identify(Map<String, Object?> args) {
     throw UnimplementedError('identity() has not been implemented.');
   }
 
@@ -82,4 +82,25 @@ abstract class FullstoryFlutterPlatform extends PlatformInterface {
     throw UnimplementedError('setStatusListener() has not been implemented.');
   }
   // todo: webview injection disable
+
+  Future<int> page(String pageName, Map<String, dynamic> pageVars) {
+    throw UnimplementedError();
+  }
+
+  Future<void> startPage(int pageId) {
+    throw UnimplementedError();
+  }
+
+  Future<void> endPage(int pageId) {
+    throw UnimplementedError();
+  }
+
+  Future<void> updatePageProperties(
+      int pageId, Map<String, dynamic> properties) {
+    throw UnimplementedError();
+  }
+
+  Future<void> releasePage(int pageId) {
+    throw UnimplementedError();
+  }
 }

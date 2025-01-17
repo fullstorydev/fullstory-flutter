@@ -72,7 +72,7 @@ class FS {
   ///
   /// For more information, see https://developer.fullstory.com/mobile/flutter/identification/identify-users/
   static Future<void> identify(String uid, [Map<String, Object?>? userVars]) {
-    Map<String, dynamic> args = {"uid": uid};
+    Map<String, Object?> args = {"uid": uid};
     if (userVars != null) {
       args["userVars"] = userVars;
     }
@@ -122,5 +122,63 @@ class FS {
   /// For more information, see https://developer.fullstory.com/mobile/flutter/fullcapture/callbacks-and-delegates/
   static void setStatusListener(FSStatusListener? listener) {
     FullstoryFlutterPlatform.instance.setStatusListener(listener);
+  }
+
+  /// Create a Fullstory Page object
+  ///
+  /// Pages can be created for each screen or logical section of your app to segment analytics and enable page-specific features such as Heatmaps and Journeys
+  ///
+  /// Call [FSPage.start()] on the returned [FSPage] object to mark the page as active.
+  ///
+  /// For more information, see https://help.fullstory.com/hc/en-us/articles/14795945510295-Mobile-App-Pages-in-Fullstory
+  static FSPage page(String pageName, {Map<String, Object?>? pageVars}) {
+    return FSPage._(
+        FullstoryFlutterPlatform.instance.page(pageName, pageVars ?? {}));
+  }
+}
+
+/// Fullstory Page object
+///
+/// See [FS.page()]
+class FSPage {
+  // The ID is used to ensure match the Dart page object to it's counterpart in Swift/Kotlin
+  final Future<int> _id;
+
+  // This should ensure the matching FSPage from the Android/iOS SDK is released.
+  // Dart's documentation stresses that this is unreliable, but it seems to work well enough in practice.
+  // (Also, pages typically last the duration of the app.)
+  static final Finalizer<int> _finalizer = Finalizer((pageId) {
+    FullstoryFlutterPlatform.instance.releasePage(pageId);
+  });
+
+  // Private constructor
+  // (This is the reason this class is in fs.dart instead of it's own file)
+  FSPage._(this._id) {
+    _id.then((value) => _finalizer.attach(this, value, detach: this));
+  }
+
+  /// Start the current page. May be called multiple times if the page is visited more than once.
+  Future<void> start() async {
+    return FullstoryFlutterPlatform.instance.startPage(await _id);
+  }
+
+  /// End the current page. Optional. Starting a different page implicitly ends the current one.
+  Future<void> end() async {
+    return FullstoryFlutterPlatform.instance.endPage(await _id);
+  }
+
+  /// Merge the given properties into the page's existing properties (if any).
+  Future<void> updateProperties(Map<String, Object?> properties) async {
+    return FullstoryFlutterPlatform.instance
+        .updatePageProperties(await _id, properties);
+  }
+
+  /// Free the native Fullstory Android/iOS SDK FSPage object that is linked to this Dart object.
+  ///
+  /// This should only be called when a page is no longer needed, to allow the native counterpart to be garbage collected.
+  /// This call is optional - usually Dart automatically handles this correctly.
+  void dispose() async {
+    _finalizer.detach(this);
+    await FullstoryFlutterPlatform.instance.releasePage(await _id);
   }
 }
