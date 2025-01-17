@@ -48,8 +48,8 @@ jobs:
       - name: Run example app tests
         run: cd example && flutter test
 
-      - name: Android unit tests
-        run: cd example/android && ./gradlew testDebugUnitTest
+      - name: Run Android unit tests
+        run: cd example/android && example/android/gradlew testDebugUnitTest
 
       - name: Test docs generation
         run: dart doc --dry-run
