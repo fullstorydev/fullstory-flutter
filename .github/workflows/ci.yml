@@ -32,6 +32,15 @@ jobs:
           flutter-version: 3.x
       - run: flutter --version
 
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          java-version: 17
+          distribution: 'temurin'
+      
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+
       - name: Install dependencies
         run: flutter pub get
 
@@ -49,7 +58,7 @@ jobs:
         run: cd example && flutter test
 
       - name: Run Android unit tests
-        run: cd example/android && example/android/gradlew testDebugUnitTest
+        run: cd example/android && ./gradlew test
 
       - name: Test docs generation
         run: dart doc --dry-run
