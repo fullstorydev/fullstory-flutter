@@ -41,7 +41,7 @@ jobs:
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v4
 
-      - name: Set up Gradle properties
+      - name: Set up local.properties
         run: bash .github/workflows/create_properties.sh
 
       - name: Install dependencies
@@ -59,9 +59,6 @@ jobs:
 
       - name: Run example app tests
         run: cd example && flutter test
-
-      - name: Generate local.properties
-        run: bash .github/workflows/create_properties.sh
 
       - name: Run Android unit tests
         run: cd example/android && gradle test
