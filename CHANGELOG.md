@@ -1,3 +1,16 @@
+## 0.2.0
+
+⚠️ BREAKING ⚠️
+
+- Changed `FS.currentSession()` (method) to `FS.currentSession` (property)
+- Changed `FS.fsVersion()` (method) to `FS.fsVersion` (property)
+- Changed `FS.getCurrentSessionURL([bool now = false])` (positional parameter) to `FS.getCurrentSessionURL({bool now = false})` (named parameter)
+- Removed `FSLogLevel.debug` to align log levels with Fullstory playback
+
+New:
+
+- Added `FS.page()` API and associated `FSPage` object and APIs
+
 ## 0.1.3
 
 - Update with links to developer docs.
