@@ -60,9 +60,11 @@ jobs:
       - name: Run example app tests
         run: cd example && flutter test
 
+      - name: Generate local.properties
+        run: bash .github/workflows/create_properties.sh
+
       - name: Run Android unit tests
-        # Inject a fake Org ID so that tests can be run
-        run: cd example/android && echo "FSOrgId=TEST" > local.properties && gradle test && rm local.properties
+        run: cd example/android && gradle test
 
       - name: Test docs generation
         run: dart doc --dry-run
