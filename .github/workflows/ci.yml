@@ -58,7 +58,7 @@ jobs:
         run: cd example && flutter test
 
       - name: Run Android unit tests
-        run: cd example/android && ./gradlew test
+        run: gradle --project-dir example/android test
 
       - name: Test docs generation
         run: dart doc --dry-run
