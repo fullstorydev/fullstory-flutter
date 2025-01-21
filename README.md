@@ -4,7 +4,7 @@
 
 Fullstory's Flutter package exposes access to the Fullstory Native Mobile SDK from within a Flutter app. This plug-in is intended to be used in conjunction with [Fullstory for Mobile Apps](https://www.fullstory.com/mobile-apps/).
 
-⚠️ This is a preview release, some breaking changes are likely before the 1.0.0 release.
+⚠️ This is a preview release, some breaking changes are possible before the 1.0.0 release.
 
 ## Quick Links
 
