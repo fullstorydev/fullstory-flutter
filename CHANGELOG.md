@@ -2,7 +2,7 @@
 
 ⚠️ BREAKING ⚠️
 
-- Changed `FS.currentSession()` (method) to `FS.currentSession` (property)
+- Changed `FS.getCurrentSession()` (method) to `FS.currentSession` (property, dropped "get")
 - Changed `FS.fsVersion()` (method) to `FS.fsVersion` (property)
 - Changed `FS.getCurrentSessionURL([bool now = false])` (positional parameter) to `FS.getCurrentSessionURL({bool now = false})` (named parameter)
 - Removed `FSLogLevel.debug` to align log levels with Fullstory playback
