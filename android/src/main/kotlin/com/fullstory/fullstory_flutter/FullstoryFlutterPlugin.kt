@@ -122,10 +122,10 @@ class FullstoryFlutterPlugin() : FlutterPlugin, MethodCallHandler {
       // Pages API
       "page" -> {
         val pageName = call.argument<String>("pageName")
-        val pageVars = call.argument<Map<String, Any>>("pageVars")
+        val properties = call.argument<Map<String, Any>>("properties")
 
         if (pageName != null) {
-          val page = FS.page(pageName, pageVars)
+          val page = FS.page(pageName, properties)
           val pageId = nextPageID++
           pages[pageId] = page
           result.success(pageId)

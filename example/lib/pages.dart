@@ -29,7 +29,7 @@ class _PagesState extends State<Pages> {
       // Dispose of the current page before creating a new one
       _currentPage?.dispose();
       _currentPage = FS.page('DemoPage$_pageCounter',
-          pageVars: {'initialKey': 'initialValue'});
+          properties: {'initialKey': 'initialValue'});
       _pageCounter++;
     });
   }

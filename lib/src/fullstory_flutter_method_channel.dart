@@ -115,10 +115,10 @@ class MethodChannelFullstoryFlutter extends FullstoryFlutterPlatform {
   // page() here asynchronously returns the ID of the native page object
   // FS.page() will use the ID future to synchronously create a new FSPage object
   @override
-  Future<int> page(String pageName, Map<String, Object?> pageVars) async {
+  Future<int> page(String pageName, Map<String, Object?> properties) async {
     final id = await methodChannel.invokeMethod<int>('page', {
       'pageName': pageName,
-      'pageVars': pageVars,
+      'properties': properties,
     });
     return id!;
   }

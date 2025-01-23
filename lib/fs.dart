@@ -131,9 +131,9 @@ class FS {
   /// Call [FSPage.start()] on the returned [FSPage] object to mark the page as active.
   ///
   /// For more information, see https://help.fullstory.com/hc/en-us/articles/14795945510295-Mobile-App-Pages-in-Fullstory
-  static FSPage page(String pageName, {Map<String, Object?>? pageVars}) {
+  static FSPage page(String pageName, {Map<String, Object?>? properties}) {
     return FSPage._(
-        FullstoryFlutterPlatform.instance.page(pageName, pageVars ?? {}));
+        FullstoryFlutterPlatform.instance.page(pageName, properties ?? {}));
   }
 }
 

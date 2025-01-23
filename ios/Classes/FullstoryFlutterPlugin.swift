@@ -117,14 +117,14 @@ public class FullstoryFlutterPlugin: NSObject, FlutterPlugin, FSDelegate {
         case "page":
             if let args = call.arguments as? [String: Any],
                let pageName = args["pageName"] as? String,
-               let pageVars = args["pageVars"] as? [String: Any] {
-                let page = FS.page(withName: pageName, properties: pageVars)
+               let properties = args["properties"] as? [String: Any] {
+                let page = FS.page(withName: pageName, properties: properties)
                 let pageId = self.nextPageID
                 self.nextPageID += 1
                 self.pages[pageId] = page
                 result(pageId)
             } else {
-                result(FlutterError(code: "INVALID_ARGUMENT", message: "Page name and pageVars are required", details: nil))
+                result(FlutterError(code: "INVALID_ARGUMENT", message: "Page name and properties are required", details: nil))
             }
         case "startPage":
             if let pageId = call.arguments as? Int,
