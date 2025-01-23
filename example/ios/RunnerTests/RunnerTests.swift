@@ -26,9 +26,9 @@ class RunnerTests: XCTestCase {
 }
 
 class MockMethodChannel: FlutterMethodChannel {
-    var didCallMethod: String?
-    
-    override func invokeMethod(_ method: String, arguments: Any?, result: FlutterResult?) {
-        didCallMethod = method
-    }
+  var didCallMethod: String?
+
+  override func invokeMethod(_ method: String, arguments: Any?, result: FlutterResult?) {
+    didCallMethod = method
+  }
 }
