@@ -124,8 +124,11 @@ class MethodChannelFullstoryFlutter extends FullstoryFlutterPlatform {
   }
 
   @override
-  Future<void> startPage(int pageId) {
-    return methodChannel.invokeMethod('startPage', pageId);
+  Future<void> startPage(int pageId, Map<String, Object?> propertyUpdates) {
+    return methodChannel.invokeMethod('startPage', {
+      'pageId': pageId,
+      'propertyUpdates': propertyUpdates,
+    });
   }
 
   @override

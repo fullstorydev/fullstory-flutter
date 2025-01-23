@@ -158,8 +158,9 @@ class FSPage {
   }
 
   /// Start the current page. May be called multiple times if the page is visited more than once.
-  Future<void> start() async {
-    return FullstoryFlutterPlatform.instance.startPage(await _id);
+  Future<void> start({Map<String, Object?>? propertyUpdates}) async {
+    return FullstoryFlutterPlatform.instance
+        .startPage(await _id, propertyUpdates ?? {});
   }
 
   /// End the current page. Optional. Starting a different page implicitly ends the current one.

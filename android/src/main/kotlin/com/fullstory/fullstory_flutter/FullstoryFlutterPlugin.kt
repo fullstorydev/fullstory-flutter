@@ -134,10 +134,11 @@ class FullstoryFlutterPlugin() : FlutterPlugin, MethodCallHandler {
         }
       }
       "startPage" -> {
-        val pageId: Int? = call.arguments as? Int;
+        val pageId = call.argument<Int>("pageId")
+        val propertyUpdates = call.argument<Map<String, Any>>("propertyUpdates")
         val page = pages[pageId]
         if (page != null) {
-          page.start()
+          page.start(propertyUpdates)
           result.success(null)
         } else {
           result.error("INVALID_PAGE", "No active page found with the given ID", null)

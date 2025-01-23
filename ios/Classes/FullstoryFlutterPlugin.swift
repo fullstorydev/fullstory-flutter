@@ -127,12 +127,17 @@ public class FullstoryFlutterPlugin: NSObject, FlutterPlugin, FSDelegate {
                 result(FlutterError(code: "INVALID_ARGUMENT", message: "Page name and properties are required", details: nil))
             }
         case "startPage":
-            if let pageId = call.arguments as? Int,
-               let page = self.pages[pageId] {
-                page.start()
-                result(nil)
+            if let args = call.arguments as? [String: Any],
+               let pageId = args["pageId"] as? Int,
+               let propertyUpdates = args["propertyUpdates"] as? [String: Any] {
+                if let page = self.pages[pageId] {
+                    page.start(withPropertyUpdates: propertyUpdates)
+                    result(nil)
+                } else {
+                    result(FlutterError(code: "INVALID_PAGE", message: "No active page found with the given ID", details: nil))
+                }
             } else {
-                result(FlutterError(code: "INVALID_PAGE", message: "No active page found with the given ID", details: nil))
+                result(FlutterError(code: "INVALID_ARGUMENT", message: "Page ID and propertyUpdates are required", details: nil))
             }
         case "endPage":
             if let pageId = call.arguments as? Int,

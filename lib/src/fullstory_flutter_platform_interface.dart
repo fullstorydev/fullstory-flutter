@@ -87,7 +87,7 @@ abstract class FullstoryFlutterPlatform extends PlatformInterface {
     throw UnimplementedError();
   }
 
-  Future<void> startPage(int pageId) {
+  Future<void> startPage(int pageId, Map<String, Object?> propertyUpdates) {
     throw UnimplementedError();
   }
 

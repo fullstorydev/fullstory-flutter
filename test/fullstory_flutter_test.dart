@@ -90,7 +90,7 @@ class MockFullstoryFlutterPlatform
   }
 
   @override
-  Future<void> startPage(int pageId) {
+  Future<void> startPage(int pageId, Map<String, Object?>? propertyUpdates) {
     throw UnimplementedError();
   }
 

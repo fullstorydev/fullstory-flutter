@@ -38,6 +38,10 @@ class _PagesState extends State<Pages> {
     _currentPage?.start();
   }
 
+  void _startPageWithProperties() {
+    _currentPage?.start(propertyUpdates: {'initialKey': 'newValue'});
+  }
+
   void _endPage() {
     _currentPage?.end();
   }
@@ -73,6 +77,10 @@ class _PagesState extends State<Pages> {
             ElevatedButton(
               onPressed: _startPage,
               child: Text("Start Page $_pageCounter"),
+            ),
+            ElevatedButton(
+              onPressed: _startPageWithProperties,
+              child: Text("Start Page $_pageCounter with properties"),
             ),
             ElevatedButton(
               onPressed: _endPage,
