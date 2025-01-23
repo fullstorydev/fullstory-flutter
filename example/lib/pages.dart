@@ -34,11 +34,11 @@ class _PagesState extends State<Pages> {
     });
   }
 
-  void _startPageSession() {
+  void _startPage() {
     _currentPage?.start();
   }
 
-  void _endPageSession() {
+  void _endPage() {
     _currentPage?.end();
   }
 
@@ -71,11 +71,11 @@ class _PagesState extends State<Pages> {
               child: const Text('Create New Page'),
             ),
             ElevatedButton(
-              onPressed: _startPageSession,
+              onPressed: _startPage,
               child: Text("Start Page $_pageCounter"),
             ),
             ElevatedButton(
-              onPressed: _endPageSession,
+              onPressed: _endPage,
               child: Text("End Page $_pageCounter"),
             ),
             ElevatedButton(
