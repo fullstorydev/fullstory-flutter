@@ -1,7 +1,8 @@
-import 'src/fullstory_flutter_platform_interface.dart';
 import 'fs_log_level.dart';
-export 'fs_log_level.dart';
 import 'fs_status_listener.dart';
+import 'src/fullstory_flutter_platform_interface.dart';
+
+export 'fs_log_level.dart';
 export 'fs_status_listener.dart';
 
 /// Fullstory API
@@ -99,7 +100,7 @@ class FS {
 
   /// Returns the ID of the current Fullstory session.
   ///
-  /// See also: [FS.getCurrentSessionURL]
+  /// See also: [FS.currentSessionURL]
   ///
   /// For more information, see https://developer.fullstory.com/mobile/flutter/get-session-details/
   static Future<String?> get currentSession {
@@ -111,7 +112,7 @@ class FS {
   /// If the optional [now] parameter is set to `true`, the URL will begin the session from the current timestamp rather than the start of the session.
   ///
   /// For more information, see https://developer.fullstory.com/mobile/flutter/get-session-details/
-  static Future<String?> getCurrentSessionURL({bool now = false}) {
+  static Future<String?> currentSessionURL({bool now = false}) {
     return FullstoryFlutterPlatform.instance.getCurrentSessionURL(now);
   }
 
