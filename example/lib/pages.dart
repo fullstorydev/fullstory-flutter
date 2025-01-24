@@ -29,16 +29,20 @@ class _PagesState extends State<Pages> {
       // Dispose of the current page before creating a new one
       _currentPage?.dispose();
       _currentPage = FS.page('DemoPage$_pageCounter',
-          pageVars: {'initialKey': 'initialValue'});
+          properties: {'initialKey': 'initialValue'});
       _pageCounter++;
     });
   }
 
-  void _startPageSession() {
+  void _startPage() {
     _currentPage?.start();
   }
 
-  void _endPageSession() {
+  void _startPageWithProperties() {
+    _currentPage?.start(propertyUpdates: {'initialKey': 'newValue'});
+  }
+
+  void _endPage() {
     _currentPage?.end();
   }
 
@@ -71,11 +75,15 @@ class _PagesState extends State<Pages> {
               child: const Text('Create New Page'),
             ),
             ElevatedButton(
-              onPressed: _startPageSession,
+              onPressed: _startPage,
               child: Text("Start Page $_pageCounter"),
             ),
             ElevatedButton(
-              onPressed: _endPageSession,
+              onPressed: _startPageWithProperties,
+              child: Text("Start Page $_pageCounter with properties"),
+            ),
+            ElevatedButton(
+              onPressed: _endPage,
               child: Text("End Page $_pageCounter"),
             ),
             ElevatedButton(

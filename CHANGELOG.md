@@ -1,3 +1,13 @@
+## 0.3.0
+
+⚠️ BREAKING ⚠️
+
+- Changed `FS.page(String pageName, {Map<String, Object?>? pageVars})` to `FS.page(String pageName, {Map<String, Object?>? properties})` (pageVars -> properties)
+
+New:
+
+- Added optional `propertyUpdates` parameter to `FSPage#start()`
+
 ## 0.2.0
 
 ⚠️ BREAKING ⚠️

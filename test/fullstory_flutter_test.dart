@@ -80,7 +80,7 @@ class MockFullstoryFlutterPlatform
   }
 
   @override
-  Future<int> page(String pageName, Map<String, dynamic> pageVars) {
+  Future<int> page(String pageName, Map<String, Object?> properties) {
     throw UnimplementedError();
   }
 
@@ -90,13 +90,13 @@ class MockFullstoryFlutterPlatform
   }
 
   @override
-  Future<void> startPage(int pageId) {
+  Future<void> startPage(int pageId, Map<String, Object?>? propertyUpdates) {
     throw UnimplementedError();
   }
 
   @override
   Future<void> updatePageProperties(
-      int pageId, Map<String, dynamic> properties) {
+      int pageId, Map<String, Object?> properties) {
     throw UnimplementedError();
   }
 }

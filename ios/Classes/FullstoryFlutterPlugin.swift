@@ -117,22 +117,27 @@ public class FullstoryFlutterPlugin: NSObject, FlutterPlugin, FSDelegate {
         case "page":
             if let args = call.arguments as? [String: Any],
                let pageName = args["pageName"] as? String,
-               let pageVars = args["pageVars"] as? [String: Any] {
-                let page = FS.page(withName: pageName, properties: pageVars)
+               let properties = args["properties"] as? [String: Any] {
+                let page = FS.page(withName: pageName, properties: properties)
                 let pageId = self.nextPageID
                 self.nextPageID += 1
                 self.pages[pageId] = page
                 result(pageId)
             } else {
-                result(FlutterError(code: "INVALID_ARGUMENT", message: "Page name and pageVars are required", details: nil))
+                result(FlutterError(code: "INVALID_ARGUMENT", message: "Page name and properties are required", details: nil))
             }
         case "startPage":
-            if let pageId = call.arguments as? Int,
-               let page = self.pages[pageId] {
-                page.start()
-                result(nil)
+            if let args = call.arguments as? [String: Any],
+               let pageId = args["pageId"] as? Int,
+               let propertyUpdates = args["propertyUpdates"] as? [String: Any] {
+                if let page = self.pages[pageId] {
+                    page.start(withPropertyUpdates: propertyUpdates)
+                    result(nil)
+                } else {
+                    result(FlutterError(code: "INVALID_PAGE", message: "No active page found with the given ID", details: nil))
+                }
             } else {
-                result(FlutterError(code: "INVALID_PAGE", message: "No active page found with the given ID", details: nil))
+                result(FlutterError(code: "INVALID_ARGUMENT", message: "Page ID and propertyUpdates are required", details: nil))
             }
         case "endPage":
             if let pageId = call.arguments as? Int,

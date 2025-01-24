@@ -131,9 +131,9 @@ class FS {
   /// Call [FSPage.start()] on the returned [FSPage] object to mark the page as active.
   ///
   /// For more information, see https://help.fullstory.com/hc/en-us/articles/14795945510295-Mobile-App-Pages-in-Fullstory
-  static FSPage page(String pageName, {Map<String, Object?>? pageVars}) {
+  static FSPage page(String pageName, {Map<String, Object?>? properties}) {
     return FSPage._(
-        FullstoryFlutterPlatform.instance.page(pageName, pageVars ?? {}));
+        FullstoryFlutterPlatform.instance.page(pageName, properties ?? {}));
   }
 }
 
@@ -158,8 +158,9 @@ class FSPage {
   }
 
   /// Start the current page. May be called multiple times if the page is visited more than once.
-  Future<void> start() async {
-    return FullstoryFlutterPlatform.instance.startPage(await _id);
+  Future<void> start({Map<String, Object?>? propertyUpdates}) async {
+    return FullstoryFlutterPlatform.instance
+        .startPage(await _id, propertyUpdates ?? {});
   }
 
   /// End the current page. Optional. Starting a different page implicitly ends the current one.
