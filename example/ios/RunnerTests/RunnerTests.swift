@@ -12,12 +12,14 @@ import XCTest
 class RunnerTests: XCTestCase {
 
   func testGetFsVersion() {
+    // This mock channel is only used to for the status listener API
     let channel = MockMethodChannel()
     let plugin = FullstoryFlutterPlugin(channel: channel)
       
     let call = FlutterMethodCall(methodName: "fsVersion", arguments: [])
     let resultExpectation = expectation(description: "result block must be called.")
     plugin.handle(call) { result in
+      // This value comes from the underlying iOS FS implementation
       XCTAssertEqual(result as! String, "1.54.0")
       resultExpectation.fulfill()
     }
