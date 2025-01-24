@@ -90,14 +90,17 @@ android {
 
 
     dependencies {
-        testImplementation("org.jetbrains.kotlin:kotlin-test")
-        testImplementation("org.mockito:mockito-core:5.0.0")
+        testImplementation "org.powermock:powermock-module-junit4:2.0.2"
+        testImplementation "org.powermock:powermock-api-mockito2:2.0.9"
+        testImplementation "junit:junit:4.13.2"
+
         implementation "com.fullstory:instrumentation-full:$fsDetectedVersion@aar" //e.g. 1.53.0@aar'
     }
 
     testOptions {
         unitTests.all {
-            useJUnitPlatform()
+            useJUnit()
+            jvmArgs '--add-opens', 'java.base/java.lang=ALL-UNNAMED'
 
             testLogging {
                events "passed", "skipped", "failed", "standardOut", "standardError"
