@@ -75,7 +75,13 @@ jobs:
               -workspace Runner.xcworkspace \
               -scheme Runner \
               -configuration Debug \
-              -destination 'platform=iOS Simulator,name=iPhone 16,OS=18.2'
+              -destination 'platform=iOS Simulator,name=iPhone 16,OS=18.2' \
+              CODE_SIGN_IDENTITY="" \
+              CODE_SIGNING_REQUIRED="NO" \ 
+              CODE_SIGNING_ALLOWED="NO" \
+              CODE_SIGN_ENTITLEMENTS=""
+
+
 
       - name: Test docs generation
         run: dart doc --dry-run
