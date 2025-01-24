@@ -26,8 +26,8 @@ Most non-visual Fullstory APIs are supported:
 - `FS.shutdown()`
 - `FS.restart()`
 - `FS.setStatusListener(FSStatusListener? listener)`
-- `FS.getCurrentSession` → `Future<String?>`
-- `FS.getCurrentSessionURL({bool now = false})` → `Future<String?>`
+- `FS.currentSession` → `Future<String?>`
+- `FS.currentSessionURL({bool now = false})` → `Future<String?>`
 - `FS.fsVersion` → `Future<String?>`
 - `FS.resetIdleTimer()`
 

@@ -25,7 +25,7 @@ class _CaptureStatusState extends State<CaptureStatus> with FSStatusListener {
     super.initState();
 
     // grab the current session URL & ID in case it has already started
-    FS.getCurrentSessionURL().then((url) => setState(() {
+    FS.currentSessionURL().then((url) => setState(() {
           if (url != null) {
             // if there is a url, we know the session started
             this.url = url;
@@ -80,7 +80,7 @@ class _CaptureStatusState extends State<CaptureStatus> with FSStatusListener {
             const TextButton(onPressed: FS.restart, child: Text("Restart")),
             TextButton(
                 onPressed: () {
-                  FS.getCurrentSessionURL(now: true).then((url) => setState(() {
+                  FS.currentSessionURL(now: true).then((url) => setState(() {
                         urlNow = url ?? "";
                       }));
                 },
