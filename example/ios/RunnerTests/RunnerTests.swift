@@ -8,7 +8,8 @@ import XCTest
 // This demonstrates a simple unit test of the Swift portion of this plugin's implementation.
 //
 // See https://developer.apple.com/documentation/xctest for more information about using XCTest.
-
+// Run with:
+// xcodebuild test -workspace Runner.xcworkspace -scheme Runner -configuration Debug -destination 'platform=iOS Simulator,name=iPhone 16,OS=18.2'
 class RunnerTests: XCTestCase {
 
   func testGetFsVersion() {

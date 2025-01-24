@@ -14,7 +14,7 @@ on:
 
 jobs:
   test:
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
 
     steps:
       - uses: actions/checkout@v4
@@ -37,7 +37,7 @@ jobs:
         with:
           java-version: 17
           distribution: 'temurin'
-      
+
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v4
 
@@ -62,6 +62,20 @@ jobs:
 
       - name: Run Android unit tests
         run: cd example/android && gradle test
+          
+      # Install any dependencies
+      - name: Install Dependencies
+        run: cd example/ios && pod install
+
+      # Run tests on iPhone 14 Simulator with iOS 16.0
+      - name: Run Tests on iPhone 14 Simulator (iOS 16.0)
+        run: |
+          cd example/ios && \
+            xcodebuild test \
+              -workspace Runner.xcworkspace \
+              -scheme Runner \
+              -configuration Debug \
+              -destination 'platform=iOS Simulator,name=iPhone 16,OS=18.2'
 
       - name: Test docs generation
         run: dart doc --dry-run
