@@ -32,6 +32,18 @@ jobs:
           flutter-version: 3.x
       - run: flutter --version
 
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          java-version: 17
+          distribution: 'temurin'
+      
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Set up local.properties
+        run: bash .github/workflows/create_properties.sh
+
       - name: Install dependencies
         run: flutter pub get
 
@@ -47,6 +59,9 @@ jobs:
 
       - name: Run example app tests
         run: cd example && flutter test
+
+      - name: Run Android unit tests
+        run: cd example/android && gradle test
 
       - name: Test docs generation
         run: dart doc --dry-run
