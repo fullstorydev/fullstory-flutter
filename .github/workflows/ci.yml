@@ -73,6 +73,7 @@ jobs:
               -workspace Runner.xcworkspace \
               -scheme Runner \
               -configuration Debug \
+              -allowProvisioningUpdates \
               -destination 'platform=iOS Simulator,name=iPhone 16,OS=18.2' 
 
       - name: Test docs generation
