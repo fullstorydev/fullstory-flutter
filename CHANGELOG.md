@@ -3,6 +3,7 @@
 ⚠️ BREAKING ⚠️
 
 - Changed `FS.page(String pageName, {Map<String, Object?>? pageVars})` to `FS.page(String pageName, {Map<String, Object?>? properties})` (pageVars -> properties)
+- Changed `FS.getCurrentSessionURL({boolean now})` to `FS.currentSessionURL({boolean now})` (removed 'get')
 
 New:
 
