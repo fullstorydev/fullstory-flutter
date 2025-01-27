@@ -63,12 +63,11 @@ jobs:
       - name: Run Android unit tests
         run: cd example/android && gradle test
           
-      # Install any dependencies
       - name: Install Dependencies
         run: cd example/ios && pod install
 
-      # Run tests on iPhone 14 Simulator with iOS 16.0
-      - name: Run Tests on iPhone 14 Simulator (iOS 16.0)
+      # Note: All CODE_SIGN* arguments must be on same line
+      - name: Run iOS unit tests
         run: |
           cd example/ios && \
             xcodebuild test \
@@ -77,8 +76,6 @@ jobs:
               -configuration Debug \
               -destination 'platform=iOS Simulator,name=iPhone 16,OS=18.2' \
               CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED="NO" CODE_SIGNING_ALLOWED="NO" CODE_SIGN_ENTITLEMENTS=""
-
-
 
       - name: Test docs generation
         run: dart doc --dry-run
