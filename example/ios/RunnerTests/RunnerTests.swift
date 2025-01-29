@@ -9,7 +9,7 @@ import XCTest
 //
 // See https://developer.apple.com/documentation/xctest for more information about using XCTest.
 // Run with:
-// xcodebuild test -workspace Runner.xcworkspace -scheme Runner -configuration Debug -destination 'platform=iOS Simulator,name=iPhone 16,OS=18.2'
+// xcodebuild test -workspace Runner.xcworkspace -scheme Runner -configuration Debug -destination 'platform=iOS Simulator,name=iPhone 16,OS=latest'
 class RunnerTests: XCTestCase {
 
   func testGetFsVersion() {
