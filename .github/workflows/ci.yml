@@ -73,7 +73,8 @@ jobs:
               -workspace Runner.xcworkspace \
               -scheme Runner \
               -configuration Debug \
-              -allowProvisioningUpdates \
+              -sdk iphonesimulator \
+              -disableAutomaticPackageResolution \
               -destination 'platform=iOS Simulator,name=iPhone 16,OS=18.2' \
               CODE_SIGNING_ALLOWED='NO'
 
