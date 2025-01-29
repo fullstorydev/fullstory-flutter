@@ -74,7 +74,8 @@ jobs:
               -scheme Runner \
               -configuration Debug \
               -allowProvisioningUpdates \
-              -destination 'platform=iOS Simulator,name=iPhone 16,OS=18.2' 
+              -destination 'platform=iOS Simulator,name=iPhone 16,OS=18.2' \
+              CODE_SIGNING_ALLOWED='NO'
 
       - name: Test docs generation
         run: dart doc --dry-run
