@@ -78,11 +78,6 @@ jobs:
               -destination 'platform=iOS Simulator,name=iPhone 16,OS=latest' \
               CODE_SIGNING_ALLOWED='NO'
 
-      # Revert the file that get's mutated by pod install
-      # to avoid angering flutter pub publish
-      - name: iOS Cleanup
-        run: git restore example/ios/Podfile.lock
-
       - name: Test docs generation
         run: dart doc --dry-run
 
