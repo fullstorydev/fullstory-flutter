@@ -81,7 +81,7 @@ jobs:
       # Revert the file that get's mutated by pod install
       # to avoid angering flutter pub publish
       - name: iOS Cleanup
-        run: git revert example/ios/Podfile.lock
+        run: git restore example/ios/Podfile.lock
 
       - name: Test docs generation
         run: dart doc --dry-run
