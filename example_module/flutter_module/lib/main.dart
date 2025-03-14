@@ -2,6 +2,8 @@
 // Use of this source code is governed by a BSD-style license that can be
 // found in the LICENSE file.
 
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fullstory_flutter/fs.dart';
@@ -49,6 +51,17 @@ class FullScreenView extends StatelessWidget {
   }
 }
 
+class _StatusListener with FSStatusListener {
+  @override
+  void onFSSession(String url) {
+    _urlCompleter.complete(url);
+  }
+
+  final _urlCompleter = Completer<String>();
+  Future<String> get url => _urlCompleter.future;
+  Future<String?> get version => _urlCompleter.future.then((_) => FS.fsVersion);
+}
+
 /// The actual content displayed by the module.
 ///
 /// This widget displays info about the state of a counter and how much room (in
@@ -62,6 +75,9 @@ class Contents extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final mediaInfo = MediaQuery.of(context);
+
+    var listener = _StatusListener();
+    FS.setStatusListener(listener);
 
     return SizedBox.expand(
       child: Stack(
@@ -90,13 +106,13 @@ class Contents extends StatelessWidget {
                 ),
                 const SizedBox(height: 16),
                 FutureBuilder(
-                  future: FS.fsVersion,
+                  future: listener.version,
                   builder: (context, snapshot) => Text(
                     'Fullstory SDK version: ${snapshot.data}',
                   ),
                 ),
                 FutureBuilder(
-                  future: FS.currentSessionURL(),
+                  future: listener.url,
                   builder: (context, snapshot) => Text(
                     'Fullstory session URL: ${snapshot.data}',
                   ),

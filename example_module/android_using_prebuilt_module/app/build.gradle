@@ -4,6 +4,24 @@ apply plugin: 'kotlin-android'
 
 apply plugin: 'fullstory'
 
+def localProperties = new Properties()
+localProperties.load(new FileInputStream(rootProject.file("local.properties")))
+if (!localProperties.containsKey('FSOrgId')) {
+    throw new GradleException('Please add a FSOrgId=<Your Fullstory OrgID> line to example/android/local.properties');
+}
+
+fullstory {
+  org localProperties['FSOrgId']
+  enabledVariants 'all'
+  logcatLevel 'error'
+  logLevel 'log'
+  if (localProperties.containsKey('FSServerUrl')) {
+    // This is for Fullstory internal testing and should not be needed when building your own app.
+    serverUrl localProperties['FSServerUrl']
+  }
+  verboseLogging true
+}
+
 android {
     compileSdk 35
     defaultConfig {
