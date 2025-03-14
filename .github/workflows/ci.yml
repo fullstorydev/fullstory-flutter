@@ -103,6 +103,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
 
       # This creates the OIDC token that the publish step uses
       - uses: dart-lang/setup-dart@v1
