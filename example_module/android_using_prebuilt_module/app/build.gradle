@@ -4,13 +4,6 @@ apply plugin: 'kotlin-android'
 
 apply plugin: 'fullstory'
 
-fullstory {
-    org = 'KWH'
-    serverUrl = 'https://staging.fullstory.com'
-    enabledVariants = 'all'
-    logcatLevel = 'debug'
-}
-
 android {
     compileSdk 35
     defaultConfig {

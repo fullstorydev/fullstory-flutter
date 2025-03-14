@@ -5,56 +5,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fullstory_flutter/fs.dart';
-import 'package:provider/provider.dart';
 
 /// The entrypoint for the flutter module.
 void main() {
-  FS.setStatusListener(_StatusListener());
   // This call ensures the Flutter binding has been set up before creating the
   // MethodChannel-based model.
   WidgetsFlutterBinding.ensureInitialized();
 
-  final model = CounterModel();
-
-  runApp(ChangeNotifierProvider.value(value: model, child: const MyApp()));
-}
-
-class _StatusListener with FSStatusListener {
-  @override
-  void onFSSession(String url) {
-    print('Fullstory session URL: $url');
-  }
-}
-
-/// A simple model that uses a [MethodChannel] as the source of truth for the
-/// state of a counter.
-///
-/// Rather than storing app state data within the Flutter module itself (where
-/// the native portions of the app can't access it), this module passes messages
-/// back to the containing app whenever it needs to increment or retrieve the
-/// value of the counter.
-class CounterModel extends ChangeNotifier {
-  CounterModel() {
-    _channel.setMethodCallHandler(_handleMessage);
-    _channel.invokeMethod<void>('requestCounter');
-  }
-
-  final _channel = const MethodChannel('dev.flutter.example/counter');
-
-  int _count = 0;
-
-  int get count => _count;
-
-  void increment() {
-    _channel.invokeMethod<void>('incrementCounter');
-  }
-
-  Future<dynamic> _handleMessage(MethodCall call) async {
-    if (call.method == 'reportCounter') {
-      _count = call.arguments as int;
-      notifyListeners();
-    }
-  }
+  runApp(MyApp());
 }
 
 /// The "app" displayed by this module.
@@ -131,22 +89,17 @@ class Contents extends StatelessWidget {
                   style: Theme.of(context).textTheme.headlineSmall,
                 ),
                 const SizedBox(height: 16),
-                Consumer<CounterModel>(
-                  builder: (context, model, child) {
-                    return Text(
-                      'Taps: ${model.count}',
-                      style: Theme.of(context).textTheme.headlineSmall,
-                    );
-                  },
+                FutureBuilder(
+                  future: FS.fsVersion,
+                  builder: (context, snapshot) => Text(
+                    'Fullstory SDK version: ${snapshot.data}',
+                  ),
                 ),
-                const SizedBox(height: 16),
-                Consumer<CounterModel>(
-                  builder: (context, model, child) {
-                    return ElevatedButton(
-                      onPressed: () => model.increment(),
-                      child: const Text('Tap me!'),
-                    );
-                  },
+                FutureBuilder(
+                  future: FS.currentSessionURL(),
+                  builder: (context, snapshot) => Text(
+                    'Fullstory session URL: ${snapshot.data}',
+                  ),
                 ),
                 if (showExit) ...[
                   const SizedBox(height: 16),

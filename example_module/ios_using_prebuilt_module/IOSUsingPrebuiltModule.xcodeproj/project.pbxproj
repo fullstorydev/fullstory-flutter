@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 52;
+	objectVersion = 54;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -324,6 +324,7 @@
 					"$(PROJECT_DIR)/Flutter/$(CONFIGURATION)",
 				);
 				INFOPLIST_FILE = "IOSUsingPrebuiltModule/Info-$(CONFIGURATION).plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -345,6 +346,7 @@
 					"$(PROJECT_DIR)/Flutter/$(CONFIGURATION)",
 				);
 				INFOPLIST_FILE = "IOSUsingPrebuiltModule/Info-$(CONFIGURATION).plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 16.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
