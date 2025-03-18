@@ -1,6 +1,6 @@
 ## 0.4.0
 
-- Added support for [add-to-app](https://docs.flutter.dev/add-to-app#add-to-ios-applications) Flutter modules. Use `-PfsTarget=` to set Fullstory version on Android if you encounter issues.
+- Added support for [add-to-app](https://docs.flutter.dev/add-to-app) Flutter modules. Use `-PfsTarget=` to set Fullstory version on Android if you encounter issues.
 - Added `example_module` directory with example add-to-app module setup.
 
 ## 0.3.0
