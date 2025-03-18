@@ -2,6 +2,8 @@ allprojects {
     repositories {
         google()
         mavenCentral()
+        mavenLocal()
+        maven { url "https://maven.fullstory.com" }
     }
 }
 
@@ -15,17 +17,4 @@ subprojects {
 
 tasks.register("clean", Delete) {
     delete rootProject.buildDir
-}
-
-buildscript {
-  repositories {
-    google()
-    mavenCentral()
-    gradlePluginPortal()
-    mavenLocal()
-    maven { url "https://maven.fullstory.com" }
-  }
-  dependencies {
-    classpath 'com.fullstory:gradle-plugin-local:1.54.0'
-  }
 }

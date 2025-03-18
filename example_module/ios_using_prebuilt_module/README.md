@@ -2,7 +2,7 @@
 
 An example iOS application used in the Flutter add-to-app samples. For more
 information on how to use it, see the [README](../README.md) file located in the
-[/add_to_app](/add_to_app) directory of this repo.
+[/example_module](/example_module) directory of this repo.
 
 ## Getting Started
 

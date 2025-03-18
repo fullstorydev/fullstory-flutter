@@ -30,7 +30,7 @@ class FullstoryFlutterPlugin() : FlutterPlugin, MethodCallHandler {
   }
 
   override fun onMethodCall(call: MethodCall, result: Result) {
-    //println("\n\nFullStory method call received: ${call.method}, ${call.arguments}\n\n")
+    //println("\n\nFullstory method call received: ${call.method}, ${call.arguments}\n\n")
     when (call.method) {
       "fsVersion" -> result.success(FS.fsVersion())
       "shutdown" -> {
