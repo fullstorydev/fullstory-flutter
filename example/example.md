@@ -548,7 +548,7 @@ class _PagesState extends State<Pages> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('FullStory Pages API'),
+        title: const Text('Fullstory Pages API'),
       ),
       body: Center(
         child: Column(

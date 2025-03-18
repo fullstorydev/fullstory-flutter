@@ -14,13 +14,11 @@ buildscript {
     }
 }
 
-allprojects {
-    repositories {
-        google()
-        mavenCentral()
-        mavenLocal()
-        maven { url "https://maven.fullstory.com" }
-    }
+repositories {
+    google()
+    mavenCentral()
+    mavenLocal()
+    maven { url "https://maven.fullstory.com" }
 }
 
 apply plugin: "com.android.library"
@@ -51,50 +49,32 @@ android {
         minSdk = 21
     }
 
-    // determine FS version app is using
-    // based on https://github.com/fullstorydev/fullstory-react-native/blob/4af1ab9c040cb647fb0f0afe25df42b986fd11de/android/build.gradle#L55-L96
-    def rootScriptClassPathFiles = rootProject.buildscript.getScriptClassPath().getAsFiles()
-    String searchString = 'gradle-plugin-local-'
-    String fsDetectedVersion = null
-    for (File file : rootScriptClassPathFiles) {
-        int lastIndex = file.name.lastIndexOf(searchString)
-        if (lastIndex < 0) {
-            continue
-        }
-
-        if (!file.name.endsWith('.jar')) {
-            continue
-        }
-
-        int endIndex = file.name.length() - 4
-        int startIndex = lastIndex + searchString.length()
-        fsDetectedVersion = file.name.substring(startIndex, endIndex)
-        break
-    }
-
-    if (fsDetectedVersion == null) {
-        throw new GradleException('Unable to determine FullStory version, please verify your root build file is properly configured')
-    }
-
-    def versionRegex = /(?<major>\d+)\.(?<minor>\d+)\.(?<patch>\d+)/
-    def match = fsDetectedVersion =~ versionRegex
-    if (match.matches()) {
-        def major = match.group('major') as Integer
-        def minor = match.group('minor') as Integer
-        if (major < 1 || (major == 1 && minor < 54)) {
-            throw new GradleException("FullStory SDK version 1.54.0 or later is required, but version $fsDetectedVersion was detected. Please update to a newer version of FullStory.")
+    // Determine the version of FS to compile against
+    String fsVersion
+    if (isModuleProject(project)) {
+        if (project.hasProperty('fsTarget')) {
+            String fsTargetStr = project.getProperty('fsTarget')
+            FSVersion targetVersion = parseVersion(fsTargetStr)
+            if (targetVersion == null) {
+                throw new GradleException("Failed to parse `fsTarget` version: $fsTargetStr")
+            }
+            validateVersion(targetVersion)
+            fsVersion = targetVersion
+        } else {
+            fsVersion = FSConstants.MIN_FS_VERSION
         }
     } else {
-        throw new GradleException('Unable to determine FullStory version, please verify your root build file is properly configured')
+        FSVersion version = getFSVersionFromBuildScript(project)
+        validateVersion(version)
+        fsVersion = version.toString()
     }
-
 
     dependencies {
         testImplementation "org.powermock:powermock-module-junit4:2.0.2"
         testImplementation "org.powermock:powermock-api-mockito2:2.0.9"
         testImplementation "junit:junit:4.13.2"
 
-        implementation "com.fullstory:instrumentation-full:$fsDetectedVersion@aar" //e.g. 1.53.0@aar'
+        compileOnly "com.fullstory:instrumentation-full:$fsVersion@aar"
     }
 
     testOptions {
@@ -109,4 +89,92 @@ android {
             }
         }
     }
+}
+
+private static boolean isModuleProject(Project project) {
+    Project flutterProject = project.rootProject.findProject(":flutter")
+    if (flutterProject != null) {
+        def modulePlugins = flutterProject.plugins
+        return modulePlugins.hasPlugin(FSConstants.FLUTTER_GRADLE_PLUGIN_ID)\
+            && modulePlugins.hasPlugin(FSConstants.ANDROID_LIBRARY_PLUGIN_ID)
+    }
+    return false
+}
+
+private static FSVersion getFSVersionFromBuildScript(Project project) {
+    def rootScriptClassPathFiles = project.rootProject.buildscript.getScriptClassPath().getAsFiles()
+    String searchString = 'gradle-plugin-local-'
+    for (File file : rootScriptClassPathFiles) {
+        int lastIndex = file.name.lastIndexOf(searchString)
+        if (lastIndex < 0) {
+            continue
+        }
+
+        if (!file.name.endsWith('.jar')) {
+            continue
+        }
+
+        int endIndex = file.name.length() - 4
+        int startIndex = lastIndex + searchString.length()
+        return parseVersion(file.name.substring(startIndex, endIndex))
+    }
+    return null
+}
+
+private static FSVersion parseVersion(String versionStr) {
+    def versionRegex = /(?<major>\d+)\.(?<minor>\d+)\.(?<patch>\d+)/
+    def match = versionStr =~ versionRegex
+    if (match.matches()) {
+        def major = match.group('major') as Integer
+        def minor = match.group('minor') as Integer
+        def patch = match.group('patch') as Integer
+        return new FSVersion(major, minor, patch)
+    } else {
+        return null
+    }
+}
+
+private static void validateVersion(FSVersion version) {
+    if (version == null) {
+        throw new GradleException('Unable to determine Fullstory version, please verify your project is properly '
+            + 'configured to use the Fullstory plugin: '
+            + 'https://help.fullstory.com/hc/en-us/articles/360040596093-Getting-Started-with-Android-Data-Capture')
+    }
+    if (version.isLessThan(FSConstants.MIN_FS_VERSION)) {
+        throw new GradleException("Fullstory SDK version ${FSConstants.MIN_FS_VERSION} or later is required, but "
+            + "version $version was detected. Please update to a newer version of Fullstory.")
+    }
+}
+
+class FSVersion {
+    public final int major
+    public final int minor
+    public final int patch
+
+    FSVersion(int major, int minor, int patch) {
+        this.major = major
+        this.minor = minor
+        this.patch = patch
+    }
+
+    boolean isLessThan(FSVersion other) {
+        if (major != other.major) {
+            return major < other.major
+        }
+        if (minor != other.minor) {
+            return minor < other.minor
+        }
+        return patch < other.patch
+    }
+
+    @Override
+    String toString() {
+        return "$major.$minor.$patch"
+    }
+}
+
+class FSConstants {
+    static final FLUTTER_GRADLE_PLUGIN_ID = "dev.flutter.flutter-gradle-plugin"
+    static final ANDROID_LIBRARY_PLUGIN_ID = "com.android.library"
+    static final MIN_FS_VERSION = new FSVersion(1, 54, 0)
 }
