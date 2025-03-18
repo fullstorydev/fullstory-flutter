@@ -24,7 +24,7 @@
 	<string>????</string>
 	<key>CFBundleVersion</key>
 	<string>$(FLUTTER_BUILD_NUMBER)</string>
-	<key>FullStory</key>
+	<key>Fullstory</key>
 	<dict>
 		<key>LogLevel</key>
 		<string>debug</string>
