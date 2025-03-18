@@ -64,6 +64,9 @@ android {
             fsVersion = FSConstants.MIN_FS_VERSION
         }
     } else {
+        if (project.hasProperty('fsTarget')) {
+            project.logger.warn('`fsTarget` specified for non-add-to-app use case and will be ignored')
+        }
         FSVersion version = getFSVersionFromBuildScript(project)
         validateVersion(version)
         fsVersion = version.toString()
@@ -73,6 +76,7 @@ android {
         testImplementation "org.powermock:powermock-module-junit4:2.0.2"
         testImplementation "org.powermock:powermock-api-mockito2:2.0.9"
         testImplementation "junit:junit:4.13.2"
+        testImplementation "com.fullstory:instrumentation-full:$fsVersion@aar"
 
         compileOnly "com.fullstory:instrumentation-full:$fsVersion@aar"
     }
