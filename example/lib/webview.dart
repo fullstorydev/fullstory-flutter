@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 // Basic webview example.
-// No Fullstory APIs are used here, and the webview's contents are not currently visible in playback.
+// Native Fullstory handles webviews, as long as Flutter allows JS there.
 
 class WebView extends StatefulWidget {
   const WebView({super.key});
@@ -18,6 +18,10 @@ class _WebViewState extends State<WebView> {
   void initState() {
     super.initState();
     controller = WebViewController()
+      // To allow Fullstory in your Flutter webview, ensure JS is unrestricted
+      // so that Fullstory can inject its JS. Otherwise, you will only see
+      // a message about disabled JS in replay.
+      ..setJavaScriptMode(JavaScriptMode.unrestricted)
       ..loadRequest(
         Uri.parse('https://www.fullstory.com/'),
       );
