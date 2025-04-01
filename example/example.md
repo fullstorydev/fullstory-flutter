@@ -608,9 +608,7 @@ class _WebViewState extends State<WebView> {
       // so that Fullstory can inject its JS. Otherwise, you will only see
       // a message about disabled JS in replay.
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
-      ..loadRequest(
-        Uri.parse('https://www.fullstory.com/'),
-      );
+      ..loadHtmlString(html);
   }
 
   @override
@@ -618,5 +616,33 @@ class _WebViewState extends State<WebView> {
     return WebViewWidget(controller: controller);
   }
 }
+
+const html = '''
+<html>
+  <head>
+    <title>WebView Example</title>
+    <style>
+      body {
+        font-family: sans-serif;
+        text-align: center;
+        padding: 20px;
+      }
+
+      h1 {
+        font-size: 5rem;
+      }
+
+      p {
+        font-size: 2rem;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>WebView Example</h1>
+    <p>This is a simple webview example.</p>
+    <p>Fullstory should work here.</p>
+  </body>
+</html>
+''';
 ```
 
