@@ -118,20 +118,11 @@ class FakeFullstoryFlutterPlatform
   Future<void> releasePage(int pageId) async {}
 }
 
-class FakeRoute extends Route<dynamic> {
+class FakeRoute extends Route<dynamic> with Fake {
   final String? name;
 
   FakeRoute({this.name});
 
   @override
   RouteSettings get settings => RouteSettings(name: name);
-
-  @override
-  bool get isCurrent => true;
-
-  @override
-  bool get isFirst => false;
-
-  @override
-  bool get isActive => true;
 }
