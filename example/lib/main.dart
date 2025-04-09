@@ -41,8 +41,8 @@ class _MyAppState extends State<MyApp> {
   // Create a list of FSPage objects to represent the different screens in the app
   // We'll call .start() on each one when it's associated screen is displayed.
   //
-  // Manual calls like this can be intermixed with the 
-  // [FullstoryNavigatorObserver].
+  // Manual calls like this can be intermixed with the
+  // [FSNavigatorObserver].
   static final List<FSPage> _pages =
       _screens.map((s) => FS.page(s.toString())).toList();
 
@@ -63,17 +63,17 @@ class _MyAppState extends State<MyApp> {
       routes: {
         '/navDemo': (_) => const NavDemo(),
       },
-      navigatorObservers: [FSNavigatorObserver(
-        initialProperties: (current, previous) => {
-          if(current.settings.name == '/navDemo')
-            'navDemoFirstVisit': true,
-        },
-        updateProperties: (current, previous) => {
-          if(current.settings.name == '/navDemo')
-            'navDemoFirstVisit': false,
+      navigatorObservers: [
+        FSNavigatorObserver(
+          initialProperties: (current, previous) => {
+            if (current.settings.name == '/navDemo') 'navDemoFirstVisit': true,
+          },
+          updateProperties: (current, previous) => {
+            if (current.settings.name == '/navDemo') 'navDemoFirstVisit': false,
             'navDemoLaterVisit': true,
-        },
-      )],
+          },
+        )
+      ],
       home: Scaffold(
         appBar: AppBar(
           title: const Text('Fullstory Flutter test app'),

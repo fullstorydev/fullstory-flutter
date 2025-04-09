@@ -73,6 +73,7 @@ String namePageDefault(Route<dynamic> route) {
 }
 
 /// Default null [PagePropertiesFactory].
-Map<String, Object?>? propertiesDefault(Route<dynamic> current, Route<dynamic>? previous) {
+Map<String, Object?>? propertiesDefault(
+    Route<dynamic> current, Route<dynamic>? previous) {
   return null;
 }
