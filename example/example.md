@@ -9,6 +9,7 @@ From https://github.com/fullstorydev/fullstory-flutter/tree/main/example/lib
 * [identity.dart](#identitydart)
 * [log.dart](#logdart)
 * [main.dart](#maindart)
+* [nav_demo.dart](#nav_demodart)
 * [pages.dart](#pagesdart)
 * [webview.dart](#webviewdart)
 
@@ -380,6 +381,8 @@ class _LogState extends State<Log> {
 ```dart
 import 'package:flutter/material.dart';
 import 'package:fullstory_flutter/fs.dart';
+import 'package:fullstory_flutter/navigator_observer.dart';
+import 'package:fullstory_flutter_example/nav_demo.dart';
 
 import 'capture_status.dart';
 import 'identity.dart';
@@ -413,10 +416,14 @@ class _MyAppState extends State<MyApp> {
     Pages(),
     FSVersion(),
     WebView(),
+    OpenNavDemo(),
   ];
 
   // Create a list of FSPage objects to represent the different screens in the app
-  // We'll call .start() on each one when it's associated screen is displayed
+  // We'll call .start() on each one when it's associated screen is displayed.
+  //
+  // Manual calls like this can be intermixed with the
+  // [FSNavigatorObserver].
   static final List<FSPage> _pages =
       _screens.map((s) => FS.page(s.toString())).toList();
 
@@ -434,6 +441,20 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      routes: {
+        '/navDemo': (_) => const NavDemo(),
+      },
+      navigatorObservers: [
+        FSNavigatorObserver(
+          initialProperties: (current, previous) => {
+            if (current.settings.name == '/navDemo') 'navDemoFirstVisit': true,
+          },
+          updateProperties: (current, previous) => {
+            if (current.settings.name == '/navDemo') 'navDemoFirstVisit': false,
+            'navDemoLaterVisit': true,
+          },
+        )
+      ],
       home: Scaffold(
         appBar: AppBar(
           title: const Text('Fullstory Flutter test app'),
@@ -474,6 +495,48 @@ class _MyAppState extends State<MyApp> {
             ),
           );
         }),
+      ),
+    );
+  }
+}
+```
+
+## nav_demo.dart
+```dart
+import 'package:flutter/material.dart';
+
+/// A second page in the app to demo use of [FullstoryNavigatorObserver].
+class NavDemo extends StatelessWidget {
+  const NavDemo({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Navigator Observer Demo'),
+      ),
+      body: Container(
+        margin: const EdgeInsets.symmetric(horizontal: 24),
+        child: const Text('Welcome to the Navigator Observer Demo!\n'
+            'Hit back to return to the main screen.'),
+      ),
+    );
+  }
+}
+
+/// A small widget with a button to open [NavDemo]
+class OpenNavDemo extends StatelessWidget {
+  const OpenNavDemo({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.symmetric(horizontal: 24),
+      child: ElevatedButton(
+        onPressed: () {
+          Navigator.pushNamed(context, '/navDemo');
+        },
+        child: const Text('Open Navigator Observer Demo'),
       ),
     );
   }

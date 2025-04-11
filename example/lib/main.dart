@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fullstory_flutter/fs.dart';
+import 'package:fullstory_flutter/navigator_observer.dart';
+import 'package:fullstory_flutter_example/nav_demo.dart';
 
 import 'capture_status.dart';
 import 'identity.dart';
@@ -33,10 +35,14 @@ class _MyAppState extends State<MyApp> {
     Pages(),
     FSVersion(),
     WebView(),
+    OpenNavDemo(),
   ];
 
   // Create a list of FSPage objects to represent the different screens in the app
-  // We'll call .start() on each one when it's associated screen is displayed
+  // We'll call .start() on each one when it's associated screen is displayed.
+  //
+  // Manual calls like this can be intermixed with the
+  // [FSNavigatorObserver].
   static final List<FSPage> _pages =
       _screens.map((s) => FS.page(s.toString())).toList();
 
@@ -54,6 +60,20 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      routes: {
+        '/navDemo': (_) => const NavDemo(),
+      },
+      navigatorObservers: [
+        FSNavigatorObserver(
+          initialProperties: (current, previous) => {
+            if (current.settings.name == '/navDemo') 'navDemoFirstVisit': true,
+          },
+          updateProperties: (current, previous) => {
+            if (current.settings.name == '/navDemo') 'navDemoFirstVisit': false,
+            'navDemoLaterVisit': true,
+          },
+        )
+      ],
       home: Scaffold(
         appBar: AppBar(
           title: const Text('Fullstory Flutter test app'),
