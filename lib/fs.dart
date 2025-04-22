@@ -66,6 +66,11 @@ class FS {
         .event(name: name, properties: properties);
   }
 
+  static Future<void> networkEvent({}) {
+    final properties = <String, Object?>{};
+    return FullstoryFlutterPlatform.instance.captureEvent();
+  }
+
   /// Identify a user and associate current and future sessions with that user.
   ///
   /// Will end the current session and begin a new one if a different uid was previously set.
