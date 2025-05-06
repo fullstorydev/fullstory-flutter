@@ -5,7 +5,7 @@ import 'package:fullstory_flutter/src/fullstory_flutter_method_channel.dart';
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 
 class MockFullstoryFlutterPlatform
-    with MockPlatformInterfaceMixin
+    with MockPlatformInterfaceMixin, Fake
     implements FullstoryFlutterPlatform {
   @override
   Future<String?> fsVersion() => Future.value('42');

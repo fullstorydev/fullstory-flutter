@@ -66,6 +66,30 @@ class FS {
         .event(name: name, properties: properties);
   }
 
+  /// Create a network event in the Dev Log in playback.
+  ///
+  /// [method] should be a valid HTTP method, such as GET, POST, PUT, or DELETE.
+  /// [requestSize] and [responseSize] are measured in bytes.
+  static Future<void> networkEvent({
+    required String url,
+    required String method,
+    int statusCode = 0,
+    int durationMs = 0,
+    int requestSize = 0,
+    int responseSize = 0,
+  }) {
+    return FullstoryFlutterPlatform.instance.captureEvent(<String, Object?>{
+      // This event type is assigned to network events in host SDKs
+      "eventType": 1,
+      "url": url,
+      "method": method,
+      "statusCode": statusCode,
+      "durationMS": durationMs,
+      "requestSize": requestSize,
+      "responseSize": responseSize,
+    });
+  }
+
   /// Identify a user and associate current and future sessions with that user.
   ///
   /// Will end the current session and begin a new one if a different uid was previously set.

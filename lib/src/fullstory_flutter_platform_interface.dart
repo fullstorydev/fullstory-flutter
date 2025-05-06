@@ -53,6 +53,10 @@ abstract class FullstoryFlutterPlatform extends PlatformInterface {
     throw UnimplementedError('event() has not been implemented.');
   }
 
+  Future<void> captureEvent(Map<String, Object?> properties) {
+    throw UnimplementedError('captureEvent() has not been implemented.');
+  }
+
   Future<void> consent() {
     throw UnimplementedError('consent() has not been implemented.');
   }
