@@ -5,6 +5,7 @@ import com.fullstory.FS
 import com.fullstory.FSSessionData
 import com.fullstory.FSStatusListener
 import com.fullstory.FSPage
+import com.fullstory.flutterEvent
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
@@ -172,6 +173,18 @@ class FullstoryFlutterPlugin() : FlutterPlugin, MethodCallHandler {
         } else {
           result.error("INVALID_PAGE", "No active page found with the given ID", null)
         }
+      }
+      "captureEvent" -> {
+        val args = call.arguments as? Map<String, Any>
+        if(args == null) {
+            result.error(
+                "INVALID_ARGUMENTS",
+                "Invalid arguments for captureEvent: expected map, got null",
+                null
+            )
+            return
+        }
+        flutterEvent(args)
       }
       else -> result.notImplemented()
     }
