@@ -90,6 +90,26 @@ class FS {
     });
   }
 
+  /// Report a crash to Fullstory for display in playback.
+  /// 
+  /// [exception] and [stackTrace] are optional, but if provided, they will be
+  /// included in the event.
+  static Future<void> crashEvent({
+    String name = 'Flutter crash',
+    Exception? exception,
+    StackTrace? stackTrace,
+  }) {
+    return FullstoryFlutterPlatform.instance.captureEvent({
+      // This event type is assigned to crash events in host SDKs
+      'eventType': 2,
+      'name': name,
+      'frames': <String>[
+        if(exception != null) exception.toString(),
+        if(stackTrace != null) stackTrace.toString(),
+      ],
+    });
+  }
+
   /// Identify a user and associate current and future sessions with that user.
   ///
   /// Will end the current session and begin a new one if a different uid was previously set.

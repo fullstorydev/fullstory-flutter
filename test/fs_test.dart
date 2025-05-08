@@ -32,6 +32,24 @@ void main() {
       expect(event['requestSize'], 456);
       expect(event['responseSize'], 789);
     });
+
+    test('crashEvent captures crash details', () async {
+      final exception = Exception('Test exception');
+      final stackTrace = StackTrace.current;
+
+      await FS.crashEvent(
+        name: 'Test Crash',
+        exception: exception,
+        stackTrace: stackTrace,
+      );
+
+      expect(fakePlatform.eventProperties.length, 1);
+      final event = fakePlatform.eventProperties.first;
+      expect(event['eventType'], 2);
+      expect(event['name'], 'Test Crash');
+      expect(event['frames'], contains(exception.toString()));
+      expect(event['frames'], contains(stackTrace.toString()));
+    });
   });
 }
 
