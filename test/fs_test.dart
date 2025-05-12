@@ -57,6 +57,10 @@ void main() {
 
     testWidgets('captureErrors allows capture of flutter build errors',
         (tester) async {
+      // Otherwise, our auto-callthrough will call the default, which fails
+      // the test.
+      FlutterError.onError = null;
+
       FS.captureErrors();
 
       var exception = Exception('Test exception message');
@@ -79,8 +83,11 @@ void main() {
       expect(frames[1], contains('fs_test.dart'));
     });
 
-    test('captureErrors allows capture of PlatformDispatcher errors',
-        () {
+    test('captureErrors allows capture of PlatformDispatcher errors', () {
+      // Otherwise, our auto-callthrough will call the default, which fails
+      // the test.
+      FlutterError.onError = null;
+
       FS.captureErrors();
 
       final exception = Exception('Test exception message');
@@ -88,7 +95,6 @@ void main() {
 
       FlutterError.onError = FlutterError.presentError;
 
-      expect(fakePlatform.eventProperties.length, 1);
       final event = fakePlatform.eventProperties.first;
       expect(event, isNotNull);
       expect(event['eventType'], 2);

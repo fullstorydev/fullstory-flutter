@@ -4,6 +4,7 @@ import 'dart:ui';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter/widgets.dart';
 
 import 'fs_log_level.dart';
 import 'fs_status_listener.dart';
@@ -101,78 +102,61 @@ class FS {
   ///
   /// [exception] and [stackTrace] are optional, but if provided, they will be
   /// included in the event.
-  // TODO(connerkasten): After crashing, if the app is reopened, session recording
-  // does not start. I don't think we're cleaning up properly if the app 
-  // exits from Flutter.
+  /// 
+  /// Once called, Fullstory capture will halt, since this assumes the app has
+  /// fatally exited.
   static Future<void> crashEvent({
     String name = 'Flutter crash',
     Object? exception,
     StackTrace? stackTrace,
-  }) => FullstoryFlutterPlatform.instance.captureEvent({
-      // This event type is assigned to crash events in host SDKs
-      'eventType': 2,
-      'name': name,
-      'frames': <String>[
-        if (exception != null) exception.toString(),
-        if (stackTrace != null) stackTrace.toString(),
-      ],
-    });
+  }) =>
+      FullstoryFlutterPlatform.instance.captureEvent({
+        // This event type is assigned to crash events in host SDKs
+        'eventType': 2,
+        'name': name,
+        'frames': <String>[
+          if (exception != null) exception.toString(),
+          if (stackTrace != null) stackTrace.toString(),
+        ],
+      });
 
   /// Configures Flutter to send errors to Fullstory for handling.
-  /// 
+  ///
   /// If you would prefer to handle errors yourself, use [crashEvent] to
   /// report errors to Fullstory in your crash handling logic.
+  ///
+  /// Set [errorHandler] to run any graceful shutdown or user notification 
+  /// logic you would like to run after the crash has been captured.
   /// 
-  /// Set [flutterErrorHandler] and [platformErrorHandler] if there is
-  /// additional logic you would like to include (such as additional crash
-  /// reporting, or graceful app exit).
-  /// 
-  /// Set [exitOnError] if the app should exit when an error is caught. The
-  /// default is to exit only in release mode.
-  /// 
-  /// set [presentFlutterErrors] if you would like to present Flutter errors
-  /// using [FlutterError.presentError]. The default behavior is for errors to
-  /// be dumped to console.
+  /// Once an error is captured, Fullstory capture will halt, 
+  /// since this assumes the app has fatally exited.
   static void captureErrors({
-    FlutterExceptionHandler? flutterErrorHandler,
-    ErrorCallback? platformErrorHandler,
-    bool exitOnError = false,
-    bool presentFlutterErrors = false,
+    void Function(Object? exception, StackTrace? stack)? errorHandler,
   }) {
+    WidgetsFlutterBinding.ensureInitialized();
+
+    final flutterHandler = FlutterError.onError;
     FlutterError.onError = (details) async {
       await FS.crashEvent(
         name: 'Flutter error',
         exception: details.exception,
         stackTrace: details.stack,
       );
-      
-      if (presentFlutterErrors) {
-        FlutterError.presentError(details);
-      }
-
-      if (flutterErrorHandler != null) {
-        flutterErrorHandler(details);
-      }
-
-      if(exitOnError) {
-        SystemNavigator.pop();
-      }
+      flutterHandler?.call(details);
+      errorHandler?.call(details.exception, details.stack);
     };
+
+    final platformHandler = PlatformDispatcher.instance.onError;
 
     PlatformDispatcher.instance.onError = (error, stack) {
       FS.crashEvent(
         name: 'Platform error',
         exception: error,
         stackTrace: stack,
-      ).then((_) {
-        if(exitOnError) SystemNavigator.pop();
-      });
+      );
 
-      if (platformErrorHandler != null) {
-        return platformErrorHandler(error, stack);
-      }
-
-      return true;
+      errorHandler?.call(error, stack);
+      return platformHandler?.call(error, stack) ?? false;
     };
   }
 
