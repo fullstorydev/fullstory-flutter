@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fullstory_flutter/fs.dart';
 import 'package:fullstory_flutter/navigator_observer.dart';
+import 'package:fullstory_flutter_example/crashes.dart';
 import 'package:fullstory_flutter_example/nav_demo.dart';
 
 import 'capture_status.dart';
@@ -14,6 +15,8 @@ import 'pages.dart';
 // Example app that demonstrates use of most Fullstory APIs
 
 void main() {
+  // Always exit on errors, since Fullstory will stop capture.
+  FS.captureErrors(exitOnError: true);
   runApp(const MyApp());
 }
 
@@ -32,6 +35,7 @@ class _MyAppState extends State<MyApp> {
     Identity(),
     Log(),
     Events(),
+    Crashes(),
     Pages(),
     FSVersion(),
     WebView(),

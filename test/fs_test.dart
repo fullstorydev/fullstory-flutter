@@ -1,3 +1,7 @@
+import 'dart:ui';
+
+import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:fullstory_flutter/fs.dart';
 import 'package:fullstory_flutter/src/fullstory_flutter_platform_interface.dart';
@@ -49,6 +53,50 @@ void main() {
       expect(event['name'], 'Test Crash');
       expect(event['frames'], contains(exception.toString()));
       expect(event['frames'], contains(stackTrace.toString()));
+    });
+
+    testWidgets('captureErrors allows capture of flutter build errors',
+        (tester) async {
+      FS.captureErrors();
+
+      var exception = Exception('Test exception message');
+      await tester.pumpWidget(Builder(
+        builder: (context) {
+          throw exception;
+        },
+      ));
+
+      FlutterError.onError = FlutterError.presentError;
+
+      expect(fakePlatform.eventProperties.length, 1);
+      final event = fakePlatform.eventProperties.first;
+      expect(event, isNotNull);
+      expect(event['eventType'], 2);
+      expect(event['name'], 'Flutter error');
+
+      final frames = event['frames'] as List<String>;
+      expect(frames, contains(exception.toString()));
+      expect(frames[1], contains('fs_test.dart'));
+    });
+
+    test('captureErrors allows capture of PlatformDispatcher errors',
+        () {
+      FS.captureErrors();
+
+      final exception = Exception('Test exception message');
+      PlatformDispatcher.instance.onError?.call(exception, StackTrace.current);
+
+      FlutterError.onError = FlutterError.presentError;
+
+      expect(fakePlatform.eventProperties.length, 1);
+      final event = fakePlatform.eventProperties.first;
+      expect(event, isNotNull);
+      expect(event['eventType'], 2);
+      expect(event['name'], 'Platform error');
+
+      final frames = event['frames'] as List<String>;
+      expect(frames, contains(exception.toString()));
+      expect(frames[1], contains('fs_test.dart'));
     });
   });
 }

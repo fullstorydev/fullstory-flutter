@@ -1,3 +1,10 @@
+import 'dart:io';
+import 'dart:math';
+import 'dart:ui';
+
+import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
+
 import 'fs_log_level.dart';
 import 'fs_status_listener.dart';
 import 'src/fullstory_flutter_platform_interface.dart';
@@ -91,23 +98,82 @@ class FS {
   }
 
   /// Report a crash to Fullstory for display in playback.
-  /// 
+  ///
   /// [exception] and [stackTrace] are optional, but if provided, they will be
   /// included in the event.
+  // TODO(connerkasten): After crashing, if the app is reopened, session recording
+  // does not start. I don't think we're cleaning up properly if the app 
+  // exits from Flutter.
   static Future<void> crashEvent({
     String name = 'Flutter crash',
-    Exception? exception,
+    Object? exception,
     StackTrace? stackTrace,
-  }) {
-    return FullstoryFlutterPlatform.instance.captureEvent({
+  }) => FullstoryFlutterPlatform.instance.captureEvent({
       // This event type is assigned to crash events in host SDKs
       'eventType': 2,
       'name': name,
       'frames': <String>[
-        if(exception != null) exception.toString(),
-        if(stackTrace != null) stackTrace.toString(),
+        if (exception != null) exception.toString(),
+        if (stackTrace != null) stackTrace.toString(),
       ],
     });
+
+  /// Configures Flutter to send errors to Fullstory for handling.
+  /// 
+  /// If you would prefer to handle errors yourself, use [crashEvent] to
+  /// report errors to Fullstory in your crash handling logic.
+  /// 
+  /// Set [flutterErrorHandler] and [platformErrorHandler] if there is
+  /// additional logic you would like to include (such as additional crash
+  /// reporting, or graceful app exit).
+  /// 
+  /// Set [exitOnError] if the app should exit when an error is caught. The
+  /// default is to exit only in release mode.
+  /// 
+  /// set [presentFlutterErrors] if you would like to present Flutter errors
+  /// using [FlutterError.presentError]. The default behavior is for errors to
+  /// be dumped to console.
+  static void captureErrors({
+    FlutterExceptionHandler? flutterErrorHandler,
+    ErrorCallback? platformErrorHandler,
+    bool exitOnError = false,
+    bool presentFlutterErrors = false,
+  }) {
+    FlutterError.onError = (details) async {
+      await FS.crashEvent(
+        name: 'Flutter error',
+        exception: details.exception,
+        stackTrace: details.stack,
+      );
+      
+      if (presentFlutterErrors) {
+        FlutterError.presentError(details);
+      }
+
+      if (flutterErrorHandler != null) {
+        flutterErrorHandler(details);
+      }
+
+      if(exitOnError) {
+        SystemNavigator.pop();
+      }
+    };
+
+    PlatformDispatcher.instance.onError = (error, stack) {
+      FS.crashEvent(
+        name: 'Platform error',
+        exception: error,
+        stackTrace: stack,
+      ).then((_) {
+        if(exitOnError) SystemNavigator.pop();
+      });
+
+      if (platformErrorHandler != null) {
+        return platformErrorHandler(error, stack);
+      }
+
+      return true;
+    };
   }
 
   /// Identify a user and associate current and future sessions with that user.

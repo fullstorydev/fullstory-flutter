@@ -185,6 +185,7 @@ class FullstoryFlutterPlugin() : FlutterPlugin, MethodCallHandler {
             return
         }
         flutterEvent(args)
+        result.success(null)
       }
       else -> result.notImplemented()
     }
