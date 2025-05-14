@@ -5,12 +5,17 @@ import 'package:fullstory_flutter/fs.dart';
 class FullstoryInterceptor extends Interceptor {
   final _requestStartTimes = <Uri, int>{};
 
-  /// Computes the size (in bytes) of the request or response data.
+  /// Computes the size (in bytes) of request data.
   /// 
   /// Defaults to always return zero. 
-  final int Function(dynamic) computeSize;
+  final int Function(RequestOptions) computeRequestSize;
 
-  FullstoryInterceptor({this.computeSize = alwaysZero});
+    /// Computes the size (in bytes) of response data.
+  /// 
+  /// Defaults to always return zero. 
+  final int Function(Response) computeResponseSize;
+
+  FullstoryInterceptor({this.computeRequestSize = alwaysZero, this.computeResponseSize = alwaysZero});
 
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
@@ -24,8 +29,8 @@ class FullstoryInterceptor extends Interceptor {
       url: response.requestOptions.uri.toString(),
       statusCode: response.statusCode,
       method: response.requestOptions.method,
-      requestSize: computeSize(response.requestOptions.data),
-      responseSize: computeSize(response.data),
+      requestSize: computeRequestSize(response.requestOptions.data),
+      responseSize: computeRequestSize(response.data),
       durationMs: _durationOf(response.requestOptions.uri),
     );
     super.onResponse(response, handler);
@@ -37,8 +42,8 @@ class FullstoryInterceptor extends Interceptor {
       url: err.requestOptions.uri.toString(),
       statusCode: err.response?.statusCode,
       method: err.requestOptions.method,
-      requestSize: computeSize(err.requestOptions.data),
-      responseSize: computeSize(err.response?.data),
+      requestSize: computeResponseSize(err.requestOptions.data),
+      responseSize: computeResponseSize(err.response?.data),
       durationMs: _durationOf(err.requestOptions.uri),
     );
     super.onError(err, handler);
