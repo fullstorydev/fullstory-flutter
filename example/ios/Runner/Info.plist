@@ -29,7 +29,9 @@
 		<key>LogLevel</key>
 		<string>debug</string>
 		<key>OrgId</key>
-		<string>&lt;Your Fullstory OrgID here&gt;</string>
+		<string>KWH</string>
+		<key>Host</key>
+		<string>staging.fullstory.com</string>
 		<key>VerboseLogging</key>
 		<string>2</string>
 	</dict>

@@ -1,3 +1,6 @@
+import 'dart:convert';
+import 'dart:typed_data';
+
 import 'package:dio/dio.dart';
 import 'package:fullstory_flutter/fs.dart';
 
@@ -52,6 +55,26 @@ class FullstoryInterceptor extends Interceptor {
   }
 }
 
-/// A default value for [FullstoryInterceptor.computeSize] that always returns 
-/// zero.
-int alwaysZero(dynamic _) => 0;
+/// Computes the size (in bytes) of the given data when encoded as UTF-8.
+int responseFromUtf8(Response? response) {
+  if (response == null) return 0;
+
+  return _fromUtf8(response.data);
+}
+
+/// Computes the size (in bytes) of the given data when encoded as UTF-8.
+int requestFromUtf8(RequestOptions request) => _fromUtf8(request.data);
+
+/// Assumes that the data is UTF-8 encoded and returns the number of bytes
+/// required to encode it.
+///
+/// If the data is null, returns 0.
+int _fromUtf8(Object? data) {
+  if (data == null) return 0;
+  if (data is Uint8List) data.length;
+
+  final str = data.toString();
+  if (str.isEmpty) return 0;
+
+  return utf8.encode(str).length;
+}
