@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:fullstory_dio/fullstory_dio.dart';
 
@@ -31,11 +34,21 @@ class NetworkEvents extends StatelessWidget {
 }
 
 // This is declared at the top-level to allow [NetworkEvents] to be const.
-final dio = Dio()
+Dio get dio => Dio()
   ..interceptors.add(FullstoryInterceptor(
-    // Dart strings are UTF-16 encoded, so code units may be 2-4 bytes in size.
-    // This is just an approximation, and probably not accurate if you send 
-    // over the wire as UTF-8!
-    computeRequestSize: (rq) => 3 * (rq.data?.toString().length ?? 0),
-    computeResponseSize: (rs) => 3 * (rs.data?.toString().length ?? 0),
+    computeRequestSize: (rq) => _utf8BytesOf(rq.data),
+    computeResponseSize: (rs) => _utf8BytesOf(rs?.data),
   ));
+
+int _utf8BytesOf(dynamic data) {
+  print('data type: ${data.runtimeType}');
+  if(data == null) return 0;
+  if(data is Uint8List) data.length;
+
+  final str = data.toString();
+  if (str.isEmpty) return 0;
+
+  return _utf8.encode(str).length;
+}
+
+const _utf8 = Utf8Codec();

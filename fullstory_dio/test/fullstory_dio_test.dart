@@ -1,14 +1,15 @@
+import 'dart:convert';
+
 import 'package:dio/dio.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:fullstory_flutter/src/fullstory_flutter_platform_interface.dart';
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
-
 
 import 'package:fullstory_dio/fullstory_dio.dart';
 
 void main() {
   group(FullstoryInterceptor, () {
-
     late FakeFullstoryFlutterPlatform fakePlatform;
 
     setUp(() {
@@ -17,18 +18,24 @@ void main() {
     });
 
     test('captures fields using computeSize', () {
-      final interceptor = FullstoryInterceptor(computeRequestSize: (_) => 42, computeResponseSize: (_) => 25);
-
-      var requestOptions = RequestOptions(path: 'https://example.com', method: 'GET');
-      interceptor.onRequest(
-        requestOptions,
-        RequestInterceptorHandler(),
+      final interceptor = FullstoryInterceptor(
+        computeRequestSize: (_) => 42,
+        computeResponseSize: (_) => 25,
       );
-      interceptor.onResponse(Response(
-        requestOptions: requestOptions,
-        statusCode: 200,
-        data: 'response data',
-      ), ResponseInterceptorHandler());
+
+      var requestOptions = RequestOptions(
+        path: 'https://example.com',
+        method: 'GET',
+      );
+      interceptor.onRequest(requestOptions, RequestInterceptorHandler());
+      interceptor.onResponse(
+        Response(
+          requestOptions: requestOptions,
+          statusCode: 200,
+          data: 'response data',
+        ),
+        ResponseInterceptorHandler(),
+      );
 
       expect(fakePlatform.eventProperties.length, 1);
       final event = fakePlatform.eventProperties.first;
@@ -43,12 +50,12 @@ void main() {
     test('captures fields on error', () {
       final interceptor = FullstoryInterceptor();
 
-      var requestOptions = RequestOptions(path: 'https://example.com', method: 'GET');
-      interceptor.onRequest(
-        requestOptions,
-        RequestInterceptorHandler(),
+      var requestOptions = RequestOptions(
+        path: 'https://example.com',
+        method: 'GET',
       );
-      
+      interceptor.onRequest(requestOptions, RequestInterceptorHandler());
+
       interceptor.onError(
         DioException(
           requestOptions: requestOptions,
@@ -67,6 +74,46 @@ void main() {
       expect(event['responseSize'], 0);
     });
   });
+
+  group('requestFromUtf8', () {
+    test('returns 0 for null data', () {
+      expect(requestFromUtf8(RequestOptions()), 0);
+    });
+
+    test('returns correct size for string data', () {
+      expect(requestFromUtf8(RequestOptions(data: 'Hello')), 5);
+    });
+
+    test('returns correct size for Uint8List data', () {
+      final result = requestFromUtf8(RequestOptions(data: Uint8List.fromList([1, 2, 3])));
+      expect(
+        result,
+        3,
+      );
+    });
+  });
+
+  group('responseFromUtf8', () {
+    test('returns 0 for null response', () {
+      expect(responseFromUtf8(null), 0);
+    });
+
+    final options = RequestOptions();
+
+    test('returns correct size for string data', () {
+      final result = responseFromUtf8(
+        Response(requestOptions: options, data: 'Hello'),
+      );
+      expect(result, 5);
+    });
+
+    test('returns correct size for Uint8List data', () {
+      final result = responseFromUtf8(
+        Response(requestOptions: options, data: Uint8List.fromList([1, 2, 3])),
+      );
+      expect(result, 3);
+    });
+  });
 }
 
 class FakeFullstoryFlutterPlatform
@@ -81,7 +128,7 @@ class FakeFullstoryFlutterPlatform
   }
 }
 
-/// A fake implementation of [ErrorInterceptorHandler] that does nothing to 
+/// A fake implementation of [ErrorInterceptorHandler] that does nothing to
 /// avoid error thrown when the interceptor completes.
 class FakeErrorHandler with Fake implements ErrorInterceptorHandler {
   @override
