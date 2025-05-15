@@ -11,7 +11,7 @@ dependencies:
   flutter:
     sdk: flutter
   dio: ^5.8.0+1
-  fullstory_flutter: 
+  fullstory_flutter: #^0.5.0+, we'll need to update this when we release
     path: ../
 
 dev_dependencies:

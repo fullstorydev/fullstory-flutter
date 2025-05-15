@@ -1,39 +1,39 @@
-<!--
-This README describes the package. If you publish this package to pub.dev,
-this README's contents appear on the landing page for your package.
+# Fullstory dio support
 
-For information about how to write a good package README, see the guide for
-[writing package pages](https://dart.dev/tools/pub/writing-package-pages).
+This package adds support for Fullstory capture of network events emitted by
+[dio](https://pub.dev/packages/dio). 
 
-For general information about developing packages, see the Dart guide for
-[creating packages](https://dart.dev/guides/libraries/create-packages)
-and the Flutter guide for
-[developing packages and plugins](https://flutter.dev/to/develop-packages).
--->
+It requires integration with [fullstory_flutter](https://pub.dev/packages/fullstory_flutter)
+to get started. Once you've 
+[set up Fullstory for Flutter](https://help.fullstory.com/hc/en-us/articles/27461129353239-Getting-Started-with-Fullstory-for-Flutter-Mobile-Apps)
+you're ready to start here.
 
-TODO: Put a short description of the package here that helps potential users
-know whether this package might be useful for them.
+⚠️ This is a preview release, some breaking changes are possible before the 1.0.0 release.
 
-## Features
+## Quick Links
 
-TODO: List what your package can do. Maybe include images, gifs, or videos.
+- [Getting Started guide](https://help.fullstory.com/hc/en-us/articles/27461129353239)
+- [Usage examples](https://github.com/fullstorydev/fullstory-flutter/tree/main/example/lib)
+- [Fullstory API](https://developer.fullstory.com/mobile/flutter/)
+- [Email us](mailto:mobile-support@fullstory.com)
 
-## Getting started
+## Setup
 
-TODO: List prerequisites and provide or point to information on how to
-start using the package.
+Add the `FullstoryInterceptor` to your dio interceptor list:
 
-## Usage
-
-TODO: Include short and useful examples for package users. Add longer examples
-to `/example` folder.
-
-```dart
-const like = 'sample';
+```
+final dio = Dio()..interceptors.add(FullstoryInterceptor());
 ```
 
-## Additional information
+If you use an encoding other than UTF-8 for your data, provide a function to
+compute request/response sizes for accurate measurment:
 
-TODO: Tell users more about the package: where to find more information, how to
-contribute to the package, how to file issues, what response they can expect
-from the package authors, and more.
+```
+FullstoryInterceptor(
+    computeRequestSize: myRequestSizer,
+    computeResponseSize: myResponseSizer,
+);
+
+int myRequestSizer(_) => 42;
+int myResponseSizer(Response? response) => _myComplexFunction(response?.data);
+```
