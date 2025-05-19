@@ -1,0 +1,2 @@
+-keepnames class com.fullstory.FSViolator2 {*;}
+-keepnames class com.fullstory.FSViolatorKt {*;}
