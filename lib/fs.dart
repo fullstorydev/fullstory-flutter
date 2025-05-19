@@ -77,8 +77,7 @@ class FS {
     int durationMs = 0,
     int requestSize = 0,
     int responseSize = 0,
-  }) {
-    return FullstoryFlutterPlatform.instance.captureEvent(<String, Object?>{
+  }) => FullstoryFlutterPlatform.instance.captureEvent({
       // This event type is assigned to network events in host SDKs
       "eventType": 1,
       "url": url,
@@ -88,7 +87,6 @@ class FS {
       "requestSize": requestSize,
       "responseSize": responseSize,
     });
-  }
 
   /// Identify a user and associate current and future sessions with that user.
   ///
