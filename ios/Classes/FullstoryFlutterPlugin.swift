@@ -174,6 +174,9 @@ public class FullstoryFlutterPlugin: NSObject, FlutterPlugin, FSDelegate {
                             if(obj != nil) {
                                 result(nil)
                                 return
+                            } else {
+                                result(FlutterError(code: "INVALID_FULLSTORY", message: "Unexpected return value for flutter event", details: String(describing: obj)))
+                                return
                             }
                         }
                     }
