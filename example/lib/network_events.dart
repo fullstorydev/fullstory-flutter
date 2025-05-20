@@ -31,4 +31,4 @@ class NetworkEvents extends StatelessWidget {
 }
 
 // This is declared at the top-level to allow [NetworkEvents] to be const.
-Dio get dio => Dio()..interceptors.add(FullstoryInterceptor());
+Dio get dio => Dio()..interceptors.add(FSInterceptor());

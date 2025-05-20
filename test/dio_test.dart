@@ -7,7 +7,7 @@ import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 import 'package:fullstory_flutter/dio.dart';
 
 void main() {
-  group(FullstoryInterceptor, () {
+  group(FSInterceptor, () {
     late FakeFullstoryFlutterPlatform fakePlatform;
 
     setUp(() {
@@ -16,7 +16,7 @@ void main() {
     });
 
     test('captures fields using computeSize', () {
-      final interceptor = FullstoryInterceptor(
+      final interceptor = FSInterceptor(
         computeRequestSize: (_) => 42,
         computeResponseSize: (_) => 25,
       );
@@ -46,7 +46,7 @@ void main() {
     });
 
     test('captures fields on error', () {
-      final interceptor = FullstoryInterceptor();
+      final interceptor = FSInterceptor();
 
       var requestOptions = RequestOptions(
         path: 'https://example.com',

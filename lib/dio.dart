@@ -5,7 +5,7 @@ import 'package:dio/dio.dart';
 import 'package:fullstory_flutter/fs.dart';
 
 /// Captures requests and responses from dio for display in Fullstory.
-class FullstoryInterceptor extends Interceptor {
+class FSInterceptor extends Interceptor {
   final _requestStartTimes = <Uri, int>{};
 
   /// Computes the size (in bytes) of request data.
@@ -18,13 +18,13 @@ class FullstoryInterceptor extends Interceptor {
   /// Defaults to compute the size of the data's toString result in UTF8.
   final int Function(Response?) computeResponseSize;
 
-  /// Creates a [FullstoryInterceptor] that captures network events.
+  /// Creates a [FSInterceptor] that captures network events.
   ///
   /// The [computeRequestSize] and [computeResponseSize] functions are used to
   /// compute the size of the request and response data. By default, they
   /// assime UTF-8 encoding. If your request uses another enocoding, override
   /// these fields.
-  FullstoryInterceptor({
+  FSInterceptor({
     this.computeRequestSize = requestFromUtf8,
     this.computeResponseSize = responseFromUtf8,
   });
