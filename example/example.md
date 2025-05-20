@@ -11,6 +11,7 @@ From https://github.com/fullstorydev/fullstory-flutter/tree/main/example/lib
 * [main.dart](#maindart)
 * [nav_demo.dart](#nav_demodart)
 * [network_events.dart](#network_eventsdart)
+* [network_events.dart](#network_eventsdart)
 * [pages.dart](#pagesdart)
 * [webview.dart](#webviewdart)
 
@@ -391,6 +392,7 @@ import 'log.dart';
 import 'events.dart';
 import 'fs_version.dart';
 import 'network_events.dart';
+import 'network_events.dart';
 import 'webview.dart';
 import 'pages.dart';
 
@@ -415,6 +417,7 @@ class _MyAppState extends State<MyApp> {
     Identity(),
     Log(),
     Events(),
+    NetworkEvents(),
     NetworkEvents(),
     Pages(),
     FSVersion(),
@@ -564,11 +567,27 @@ class NetworkEvents extends StatelessWidget {
     return Column(
       children: [
         TextButton(
+          onPressed: () => _makeHttpRequest(context),
+          child: const Text('Send package:http request'),
+        ),
+        TextButton(
           onPressed: () => _makeDioRequest(context),
           child: const Text('Send dio request'),
         ),
       ],
     );
+  }
+
+  Future<void> _makeHttpRequest(BuildContext context) async {
+    print(FS.currentSessionURL());
+    final response = await httpClient.get(Uri.parse('https://fullstory.com'));
+    if (context.mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('package:http got response: ${response.statusCode}'),
+        ),
+      );
+    }
   }
 
   Future<void> _makeDioRequest(BuildContext context) async {
