@@ -85,7 +85,7 @@ int requestFromUtf8(RequestOptions request) => _fromUtf8(request.data);
 /// If the data is null, returns 0.
 int _fromUtf8(Object? data) {
   if (data == null) return 0;
-  if (data is Uint8List) data.length;
+  if (data is Uint8List) return data.length;
 
   final str = data.toString();
   if (str.isEmpty) return 0;

@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:fullstory_dio/fullstory_dio.dart';
+import 'package:fullstory_flutter/dio.dart';
 
 /// Demo widget that sends network requests using package:dio and package:http.
 class NetworkEvents extends StatelessWidget {
