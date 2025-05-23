@@ -40,9 +40,6 @@ jobs:
           java-version: 17
           distribution: 'temurin'
 
-      - name: Set up Gradle
-        uses: gradle/actions/setup-gradle@v4
-
       - name: Set up local.properties
         run: bash .github/workflows/create_properties.sh
 
@@ -63,7 +60,7 @@ jobs:
         run: cd example && flutter test
 
       - name: Run Android unit tests
-        run: cd example/android && gradle test
+        run: cd example/android && ./gradlew test
           
       - name: Install Dependencies
         run: cd example/ios && pod install
