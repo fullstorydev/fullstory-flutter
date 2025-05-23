@@ -56,11 +56,8 @@ jobs:
       - name: Run library tests
         run: flutter test
 
-      - name: Run example app tests
-        run: cd example && flutter test
-
-      - name: Run Android unit tests
-        run: cd example/android && ./gradlew test
+      - name: Run example Flutter & Android unit tests
+        run: cd example && flutter test && cd android && ./gradlew test
           
       - name: Install Dependencies
         run: cd example/ios && pod install
