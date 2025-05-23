@@ -7,6 +7,6 @@ package com.fullstory
  * The SDK API is package private to avoid polluting non-Flutter namespace, and exposed via this
  * function.
  */
-fun flutterEvent(properties: Map<String, Any>) {
+fun flutterEvent(properties: Map<String, Any?>) {
     FS.__flutterEvent(properties)
 }
