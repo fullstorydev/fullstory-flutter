@@ -79,8 +79,7 @@ class FS {
     int responseSize = 0,
   }) =>
       FullstoryFlutterPlatform.instance.captureEvent({
-        // This event type is assigned to network events in host SDKs
-        "eventType": 1,
+        "eventType": _EventType.network.value,
         "url": url,
         "method": method,
         "statusCode": statusCode,
@@ -206,4 +205,17 @@ class FSPage {
     _finalizer.detach(this);
     await FullstoryFlutterPlatform.instance.releasePage(await _id);
   }
+}
+
+/// Event type values used for [FullstoryFlutterPlatform.captureEvent].
+/// 
+/// Each should correspond to a different method in [FS] which delegates to
+/// `captureEvent` with the additional predefined properties.
+enum _EventType {
+  network(1),
+  crash(2);
+
+  final int value;
+
+  const _EventType(this.value);
 }
