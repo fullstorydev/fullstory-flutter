@@ -212,8 +212,7 @@ class FSPage {
 /// Each should correspond to a different method in [FS] which delegates to
 /// `captureEvent` with the additional predefined properties.
 enum _EventType {
-  network(1),
-  crash(2);
+  network(1);
 
   final int value;
 
