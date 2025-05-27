@@ -208,7 +208,7 @@ class FSPage {
 }
 
 /// Event type values used for [FullstoryFlutterPlatform.captureEvent].
-/// 
+///
 /// Each should correspond to a different method in [FS] which delegates to
 /// `captureEvent` with the additional predefined properties.
 enum _EventType {
