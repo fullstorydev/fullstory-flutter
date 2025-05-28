@@ -1,9 +1,4 @@
-import 'dart:io';
-import 'dart:math';
-import 'dart:ui';
-
 import 'package:flutter/foundation.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 
 import 'fs_log_level.dart';
@@ -110,7 +105,7 @@ class FS {
   }) =>
       FullstoryFlutterPlatform.instance.captureEvent({
         // This event type is assigned to crash events in host SDKs
-        'eventType': 2,
+        'eventType': _EventType.crash.value,
         'name': name,
         'frames': <String>[
           if (exception != null) exception.toString(),
@@ -282,7 +277,8 @@ class FSPage {
 /// Each should correspond to a different method in [FS] which delegates to
 /// `captureEvent` with the additional predefined properties.
 enum _EventType {
-  network(1);
+  network(1),
+  crash(2);
 
   final int value;
 
