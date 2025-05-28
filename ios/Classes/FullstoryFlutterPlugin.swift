@@ -174,11 +174,14 @@ public class FullstoryFlutterPlugin: NSObject, FlutterPlugin, FSDelegate {
                             if(obj != nil) {
                                 result(nil)
                                 return
+                            } else {
+                                result(FlutterError(code: "INVALID_FULLSTORY", message: "Unexpected return value for flutter event", details: String(describing: obj)))
+                                return
                             }
                         }
                     }
                 }
-                result(FlutterError(code: "INVALID_FULLSTORY", message: "Unable to find Flutter APIs in Fullstory SDK. Try updating Fullstory", details: nil))
+                result(FlutterError(code: "INVALID_FULLSTORY", message: "Unable to find Flutter APIs in Fullstory iOS SDK. Try updating the FullStory pod.", details: nil))
             } else {
                 result(FlutterError(code: "INVALID_ARGUMENT", message: "Invalid argument for flutterEvent", details: "Expected Map<String, Any>, got \(String(describing: call.arguments))"))
             }

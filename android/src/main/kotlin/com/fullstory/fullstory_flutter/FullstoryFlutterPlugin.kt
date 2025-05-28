@@ -175,7 +175,7 @@ class FullstoryFlutterPlugin() : FlutterPlugin, MethodCallHandler {
         }
       }
       "captureEvent" -> {
-        val args = call.arguments as? Map<String, Any>
+        val args = call.arguments as? Map<String, Any?>
         if(args == null) {
             result.error(
                 "INVALID_ARGUMENTS",
@@ -185,7 +185,6 @@ class FullstoryFlutterPlugin() : FlutterPlugin, MethodCallHandler {
             return
         }
         flutterEvent(args)
-        result.success(null)
       }
       else -> result.notImplemented()
     }

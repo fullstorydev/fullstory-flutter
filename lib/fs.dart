@@ -85,18 +85,16 @@ class FS {
     int durationMs = 0,
     int requestSize = 0,
     int responseSize = 0,
-  }) {
-    return FullstoryFlutterPlatform.instance.captureEvent(<String, Object?>{
-      // This event type is assigned to network events in host SDKs
-      "eventType": 1,
-      "url": url,
-      "method": method,
-      "statusCode": statusCode,
-      "durationMS": durationMs,
-      "requestSize": requestSize,
-      "responseSize": responseSize,
-    });
-  }
+  }) =>
+      FullstoryFlutterPlatform.instance.captureEvent({
+        "eventType": _EventType.network.value,
+        "url": url,
+        "method": method,
+        "statusCode": statusCode,
+        "durationMS": durationMs,
+        "requestSize": requestSize,
+        "responseSize": responseSize,
+      });
 
   /// Report a crash to Fullstory for display in playback.
   ///
@@ -277,4 +275,16 @@ class FSPage {
     _finalizer.detach(this);
     await FullstoryFlutterPlatform.instance.releasePage(await _id);
   }
+}
+
+/// Event type values used for [FullstoryFlutterPlatform.captureEvent].
+///
+/// Each should correspond to a different method in [FS] which delegates to
+/// `captureEvent` with the additional predefined properties.
+enum _EventType {
+  network(1);
+
+  final int value;
+
+  const _EventType(this.value);
 }
