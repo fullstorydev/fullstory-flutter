@@ -77,17 +77,17 @@ class FS {
     int? durationMs = 0,
     int? requestSize = 0,
     int? responseSize = 0,
-  }) => 
+  }) =>
       FullstoryFlutterPlatform.instance.captureEvent(<String, Object?>{
-      // This event type is assigned to network events in host SDKs
-      "eventType": 1,
-      "url": url,
-      "method": method,
-      "statusCode": statusCode ?? 0,
-      "durationMS": durationMs ?? 0,
-      "requestSize": requestSize ?? 0,
-      "responseSize": responseSize ?? 0,
-    });
+        // This event type is assigned to network events in host SDKs
+        "eventType": 1,
+        "url": url,
+        "method": method,
+        "statusCode": statusCode ?? 0,
+        "durationMS": durationMs ?? 0,
+        "requestSize": requestSize ?? 0,
+        "responseSize": responseSize ?? 0,
+      });
 
   /// Identify a user and associate current and future sessions with that user.
   ///

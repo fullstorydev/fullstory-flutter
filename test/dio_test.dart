@@ -83,7 +83,8 @@ void main() {
     });
 
     test('returns correct size for Uint8List data', () {
-      final result = requestFromUtf8(RequestOptions(data: Uint8List.fromList([1, 2, 3])));
+      final result =
+          requestFromUtf8(RequestOptions(data: Uint8List.fromList([1, 2, 3])));
       expect(
         result,
         3,
