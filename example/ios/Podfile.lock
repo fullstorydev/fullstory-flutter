@@ -1,9 +1,9 @@
 PODS:
   - Flutter (1.0.0)
-  - FullStory (1.54.0)
+  - FullStory (1.60.0)
   - fullstory_flutter (0.0.1):
     - Flutter
-    - FullStory (~> 1.54)
+    - FullStory (~> 1.60)
   - integration_test (0.0.1):
     - Flutter
   - webview_flutter_wkwebview (0.0.1):
@@ -32,8 +32,8 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   Flutter: e0871f40cf51350855a761d2e70bf5af5b9b5de7
-  FullStory: 621fce986e63959bc29a8864dfc05ea6a3fe6403
-  fullstory_flutter: 82276b0edaf3d683dc45991adb0c39c0196a2a9e
+  FullStory: 6b5dd3fe8d75280286223f6fbdf4f402409ef5a0
+  fullstory_flutter: 55b8e3542d8351fc8645ceb70a49a453f11d991e
   integration_test: 4a889634ef21a45d28d50d622cf412dc6d9f586e
   webview_flutter_wkwebview: 44d4dee7d7056d5ad185d25b38404436d56c547c
 

@@ -80,6 +80,11 @@ class MethodChannelFullstoryFlutter extends FullstoryFlutterPlatform {
   }
 
   @override
+  Future<void> captureEvent(Map<String, Object?> properties) async {
+    await methodChannel.invokeMethod<void>('captureEvent', properties);
+  }
+
+  @override
   Future<void> consent() async {
     await methodChannel.invokeMethod<void>('consent');
   }

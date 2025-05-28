@@ -164,6 +164,27 @@ public class FullstoryFlutterPlugin: NSObject, FlutterPlugin, FSDelegate {
             } else {
                 result(FlutterError(code: "INVALID_PAGE", message: "No active page found with the given ID", details: nil))
             }
+        case "captureEvent":
+            if let args = call.arguments as? [String: Any] {
+                if let FS = NSClassFromString("FS") {
+                    let sel = NSSelectorFromString("__flutterEvent:")
+                    if let clazz = FS as AnyObject as? NSObjectProtocol {
+                        if clazz.responds(to: sel) {
+                            let obj = clazz.perform(sel, with: args)
+                            if(obj != nil) {
+                                result(nil)
+                                return
+                            } else {
+                                result(FlutterError(code: "INVALID_FULLSTORY", message: "Unexpected return value for flutter event", details: String(describing: obj)))
+                                return
+                            }
+                        }
+                    }
+                }
+                result(FlutterError(code: "INVALID_FULLSTORY", message: "Unable to find Flutter APIs in Fullstory iOS SDK. Try updating the FullStory pod.", details: nil))
+            } else {
+                result(FlutterError(code: "INVALID_ARGUMENT", message: "Invalid argument for flutterEvent", details: "Expected Map<String, Any>, got \(String(describing: call.arguments))"))
+            }
         default:
             result(FlutterMethodNotImplemented)
         }
