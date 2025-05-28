@@ -1,6 +1,10 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:fullstory_flutter/fs.dart';
 import 'package:fullstory_flutter/navigator_observer.dart';
+import 'package:fullstory_flutter_example/crashes.dart';
 import 'package:fullstory_flutter_example/nav_demo.dart';
 
 import 'capture_status.dart';
@@ -14,6 +18,16 @@ import 'pages.dart';
 // Example app that demonstrates use of most Fullstory APIs
 
 void main() {
+  FS.captureErrors(errorHandler: (_, __) {
+    FS.log(message: 'Error handler called, popping app');
+    if (Platform.isAndroid) {
+      SystemNavigator.pop();
+    } else {
+      // Don't do this on an app being released to the App Store, see
+      // https://developer.apple.com/library/archive/qa/qa1561/_index.html#//apple_ref/doc/uid/DTS40007952
+      exit(1);
+    }
+  });
   runApp(const MyApp());
 }
 
@@ -32,6 +46,7 @@ class _MyAppState extends State<MyApp> {
     Identity(),
     Log(),
     Events(),
+    Crashes(),
     Pages(),
     FSVersion(),
     WebView(),
