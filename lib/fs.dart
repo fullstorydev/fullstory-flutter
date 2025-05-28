@@ -100,7 +100,7 @@ class FS {
   ///
   /// [exception] and [stackTrace] are optional, but if provided, they will be
   /// included in the event.
-  /// 
+  ///
   /// Once called, Fullstory capture will halt, since this assumes the app has
   /// fatally exited.
   static Future<void> crashEvent({
@@ -123,10 +123,10 @@ class FS {
   /// If you would prefer to handle errors yourself, use [crashEvent] to
   /// report errors to Fullstory in your crash handling logic.
   ///
-  /// Set [errorHandler] to run any graceful shutdown or user notification 
+  /// Set [errorHandler] to run any graceful shutdown or user notification
   /// logic you would like to run after the crash has been captured.
-  /// 
-  /// Once an error is captured, Fullstory capture will halt, 
+  ///
+  /// Once an error is captured, Fullstory capture will halt,
   /// since this assumes the app has fatally exited.
   static void captureErrors({
     void Function(Object? exception, StackTrace? stack)? errorHandler,

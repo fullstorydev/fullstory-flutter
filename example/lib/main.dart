@@ -18,9 +18,9 @@ import 'pages.dart';
 // Example app that demonstrates use of most Fullstory APIs
 
 void main() {
-  FS.captureErrors(errorHandler: (_,__) {
+  FS.captureErrors(errorHandler: (_, __) {
     FS.log(message: 'Error handler called, popping app');
-    if(Platform.isAndroid) {
+    if (Platform.isAndroid) {
       SystemNavigator.pop();
     } else {
       // Don't do this on an app being released to the App Store, see

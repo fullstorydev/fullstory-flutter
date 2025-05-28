@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 /// Demonstrates how crashes are captured by the top level error handler
 /// set in main.dart.
-class Crashes extends StatelessWidget{
+class Crashes extends StatelessWidget {
   const Crashes({super.key});
 
   @override
