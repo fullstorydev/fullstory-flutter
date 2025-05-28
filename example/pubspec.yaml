@@ -30,8 +30,6 @@ dependencies:
   cupertino_icons: ^1.0.8
   webview_flutter: ^4.10.0
   dio: ^5.8.0+1
-  fullstory_dio:
-    path: ../fullstory_dio
 
 dev_dependencies:
   integration_test:
