@@ -80,7 +80,7 @@ class FS {
   }) =>
       FullstoryFlutterPlatform.instance.captureEvent(<String, Object?>{
         // This event type is assigned to network events in host SDKs
-        "eventType": 1,
+        "eventType": _EventType.network.value,
         "url": url,
         "method": method,
         "statusCode": statusCode ?? 0,
