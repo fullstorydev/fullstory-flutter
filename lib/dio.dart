@@ -6,7 +6,7 @@ import 'package:fullstory_flutter/fs.dart';
 
 /// Captures requests and responses from dio for display in Fullstory.
 class FSInterceptor extends Interceptor {
-  final _requestStartTimes = <Uri, int>{};
+  final _requestStartTimes = Expando<int>('request start epochs');
 
   /// Computes the size (in bytes) of request data.
   ///
@@ -31,7 +31,7 @@ class FSInterceptor extends Interceptor {
 
   @override
   void onRequest(RequestOptions options, RequestInterceptorHandler handler) {
-    _requestStartTimes[options.uri] = DateTime.now().millisecondsSinceEpoch;
+    _requestStartTimes[options] = DateTime.now().millisecondsSinceEpoch;
     super.onRequest(options, handler);
   }
 
@@ -43,7 +43,7 @@ class FSInterceptor extends Interceptor {
       method: response.requestOptions.method,
       requestSize: computeRequestSize(response.requestOptions),
       responseSize: computeResponseSize(response),
-      durationMs: _durationOf(response.requestOptions.uri),
+      durationMs: _durationOf(response.requestOptions),
     );
     super.onResponse(response, handler);
   }
@@ -56,28 +56,44 @@ class FSInterceptor extends Interceptor {
       method: err.requestOptions.method,
       requestSize: computeRequestSize(err.requestOptions),
       responseSize: computeResponseSize(err.response),
-      durationMs: _durationOf(err.requestOptions.uri),
+      durationMs: _durationOf(err.requestOptions),
     );
     super.onError(err, handler);
   }
 
-  int _durationOf(Uri uri) {
-    final startTime = _requestStartTimes.remove(uri);
+  int _durationOf(RequestOptions options) {
+    final startTime = _requestStartTimes[options];
     return startTime == null
         ? 0
         : DateTime.now().millisecondsSinceEpoch - startTime;
   }
 }
 
-/// Computes the size (in bytes) of the given data when encoded as UTF-8.
+/// Computes the size (in bytes) of the given data when encoded as UTF-8 if
+/// the `content-length` header is not set.
 int responseFromUtf8(Response? response) {
   if (response == null) return 0;
+
+  final contentLength = response.headers.value(Headers.contentLengthHeader);
+  if (contentLength != null) return _fromContentLength(contentLength);
 
   return _fromUtf8(response.data);
 }
 
-/// Computes the size (in bytes) of the given data when encoded as UTF-8.
-int requestFromUtf8(RequestOptions request) => _fromUtf8(request.data);
+/// Computes the size (in bytes) of the given data when encoded as UTF-8 if
+/// the `content-length` header is not set.
+int requestFromUtf8(RequestOptions request) {
+  final contentLength = request.headers[Headers.contentLengthHeader];
+  if (contentLength != null) return _fromContentLength(contentLength);
+  return _fromUtf8(request.data);
+}
+
+int _fromContentLength(dynamic contentLength) {
+  if (contentLength == null) return 0;
+  if (contentLength is int) return contentLength;
+  if (contentLength is String) return int.tryParse(contentLength) ?? 0;
+  return 0;
+}
 
 /// Assumes that the data is UTF-8 encoded and returns the number of bytes
 /// required to encode it.

@@ -78,6 +78,13 @@ void main() {
       expect(requestFromUtf8(RequestOptions()), 0);
     });
 
+    test('returns contentLength if set', () {
+      final options = RequestOptions(
+        data: 'Hello',
+        headers: {Headers.contentLengthHeader: '5'},
+      );
+      expect(requestFromUtf8(options), 5);
+    });
     test('returns correct size for string data', () {
       expect(requestFromUtf8(RequestOptions(data: 'Hello')), 5);
     });
@@ -98,6 +105,15 @@ void main() {
     });
 
     final options = RequestOptions();
+
+    test('returns contentLength if set', () {
+      var response = Response(
+        requestOptions: options,
+        data: '',
+        headers: Headers()..set(Headers.contentLengthHeader, '5'),
+      );
+      expect(responseFromUtf8(response), 5);
+    });
 
     test('returns correct size for string data', () {
       final result = responseFromUtf8(
