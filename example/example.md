@@ -552,6 +552,9 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:fullstory_flutter/dio.dart';
 
+// This is declared at the top-level to allow [NetworkEvents] to be const.
+Dio get dio => Dio()..interceptors.add(FSInterceptor());
+
 /// Demo widget that sends network requests using package:dio and package:http.
 class NetworkEvents extends StatelessWidget {
   const NetworkEvents({super.key});
@@ -579,9 +582,6 @@ class NetworkEvents extends StatelessWidget {
     }
   }
 }
-
-// This is declared at the top-level to allow [NetworkEvents] to be const.
-Dio get dio => Dio()..interceptors.add(FSInterceptor());
 ```
 
 ## pages.dart
