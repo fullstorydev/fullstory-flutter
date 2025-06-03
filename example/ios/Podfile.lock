@@ -16,6 +16,10 @@ DEPENDENCIES:
   - integration_test (from `.symlinks/plugins/integration_test/ios`)
   - webview_flutter_wkwebview (from `.symlinks/plugins/webview_flutter_wkwebview/darwin`)
 
+SPEC REPOS:
+  trunk:
+    - FullStory
+
 EXTERNAL SOURCES:
   Flutter:
     :path: Flutter

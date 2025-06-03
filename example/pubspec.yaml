@@ -30,6 +30,7 @@ dependencies:
   cupertino_icons: ^1.0.8
   webview_flutter: ^4.10.0
   dio: ^5.8.0+1
+  http: ^1.4.0
 
 dev_dependencies:
   integration_test:
