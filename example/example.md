@@ -11,7 +11,6 @@ From https://github.com/fullstorydev/fullstory-flutter/tree/main/example/lib
 * [main.dart](#maindart)
 * [nav_demo.dart](#nav_demodart)
 * [network_events.dart](#network_eventsdart)
-* [network_events.dart](#network_eventsdart)
 * [pages.dart](#pagesdart)
 * [webview.dart](#webviewdart)
 
@@ -392,7 +391,6 @@ import 'log.dart';
 import 'events.dart';
 import 'fs_version.dart';
 import 'network_events.dart';
-import 'network_events.dart';
 import 'webview.dart';
 import 'pages.dart';
 
@@ -417,7 +415,6 @@ class _MyAppState extends State<MyApp> {
     Identity(),
     Log(),
     Events(),
-    NetworkEvents(),
     NetworkEvents(),
     Pages(),
     FSVersion(),
@@ -553,10 +550,13 @@ class OpenNavDemo extends StatelessWidget {
 ```dart
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:fullstory_flutter/dio.dart';
+import 'package:fullstory_flutter/network/dio.dart' as fs_dio;
+import 'package:fullstory_flutter/network/http.dart' as fs_http;
+import 'package:http/http.dart';
 
 // This is declared at the top-level to allow [NetworkEvents] to be const.
-Dio get dio => Dio()..interceptors.add(FSInterceptor());
+Dio get dio => Dio()..interceptors.add(fs_dio.FSInterceptor());
+Client get httpClient => fs_http.fsHttpClient();
 
 /// Demo widget that sends network requests using package:dio and package:http.
 class NetworkEvents extends StatelessWidget {
@@ -579,7 +579,6 @@ class NetworkEvents extends StatelessWidget {
   }
 
   Future<void> _makeHttpRequest(BuildContext context) async {
-    print(FS.currentSessionURL());
     final response = await httpClient.get(Uri.parse('https://fullstory.com'));
     if (context.mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -601,6 +600,7 @@ class NetworkEvents extends StatelessWidget {
     }
   }
 }
+
 ```
 
 ## pages.dart
