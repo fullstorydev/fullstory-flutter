@@ -13,7 +13,7 @@ class FSInterceptor extends InterceptorContract {
 
   @override
   FutureOr<BaseRequest> interceptRequest({required BaseRequest request}) {
-    _requestStartTimes[request.url] = DateTime.now().millisecondsSinceEpoch;
+    _requestStartTimes[request] = DateTime.now().millisecondsSinceEpoch;
     return request;
   }
 
@@ -25,16 +25,16 @@ class FSInterceptor extends InterceptorContract {
       method: response.request?.method ?? '',
       requestSize: response.request?.contentLength,
       responseSize: response.contentLength,
-      durationMs: _durationOf(response.request?.url),
+      durationMs: _durationOf(response.request),
     );
 
     return response;
   }
 
-  int _durationOf(Uri? uri) {
-    if (uri == null) return 0;
+  int _durationOf(BaseRequest? request) {
+    if (request == null) return 0;
 
-    final startTime = _requestStartTimes[uri];
+    final startTime = _requestStartTimes[request];
     return startTime == null
         ? 0
         : DateTime.now().millisecondsSinceEpoch - startTime;
