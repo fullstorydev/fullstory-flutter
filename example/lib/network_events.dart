@@ -1,10 +1,8 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
-import 'package:fullstory_flutter/fs.dart';
 import 'package:fullstory_flutter/network/dio.dart' as fs_dio;
 import 'package:fullstory_flutter/network/http.dart' as fs_http;
 import 'package:http/http.dart';
-import 'package:fullstory_flutter/dio.dart';
 
 // This is declared at the top-level to allow [NetworkEvents] to be const.
 Dio get dio => Dio()..interceptors.add(fs_dio.FSInterceptor());
@@ -31,7 +29,6 @@ class NetworkEvents extends StatelessWidget {
   }
 
   Future<void> _makeHttpRequest(BuildContext context) async {
-    print(FS.currentSessionURL());
     final response = await httpClient.get(Uri.parse('https://fullstory.com'));
     if (context.mounted) {
       ScaffoldMessenger.of(context).showSnackBar(

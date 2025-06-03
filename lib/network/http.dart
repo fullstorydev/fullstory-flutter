@@ -9,7 +9,7 @@ import 'package:http_interceptor/http_interceptor.dart';
 /// [fsHttpClient] to create a new [Client] with this interceptor preconfigured.
 class FSInterceptor extends InterceptorContract {
   // Map of request URLs to epoch start times in milliseconds.
-  final _requestStartTimes = <Uri, int>{};
+  final _requestStartTimes = Expando<int>('request start epochs');
 
   @override
   FutureOr<BaseRequest> interceptRequest({required BaseRequest request}) {
@@ -34,7 +34,7 @@ class FSInterceptor extends InterceptorContract {
   int _durationOf(Uri? uri) {
     if (uri == null) return 0;
 
-    final startTime = _requestStartTimes.remove(uri);
+    final startTime = _requestStartTimes[uri];
     return startTime == null
         ? 0
         : DateTime.now().millisecondsSinceEpoch - startTime;
