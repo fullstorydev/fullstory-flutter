@@ -600,7 +600,6 @@ class NetworkEvents extends StatelessWidget {
     }
   }
 }
-
 ```
 
 ## pages.dart
