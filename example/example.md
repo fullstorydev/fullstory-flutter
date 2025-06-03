@@ -4,6 +4,7 @@
 From https://github.com/fullstorydev/fullstory-flutter/tree/main/example/lib
 
 * [capture_status.dart](#capture_statusdart)
+* [crashes.dart](#crashesdart)
 * [events.dart](#eventsdart)
 * [fs_version.dart](#fs_versiondart)
 * [identity.dart](#identitydart)
@@ -106,6 +107,37 @@ class _CaptureStatusState extends State<CaptureStatus> with FSStatusListener {
           ],
         ),
         SelectableText("Status: $status\nURL: $url\nNow: $urlNow\nID: $id"),
+      ],
+    );
+  }
+}
+```
+
+## crashes.dart
+```dart
+import 'package:flutter/material.dart';
+
+/// Demonstrates how crashes are captured by the top level error handler
+/// set in main.dart.
+class Crashes extends StatelessWidget {
+  const Crashes({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        TextButton(
+          onPressed: () {
+            throw Exception('Test exception');
+          },
+          child: const Text('Throw exception'),
+        ),
+        TextButton(
+          onPressed: () async {
+            throw Exception('Async test exception');
+          },
+          child: const Text('Throw async exception'),
+        ),
       ],
     );
   }
@@ -380,9 +412,12 @@ class _LogState extends State<Log> {
 
 ## main.dart
 ```dart
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:fullstory_flutter/fs.dart';
 import 'package:fullstory_flutter/navigator_observer.dart';
+import 'package:fullstory_flutter_example/crashes.dart';
 import 'package:fullstory_flutter_example/nav_demo.dart';
 
 import 'capture_status.dart';
@@ -397,11 +432,18 @@ import 'pages.dart';
 // Example app that demonstrates use of most Fullstory APIs
 
 void main() {
-  runApp(const MyApp());
+  final errorStream = StreamController<Object?>.broadcast();
+  FS.captureErrors(errorHandler: (exception, __) {
+    FS.log(message: 'Error handler called');
+    errorStream.add(exception);
+  });
+  runApp(MyApp(errorStream: errorStream.stream));
 }
 
 class MyApp extends StatefulWidget {
-  const MyApp({super.key});
+  final Stream<Object?> errorStream;
+
+  const MyApp({super.key, this.errorStream = const Stream.empty()});
 
   @override
   State<MyApp> createState() => _MyAppState();
@@ -415,6 +457,7 @@ class _MyAppState extends State<MyApp> {
     Identity(),
     Log(),
     Events(),
+    Crashes(),
     NetworkEvents(),
     Pages(),
     FSVersion(),
@@ -463,11 +506,14 @@ class _MyAppState extends State<MyApp> {
           title: const Text('Fullstory Flutter test app'),
           leading: Builder(
             builder: (context) {
-              return IconButton(
-                icon: const Icon(Icons.menu),
-                onPressed: () {
-                  Scaffold.of(context).openDrawer();
-                },
+              return _CrashNotifier(
+                errorStream: widget.errorStream,
+                child: IconButton(
+                  icon: const Icon(Icons.menu),
+                  onPressed: () {
+                    Scaffold.of(context).openDrawer();
+                  },
+                ),
               );
             },
           ),
@@ -500,6 +546,33 @@ class _MyAppState extends State<MyApp> {
         }),
       ),
     );
+  }
+}
+
+/// Shows a snackbar message when a crash is captured in main() above.
+class _CrashNotifier extends StatelessWidget {
+  final Widget child;
+  final Stream<Object?> errorStream;
+
+  const _CrashNotifier({required this.child, required this.errorStream});
+
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder(
+        stream: errorStream,
+        builder: (context, asyncSnapshot) {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            if (asyncSnapshot.hasData) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content:
+                      Text('Crashed successfully, Fullstory capture stopped.'),
+                ),
+              );
+            }
+          });
+          return child;
+        });
   }
 }
 ```

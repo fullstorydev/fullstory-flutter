@@ -1,3 +1,6 @@
+import 'package:flutter/foundation.dart';
+import 'package:flutter/widgets.dart';
+
 import 'fs_log_level.dart';
 import 'fs_status_listener.dart';
 import 'src/fullstory_flutter_platform_interface.dart';
@@ -88,6 +91,68 @@ class FS {
         "requestSize": requestSize ?? 0,
         "responseSize": responseSize ?? 0,
       });
+
+  /// Report a crash to Fullstory for display in playback.
+  ///
+  /// [exception] and [stackTrace] are optional, but if provided, they will be
+  /// included in the event.
+  ///
+  /// Once called, Fullstory capture will halt, since this assumes the app has
+  /// fatally exited.
+  static Future<void> crashEvent({
+    String name = 'Flutter crash',
+    Object? exception,
+    StackTrace? stackTrace,
+  }) =>
+      FullstoryFlutterPlatform.instance.captureEvent({
+        // This event type is assigned to crash events in host SDKs
+        'eventType': _EventType.crash.value,
+        'name': name,
+        'frames': <String>[
+          if (exception != null) exception.toString(),
+          if (stackTrace != null) stackTrace.toString(),
+        ],
+      });
+
+  /// Configures Flutter to send errors to Fullstory for handling.
+  ///
+  /// If you would prefer to handle errors yourself, use [crashEvent] to
+  /// report errors to Fullstory in your crash handling logic.
+  ///
+  /// Set [errorHandler] to run any graceful shutdown or user notification
+  /// logic you would like to run after the crash has been captured.
+  ///
+  /// Once an error is captured, Fullstory capture will halt,
+  /// since this assumes the app has fatally exited.
+  static void captureErrors({
+    void Function(Object? exception, StackTrace? stack)? errorHandler,
+  }) {
+    WidgetsFlutterBinding.ensureInitialized();
+
+    final flutterHandler = FlutterError.onError;
+    FlutterError.onError = (details) async {
+      await FS.crashEvent(
+        name: 'Flutter error',
+        exception: details.exception,
+        stackTrace: details.stack,
+      );
+      errorHandler?.call(details.exception, details.stack);
+      flutterHandler?.call(details);
+    };
+
+    final platformHandler = PlatformDispatcher.instance.onError;
+
+    PlatformDispatcher.instance.onError = (error, stack) {
+      FS.crashEvent(
+        name: 'Platform error',
+        exception: error,
+        stackTrace: stack,
+      );
+
+      errorHandler?.call(error, stack);
+      return platformHandler?.call(error, stack) ?? false;
+    };
+  }
 
   /// Identify a user and associate current and future sessions with that user.
   ///
@@ -213,7 +278,8 @@ class FSPage {
 /// Each should correspond to a different method in [FS] which delegates to
 /// `captureEvent` with the additional predefined properties.
 enum _EventType {
-  network(1);
+  network(1),
+  crash(2);
 
   final int value;
 
