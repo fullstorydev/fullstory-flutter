@@ -14,9 +14,10 @@ void main() {
     });
 
     test('captures fields from network event', () async {
-      final interceptor  = FSInterceptor();
+      final interceptor = FSInterceptor();
 
-      final request = Request('GET', Uri.parse('https://example.com'))..body = '123';
+      final request = Request('GET', Uri.parse('https://example.com'))
+        ..body = '123';
       final response = Response('1234', 200, request: request);
 
       interceptor.interceptRequest(request: request);
