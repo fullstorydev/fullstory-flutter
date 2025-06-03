@@ -412,10 +412,9 @@ class _LogState extends State<Log> {
 
 ## main.dart
 ```dart
-import 'dart:io';
+import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:fullstory_flutter/fs.dart';
 import 'package:fullstory_flutter/navigator_observer.dart';
 import 'package:fullstory_flutter_example/crashes.dart';
@@ -433,21 +432,18 @@ import 'pages.dart';
 // Example app that demonstrates use of most Fullstory APIs
 
 void main() {
-  FS.captureErrors(errorHandler: (_, __) {
-    FS.log(message: 'Error handler called, popping app');
-    if (Platform.isAndroid) {
-      SystemNavigator.pop();
-    } else {
-      // Don't do this on an app being released to the App Store, see
-      // https://developer.apple.com/library/archive/qa/qa1561/_index.html#//apple_ref/doc/uid/DTS40007952
-      exit(1);
-    }
+  final errorStream = StreamController<Object?>.broadcast();
+  FS.captureErrors(errorHandler: (exception, __) {
+    FS.log(message: 'Error handler called');
+    errorStream.add(exception);
   });
-  runApp(const MyApp());
+  runApp(MyApp(errorStream: errorStream.stream));
 }
 
 class MyApp extends StatefulWidget {
-  const MyApp({super.key});
+  final Stream<Object?> errorStream;
+
+  const MyApp({super.key, this.errorStream = const Stream.empty()});
 
   @override
   State<MyApp> createState() => _MyAppState();
@@ -510,11 +506,14 @@ class _MyAppState extends State<MyApp> {
           title: const Text('Fullstory Flutter test app'),
           leading: Builder(
             builder: (context) {
-              return IconButton(
-                icon: const Icon(Icons.menu),
-                onPressed: () {
-                  Scaffold.of(context).openDrawer();
-                },
+              return _CrashNotifier(
+                errorStream: widget.errorStream,
+                child: IconButton(
+                  icon: const Icon(Icons.menu),
+                  onPressed: () {
+                    Scaffold.of(context).openDrawer();
+                  },
+                ),
               );
             },
           ),
@@ -547,6 +546,33 @@ class _MyAppState extends State<MyApp> {
         }),
       ),
     );
+  }
+}
+
+/// Shows a snackbar message when a crash is captured in main() above.
+class _CrashNotifier extends StatelessWidget {
+  final Widget child;
+  final Stream<Object?> errorStream;
+
+  const _CrashNotifier({required this.child, required this.errorStream});
+
+  @override
+  Widget build(BuildContext context) {
+    return StreamBuilder(
+        stream: errorStream,
+        builder: (context, asyncSnapshot) {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            if (asyncSnapshot.hasData) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content:
+                      Text('Crashed successfully, Fullstory capture stopped.'),
+                ),
+              );
+            }
+          });
+          return child;
+        });
   }
 }
 ```
