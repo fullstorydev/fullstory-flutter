@@ -75,7 +75,7 @@ void main() {
 
   group('requestFromUtf8', () {
     test('returns 0 for null data', () {
-      expect(requestFromUtf8(RequestOptions()), 0);
+      expect(requestContentLength(RequestOptions()), 0);
     });
 
     test('returns contentLength if set', () {
@@ -83,25 +83,13 @@ void main() {
         data: 'Hello',
         headers: {Headers.contentLengthHeader: '5'},
       );
-      expect(requestFromUtf8(options), 5);
-    });
-    test('returns correct size for string data', () {
-      expect(requestFromUtf8(RequestOptions(data: 'Hello')), 5);
-    });
-
-    test('returns correct size for Uint8List data', () {
-      final result =
-          requestFromUtf8(RequestOptions(data: Uint8List.fromList([1, 2, 3])));
-      expect(
-        result,
-        3,
-      );
+      expect(requestContentLength(options), 5);
     });
   });
 
   group('responseFromUtf8', () {
     test('returns 0 for null response', () {
-      expect(responseFromUtf8(null), 0);
+      expect(responseContentLength(null), 0);
     });
 
     final options = RequestOptions();
@@ -112,21 +100,7 @@ void main() {
         data: '',
         headers: Headers()..set(Headers.contentLengthHeader, '5'),
       );
-      expect(responseFromUtf8(response), 5);
-    });
-
-    test('returns correct size for string data', () {
-      final result = responseFromUtf8(
-        Response(requestOptions: options, data: 'Hello'),
-      );
-      expect(result, 5);
-    });
-
-    test('returns correct size for Uint8List data', () {
-      final result = responseFromUtf8(
-        Response(requestOptions: options, data: Uint8List.fromList([1, 2, 3])),
-      );
-      expect(result, 3);
+      expect(responseContentLength(response), 5);
     });
   });
 }

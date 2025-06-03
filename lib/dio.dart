@@ -1,6 +1,3 @@
-import 'dart:convert';
-import 'dart:typed_data';
-
 import 'package:dio/dio.dart';
 import 'package:fullstory_flutter/fs.dart';
 
@@ -10,12 +7,12 @@ class FSInterceptor extends Interceptor {
 
   /// Computes the size (in bytes) of request data.
   ///
-  /// Defaults to compute the size of the data's toString result in UTF8.
+  /// Defaults to use `content-length` header if set.
   final int Function(RequestOptions) computeRequestSize;
 
   /// Computes the size (in bytes) of response data.
   ///
-  /// Defaults to compute the size of the data's toString result in UTF8.
+  /// Defaults to use `content-length` header if set.
   final int Function(Response?) computeResponseSize;
 
   /// Creates a [FSInterceptor] that captures network events.
@@ -25,8 +22,8 @@ class FSInterceptor extends Interceptor {
   /// assime UTF-8 encoding. If your request uses another enocoding, override
   /// these fields.
   FSInterceptor({
-    this.computeRequestSize = requestFromUtf8,
-    this.computeResponseSize = responseFromUtf8,
+    this.computeRequestSize = requestContentLength,
+    this.computeResponseSize = responseContentLength,
   });
 
   @override
@@ -69,23 +66,23 @@ class FSInterceptor extends Interceptor {
   }
 }
 
-/// Computes the size (in bytes) of the given data when encoded as UTF-8 if
-/// the `content-length` header is not set.
-int responseFromUtf8(Response? response) {
+/// Gets the size (in bytes) of the response data, using the `content-length`
+/// header, or 0 if unset.
+int responseContentLength(Response? response) {
   if (response == null) return 0;
 
   final contentLength = response.headers.value(Headers.contentLengthHeader);
   if (contentLength != null) return _fromContentLength(contentLength);
 
-  return _fromUtf8(response.data);
+  return 0;
 }
 
-/// Computes the size (in bytes) of the given data when encoded as UTF-8 if
-/// the `content-length` header is not set.
-int requestFromUtf8(RequestOptions request) {
+/// Gets the size (in bytes) of the request data, using the `content-length`
+/// header, or 0 if unset.
+int requestContentLength(RequestOptions request) {
   final contentLength = request.headers[Headers.contentLengthHeader];
   if (contentLength != null) return _fromContentLength(contentLength);
-  return _fromUtf8(request.data);
+  return 0;
 }
 
 int _fromContentLength(dynamic contentLength) {
@@ -93,18 +90,4 @@ int _fromContentLength(dynamic contentLength) {
   if (contentLength is int) return contentLength;
   if (contentLength is String) return int.tryParse(contentLength) ?? 0;
   return 0;
-}
-
-/// Assumes that the data is UTF-8 encoded and returns the number of bytes
-/// required to encode it.
-///
-/// If the data is null, returns 0.
-int _fromUtf8(Object? data) {
-  if (data == null) return 0;
-  if (data is Uint8List) return data.length;
-
-  final str = data.toString();
-  if (str.isEmpty) return 0;
-
-  return utf8.encode(str).length;
 }
