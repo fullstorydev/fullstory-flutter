@@ -70,6 +70,7 @@ void main() {
         },
       ));
 
+      // Reset to the default error handler.
       FlutterError.onError = FlutterError.presentError;
 
       expect(fakePlatform.eventProperties.length, 1);

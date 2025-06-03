@@ -135,8 +135,8 @@ class FS {
         exception: details.exception,
         stackTrace: details.stack,
       );
-      flutterHandler?.call(details);
       errorHandler?.call(details.exception, details.stack);
+      flutterHandler?.call(details);
     };
 
     final platformHandler = PlatformDispatcher.instance.onError;
