@@ -10,6 +10,7 @@ From https://github.com/fullstorydev/fullstory-flutter/tree/main/example/lib
 * [log.dart](#logdart)
 * [main.dart](#maindart)
 * [nav_demo.dart](#nav_demodart)
+* [network_events.dart](#network_eventsdart)
 * [pages.dart](#pagesdart)
 * [webview.dart](#webviewdart)
 
@@ -389,6 +390,7 @@ import 'identity.dart';
 import 'log.dart';
 import 'events.dart';
 import 'fs_version.dart';
+import 'network_events.dart';
 import 'webview.dart';
 import 'pages.dart';
 
@@ -413,6 +415,7 @@ class _MyAppState extends State<MyApp> {
     Identity(),
     Log(),
     Events(),
+    NetworkEvents(),
     Pages(),
     FSVersion(),
     WebView(),
@@ -539,6 +542,44 @@ class OpenNavDemo extends StatelessWidget {
         child: const Text('Open Navigator Observer Demo'),
       ),
     );
+  }
+}
+```
+
+## network_events.dart
+```dart
+import 'package:dio/dio.dart';
+import 'package:flutter/material.dart';
+import 'package:fullstory_flutter/dio.dart';
+
+// This is declared at the top-level to allow [NetworkEvents] to be const.
+Dio get dio => Dio()..interceptors.add(FSInterceptor());
+
+/// Demo widget that sends network requests using package:dio and package:http.
+class NetworkEvents extends StatelessWidget {
+  const NetworkEvents({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        TextButton(
+          onPressed: () => _makeDioRequest(context),
+          child: const Text('Send dio request'),
+        ),
+      ],
+    );
+  }
+
+  Future<void> _makeDioRequest(BuildContext context) async {
+    final response = await dio.get('https://fullstory.com');
+    if (context.mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Dio got response: ${response.statusCode}'),
+        ),
+      );
+    }
   }
 }
 ```
