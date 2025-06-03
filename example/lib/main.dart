@@ -11,6 +11,7 @@ import 'identity.dart';
 import 'log.dart';
 import 'events.dart';
 import 'fs_version.dart';
+import 'network_events.dart';
 import 'webview.dart';
 import 'pages.dart';
 
@@ -43,6 +44,7 @@ class _MyAppState extends State<MyApp> {
     Log(),
     Events(),
     Crashes(),
+    NetworkEvents(),
     Pages(),
     FSVersion(),
     WebView(),
