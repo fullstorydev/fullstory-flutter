@@ -432,17 +432,16 @@ import 'pages.dart';
 // Example app that demonstrates use of most Fullstory APIs
 
 void main() {
-  final errorStream = StreamController<Object?>.broadcast();
   FS.captureErrors(errorHandler: (exception, __) {
-    errorStream.add(exception);
+    // At this point, the error is captured and FS has shut down.
+    // No other FS methods can be called, but other behavior like
+    // graceful shutdown or user notification can be done here.
   });
-  runApp(MyApp(errorStream: errorStream.stream));
+  runApp(const MyApp());
 }
 
 class MyApp extends StatefulWidget {
-  final Stream<Object?> errorStream;
-
-  const MyApp({super.key, this.errorStream = const Stream.empty()});
+  const MyApp({super.key});
 
   @override
   State<MyApp> createState() => _MyAppState();
@@ -505,14 +504,11 @@ class _MyAppState extends State<MyApp> {
           title: const Text('Fullstory Flutter test app'),
           leading: Builder(
             builder: (context) {
-              return _CrashNotifier(
-                errorStream: widget.errorStream,
-                child: IconButton(
-                  icon: const Icon(Icons.menu),
-                  onPressed: () {
-                    Scaffold.of(context).openDrawer();
-                  },
-                ),
+              return IconButton(
+                icon: const Icon(Icons.menu),
+                onPressed: () {
+                  Scaffold.of(context).openDrawer();
+                },
               );
             },
           ),
@@ -545,33 +541,6 @@ class _MyAppState extends State<MyApp> {
         }),
       ),
     );
-  }
-}
-
-/// Shows a snackbar message when a crash is captured in main() above.
-class _CrashNotifier extends StatelessWidget {
-  final Widget child;
-  final Stream<Object?> errorStream;
-
-  const _CrashNotifier({required this.child, required this.errorStream});
-
-  @override
-  Widget build(BuildContext context) {
-    return StreamBuilder(
-        stream: errorStream,
-        builder: (context, asyncSnapshot) {
-          WidgetsBinding.instance.addPostFrameCallback((_) {
-            if (asyncSnapshot.hasData) {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(
-                  content:
-                      Text('Crashed successfully, Fullstory capture stopped.'),
-                ),
-              );
-            }
-          });
-          return child;
-        });
   }
 }
 ```

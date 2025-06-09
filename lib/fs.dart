@@ -118,7 +118,7 @@ class FS {
   /// If you would prefer to handle errors yourself, use [crashEvent] to
   /// report errors to Fullstory in your crash handling logic.
   ///
-  /// Once an error is captured, Fullstory will end the session and shut 
+  /// Once an error is captured, Fullstory will end the session and shut
   /// down.
   ///
   /// Set [errorHandler] to run any graceful shutdown or user notification
