@@ -76,20 +76,19 @@ class FS {
   static Future<void> networkEvent({
     required String url,
     required String method,
-    int? statusCode,
-    int? durationMs,
-    int? requestSize,
-    int? responseSize,
+    int statusCode = 0,
+    int durationMs = 0,
+    int requestSize = 0,
+    int responseSize = 0,
   }) =>
-      FullstoryFlutterPlatform.instance.captureEvent(<String, Object?>{
-        // This event type is assigned to network events in host SDKs
+      FullstoryFlutterPlatform.instance.captureEvent({
         "eventType": _EventType.network.value,
         "url": url,
         "method": method,
-        "statusCode": statusCode ?? 0,
-        "durationMS": durationMs ?? 0,
-        "requestSize": requestSize ?? 0,
-        "responseSize": responseSize ?? 0,
+        "statusCode": statusCode,
+        "durationMS": durationMs,
+        "requestSize": requestSize,
+        "responseSize": responseSize,
       });
 
   /// Report a crash to Fullstory for display in playback.
@@ -121,6 +120,8 @@ class FS {
   ///
   /// Set [errorHandler] to run any graceful shutdown or user notification
   /// logic you would like to run after the crash has been captured.
+  /// Since [errorHandler] is called after the crash has been captured and
+  /// Fullstory has shut down, it cannot log further details.
   ///
   /// Once an error is captured, Fullstory capture will halt,
   /// since this assumes the app has fatally exited.

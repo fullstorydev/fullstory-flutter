@@ -20,7 +20,6 @@ import 'pages.dart';
 void main() {
   final errorStream = StreamController<Object?>.broadcast();
   FS.captureErrors(errorHandler: (exception, __) {
-    FS.log(message: 'Error handler called');
     errorStream.add(exception);
   });
   runApp(MyApp(errorStream: errorStream.stream));
