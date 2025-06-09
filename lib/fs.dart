@@ -118,13 +118,13 @@ class FS {
   /// If you would prefer to handle errors yourself, use [crashEvent] to
   /// report errors to Fullstory in your crash handling logic.
   ///
+  /// Once an error is captured, Fullstory will end the session and shut 
+  /// down.
+  ///
   /// Set [errorHandler] to run any graceful shutdown or user notification
   /// logic you would like to run after the crash has been captured.
   /// Since [errorHandler] is called after the crash has been captured and
-  /// Fullstory has shut down, it cannot log further details.
-  ///
-  /// Once an error is captured, Fullstory capture will halt,
-  /// since this assumes the app has fatally exited.
+  /// Fullstory has shut down, most Fullstory APIs will not work here.
   static void captureErrors({
     void Function(Object? exception, StackTrace? stack)? errorHandler,
   }) {
