@@ -4,6 +4,7 @@
 From https://github.com/fullstorydev/fullstory-flutter/tree/main/example/lib
 
 * [capture_status.dart](#capture_statusdart)
+* [crashes.dart](#crashesdart)
 * [events.dart](#eventsdart)
 * [fs_version.dart](#fs_versiondart)
 * [identity.dart](#identitydart)
@@ -106,6 +107,37 @@ class _CaptureStatusState extends State<CaptureStatus> with FSStatusListener {
           ],
         ),
         SelectableText("Status: $status\nURL: $url\nNow: $urlNow\nID: $id"),
+      ],
+    );
+  }
+}
+```
+
+## crashes.dart
+```dart
+import 'package:flutter/material.dart';
+
+/// Demonstrates how crashes are captured by the top level error handler
+/// set in main.dart.
+class Crashes extends StatelessWidget {
+  const Crashes({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        TextButton(
+          onPressed: () {
+            throw Exception('Test exception');
+          },
+          child: const Text('Throw exception'),
+        ),
+        TextButton(
+          onPressed: () async {
+            throw Exception('Async test exception');
+          },
+          child: const Text('Throw async exception'),
+        ),
       ],
     );
   }
@@ -383,6 +415,7 @@ class _LogState extends State<Log> {
 import 'package:flutter/material.dart';
 import 'package:fullstory_flutter/fs.dart';
 import 'package:fullstory_flutter/navigator_observer.dart';
+import 'package:fullstory_flutter_example/crashes.dart';
 import 'package:fullstory_flutter_example/nav_demo.dart';
 
 import 'capture_status.dart';
@@ -397,6 +430,11 @@ import 'pages.dart';
 // Example app that demonstrates use of most Fullstory APIs
 
 void main() {
+  FS.captureErrors(errorHandler: (exception, __) {
+    // At this point, the error is captured and FS has shut down.
+    // No other FS methods can be called, but other behavior like
+    // graceful shutdown or user notification can be done here.
+  });
   runApp(const MyApp());
 }
 
@@ -415,6 +453,7 @@ class _MyAppState extends State<MyApp> {
     Identity(),
     Log(),
     Events(),
+    Crashes(),
     NetworkEvents(),
     Pages(),
     FSVersion(),

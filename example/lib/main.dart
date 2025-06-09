@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fullstory_flutter/fs.dart';
 import 'package:fullstory_flutter/navigator_observer.dart';
+import 'package:fullstory_flutter_example/crashes.dart';
 import 'package:fullstory_flutter_example/nav_demo.dart';
 
 import 'capture_status.dart';
@@ -15,6 +16,11 @@ import 'pages.dart';
 // Example app that demonstrates use of most Fullstory APIs
 
 void main() {
+  FS.captureErrors(errorHandler: (exception, __) {
+    // At this point, the error is captured and FS has shut down.
+    // No other FS methods can be called, but other behavior like
+    // graceful shutdown or user notification can be done here.
+  });
   runApp(const MyApp());
 }
 
@@ -33,6 +39,7 @@ class _MyAppState extends State<MyApp> {
     Identity(),
     Log(),
     Events(),
+    Crashes(),
     NetworkEvents(),
     Pages(),
     FSVersion(),
