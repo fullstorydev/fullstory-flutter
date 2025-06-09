@@ -412,8 +412,6 @@ class _LogState extends State<Log> {
 
 ## main.dart
 ```dart
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:fullstory_flutter/fs.dart';
 import 'package:fullstory_flutter/navigator_observer.dart';
