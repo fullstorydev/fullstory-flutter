@@ -76,19 +76,19 @@ class FS {
   static Future<void> networkEvent({
     required String url,
     required String method,
-    int statusCode = 0,
-    int durationMs = 0,
-    int requestSize = 0,
-    int responseSize = 0,
+    int? statusCode,
+    int? durationMs,
+    int? requestSize,
+    int? responseSize,
   }) =>
       FullstoryFlutterPlatform.instance.captureEvent({
         "eventType": _EventType.network.value,
         "url": url,
         "method": method,
-        "statusCode": statusCode,
-        "durationMS": durationMs,
-        "requestSize": requestSize,
-        "responseSize": responseSize,
+        "statusCode": statusCode ?? 0,
+        "durationMS": durationMs ?? 0,
+        "requestSize": requestSize ?? 0,
+        "responseSize": responseSize ?? 0,
       });
 
   /// Report a crash to Fullstory for display in playback.
