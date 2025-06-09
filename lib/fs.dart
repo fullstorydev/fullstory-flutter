@@ -114,6 +114,10 @@ class FS {
       });
 
   /// Configures Flutter to send errors to Fullstory for handling.
+  /// 
+  /// Registers for errors from the widget build face 
+  /// (via [FlutterError.onError])and non-widget errors 
+  /// (via [PlatformDispatcher.instance.onError]).
   ///
   /// If you would prefer to handle errors yourself, use [crashEvent] to
   /// report errors to Fullstory in your crash handling logic.
@@ -123,8 +127,13 @@ class FS {
   ///
   /// Set [errorHandler] to run any graceful shutdown or user notification
   /// logic you would like to run after the crash has been captured.
+  /// [errorHandler] is called for both widget and non-widget errors.
   /// Since [errorHandler] is called after the crash has been captured and
   /// Fullstory has shut down, most Fullstory APIs will not work here.
+  /// 
+  /// Any previously registered error handlers for either [FlutterError.onError]
+  /// or [PlatformDispatcher.instance.onError] will be called after 
+  /// [errorHandler] completes.
   static void captureErrors({
     void Function(Object? exception, StackTrace? stack)? errorHandler,
   }) {
