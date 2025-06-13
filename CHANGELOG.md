@@ -1,3 +1,11 @@
+## 0.5.0
+
+- Added support for page autocapture using `FSNavigatorObserver` for named routes
+- Added support for crash autocapture using `FS.captureErrors({void Function(Object? exception, StackTrace? stack)? errorHandler})`
+or manual crash capture with `FS.crashEvent({String name, Object? exception, StackTrace? stackTrace,})`
+- Added support for network request autocapture with `package:dio` or `package:http` using `FSInteceptor` and manual
+network capture with `FS.networkEvent({String url, String method, int? statusCode, int? durationMs, int? requestSize, int? responseSize})`
+
 ## 0.4.0
 
 - Added support for [add-to-app](https://docs.flutter.dev/add-to-app) Flutter modules. Use `-PfsTarget=` to set Fullstory version on Android if you encounter issues.
