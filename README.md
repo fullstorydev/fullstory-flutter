@@ -30,6 +30,13 @@ Most non-visual Fullstory APIs are supported:
 - `FS.currentSessionURL({bool now = false})` → `Future<String?>`
 - `FS.fsVersion` → `Future<String?>`
 - `FS.resetIdleTimer()`
+- `FS.networkEvent({String url, String method, int? statusCode, int? durationMs, int? requestSize, int? responseSize})`
+- `FS.crashEvent({String name, Object? exception, StackTrace? stackTrace,})`
+- `FS.captureErrors({void Function(Object? exception, StackTrace? stack)? errorHandler})`
+
+Additionally, interceptors are available to autocapture network requests with
+popular libraries using `FSInterceptor`, and page navigation can be captured
+with `FSNavigatorObserver`.
 
 Visual session replay is not currently supported, but is planned for a future release.
 
