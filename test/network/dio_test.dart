@@ -3,7 +3,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:fullstory_flutter/src/fullstory_flutter_platform_interface.dart';
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 
-import 'package:fullstory_flutter/dio.dart';
+import 'package:fullstory_flutter/network/dio.dart';
 
 void main() {
   group(FSInterceptor, () {
