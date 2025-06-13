@@ -554,7 +554,8 @@ import 'package:fullstory_flutter/network/dio.dart' as fs_dio;
 import 'package:fullstory_flutter/network/http.dart' as fs_http;
 import 'package:http/http.dart';
 
-// This is declared at the top-level to allow [NetworkEvents] to be const.
+// Typically, you'd only have one of these two in your app, but since this is
+// an example, we include both to demonstrate the related features.
 Dio get dio => Dio()..interceptors.add(fs_dio.FSInterceptor());
 Client get httpClient => fs_http.fsHttpClient();
 
