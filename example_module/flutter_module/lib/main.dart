@@ -107,15 +107,15 @@ class Contents extends StatelessWidget {
                 const SizedBox(height: 16),
                 FutureBuilder(
                   future: listener.version,
-                  builder: (context, snapshot) => Text(
-                    'Fullstory SDK version: ${snapshot.data}',
-                  ),
+                  builder:
+                      (context, snapshot) =>
+                          Text('Fullstory SDK version: ${snapshot.data}'),
                 ),
                 FutureBuilder(
                   future: listener.url,
-                  builder: (context, snapshot) => Text(
-                    'Fullstory session URL: ${snapshot.data}',
-                  ),
+                  builder:
+                      (context, snapshot) =>
+                          Text('Fullstory session URL: ${snapshot.data}'),
                 ),
                 if (showExit) ...[
                   const SizedBox(height: 16),
