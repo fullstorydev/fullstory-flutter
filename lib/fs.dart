@@ -60,6 +60,17 @@ class FS {
     return FullstoryFlutterPlatform.instance.resetIdleTimer();
   }
 
+  /// Configure Fullstory to enable/disable capturing elements that have been configured to "Capture data wiht user constent"
+  /// in Fullstory's privacy settings.
+  /// 
+  /// [FS.consent(true)] must be called to begin capturing elements that have been configured to capture with user consent. 
+  /// 
+  /// TODO: this link needs to exist
+  /// For more information, see https://developer.fullstory.com/mobile/flutter/fullcapture/user-consent/
+  static Future<void> consent(bool consented) {
+    return FullstoryFlutterPlatform.instance.consent(consented);
+  }
+
   /// Create a custom event that will appear in the event list in playback and can be used in segments, funnels, etc.
   ///
   /// For more information, see https://developer.fullstory.com/mobile/flutter/capture-events/analytics-events/

@@ -30,6 +30,7 @@ Most non-visual Fullstory APIs are supported:
 - `FS.currentSessionURL({bool now = false})` → `Future<String?>`
 - `FS.fsVersion` → `Future<String?>`
 - `FS.resetIdleTimer()`
+- `FS.consent({bool consented})`
 - `FS.networkEvent({String url, String method, int? statusCode, int? durationMs, int? requestSize, int? responseSize})`
 - `FS.crashEvent({String name, Object? exception, StackTrace? stackTrace,})`
 - `FS.captureErrors({void Function(Object? exception, StackTrace? stack)? errorHandler})`

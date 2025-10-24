@@ -174,6 +174,10 @@ class FullstoryFlutterPlugin() : FlutterPlugin, MethodCallHandler {
           result.error("INVALID_PAGE", "No active page found with the given ID", null)
         }
       }
+      "consent" -> {
+        FS.consent(call.arguments as Boolean)
+        result.success(null)
+      }
       "captureEvent" -> {
         val args = call.arguments as? Map<String, Any?>
         if(args == null) {
@@ -199,6 +203,10 @@ class FullstoryFlutterPlugin() : FlutterPlugin, MethodCallHandler {
     override fun onSession(sessionData: FSSessionData) {
       //println("Fullstory", "FS session URL: ${sessionData.currentSessionURL}")
       channel.invokeMethod("onSession", sessionData.currentSessionURL)
+    }
+
+    override fun onConsentChanged(consented: Boolean) {
+      channel.invokeMethod("onConsentChanged", consented)
     }
 
     // omitting these for now since they don't align perfectly with the iOS version

@@ -25,6 +25,8 @@ class MethodChannelFullstoryFlutter extends FullstoryFlutterPlatform {
     switch (call.method) {
       case 'onSession':
         statusListener?.onFSSession(call.arguments as String);
+      case 'onConsentChanged':
+        statusListener?.onFSConsentChanged(call.arguments as bool);
       // case 'onStop':
       //   statusListener?.onFSShutdown();
       // case 'onError':
@@ -85,8 +87,8 @@ class MethodChannelFullstoryFlutter extends FullstoryFlutterPlatform {
   }
 
   @override
-  Future<void> consent() async {
-    await methodChannel.invokeMethod<void>('consent');
+  Future<void> consent(bool consented) async {
+    await methodChannel.invokeMethod<void>('consent', consented);
   }
 
   @override

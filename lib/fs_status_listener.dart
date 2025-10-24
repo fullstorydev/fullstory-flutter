@@ -9,6 +9,11 @@ mixin FSStatusListener {
     // session started
   }
 
+  /// Override this to be notified when the user's consent status changes
+  void onFSConsentChanged(bool consented) {
+    // consent changed
+  }
+
   // Omitting these for now since shutdown is iOS only and error has some differences between Android and iOS
   // void onFSShutdown() {
   //   // session ended cleanly
