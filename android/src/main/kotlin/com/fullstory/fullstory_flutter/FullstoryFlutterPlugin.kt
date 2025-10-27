@@ -205,10 +205,6 @@ class FullstoryFlutterPlugin() : FlutterPlugin, MethodCallHandler {
       channel.invokeMethod("onSession", sessionData.currentSessionURL)
     }
 
-    override fun onConsentChanged(consented: Boolean) {
-      channel.invokeMethod("onConsentChanged", consented)
-    }
-
     // omitting these for now since they don't align perfectly with the iOS version
     // override fun onSessionDisabled(reason: FSReason) {
     //   println("Fullstory", "Session disabled (${reason.code}): ${reason.message}")

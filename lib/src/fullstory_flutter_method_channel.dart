@@ -25,8 +25,6 @@ class MethodChannelFullstoryFlutter extends FullstoryFlutterPlatform {
     switch (call.method) {
       case 'onSession':
         statusListener?.onFSSession(call.arguments as String);
-      case 'onConsentChanged':
-        statusListener?.onFSConsentChanged(call.arguments as bool);
       // case 'onStop':
       //   statusListener?.onFSShutdown();
       // case 'onError':
