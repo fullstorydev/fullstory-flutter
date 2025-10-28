@@ -85,8 +85,8 @@ class MethodChannelFullstoryFlutter extends FullstoryFlutterPlatform {
   }
 
   @override
-  Future<void> consent() async {
-    await methodChannel.invokeMethod<void>('consent');
+  Future<void> consent(bool consented) async {
+    await methodChannel.invokeMethod<void>('consent', consented);
   }
 
   @override

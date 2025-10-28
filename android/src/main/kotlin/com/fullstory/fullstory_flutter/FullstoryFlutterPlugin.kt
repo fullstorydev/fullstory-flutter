@@ -174,6 +174,10 @@ class FullstoryFlutterPlugin() : FlutterPlugin, MethodCallHandler {
           result.error("INVALID_PAGE", "No active page found with the given ID", null)
         }
       }
+      "consent" -> {
+        FS.consent(call.arguments as Boolean)
+        result.success(null)
+      }
       "captureEvent" -> {
         val args = call.arguments as? Map<String, Any?>
         if(args == null) {

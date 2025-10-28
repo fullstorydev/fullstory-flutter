@@ -16,7 +16,7 @@ class MockFullstoryFlutterPlatform
   }
 
   @override
-  Future<void> consent() {
+  Future<void> consent(bool consented) {
     throw UnimplementedError();
   }
 

@@ -73,10 +73,15 @@ public class FullstoryFlutterPlugin: NSObject, FlutterPlugin, FSDelegate {
             print("FS.event:", eventName, properties);
             FS.event(eventName, properties: properties)
             result(nil)
-            //  case "consent":
-            //    // todo: handle param
-            //    FS.consent()
-            //    result(nil)
+        case "consent":
+            guard let consented = call.arguments as? Bool else {
+                result(FlutterError(code: "INVALID_ARGUMENTS",
+                                    message: "Invalid argument for consent. Expected Bool, got \(String(describing: call.arguments))",
+                                    details: nil))
+                return
+            }
+            FS.consent(consented)
+            result(nil)
         case "identify":
             // todo: consider handling null or false uid as FS.anonymize()
             guard let args = call.arguments as? [String: Any],
