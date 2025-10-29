@@ -53,7 +53,7 @@ jobs:
 	run: cd example && flutter pub get
 
       - name: Install example module dependencies
-	run cd example_module/flutter_module && flutter pub get
+	run: cd example_module/flutter_module && flutter pub get
 
       - name: Verify formatting
         run: dart format --output=none --set-exit-if-changed .
