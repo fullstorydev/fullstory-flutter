@@ -11,10 +11,9 @@ import 'package:fullstory_flutter/fs.dart';
 /// The entrypoint for the flutter module.
 void main() {
   // This call ensures the Flutter binding has been set up before creating the
-  // MethodChannel-based model.i
+  // MethodChannel-based model.
   WidgetsFlutterBinding.ensureInitialized();
 
-  // Run the app.
   runApp(MyApp());
 }
 
