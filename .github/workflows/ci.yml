@@ -40,14 +40,17 @@ jobs:
           java-version: 17
           distribution: 'temurin'
 
-      - name: Set up Gradle
-        uses: gradle/actions/setup-gradle@v4
-
       - name: Set up local.properties
         run: bash .github/workflows/create_properties.sh
 
       - name: Install dependencies
         run: flutter pub get
+
+      - name: Install example dependencies
+        run: cd example && flutter pub get
+
+      - name: Install example module dependencies
+        run: cd example_module/flutter_module && flutter pub get
 
       - name: Verify formatting
         run: dart format --output=none --set-exit-if-changed .
@@ -65,7 +68,7 @@ jobs:
       - name: Run Android unit tests
         # the 'build apk --config-only' is a workaround for 
         # https://github.com/flutter/flutter/issues/169336
-        run: cd example && flutter build apk --config-only && cd android && gradle test
+        run: cd example && flutter build apk --config-only && cd android && ./gradlew test
           
       - name: Install Dependencies
         run: cd example/ios && pod install
