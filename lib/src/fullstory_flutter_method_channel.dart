@@ -10,7 +10,7 @@ class MethodChannelFullstoryFlutter extends FullstoryFlutterPlatform {
   @visibleForTesting
   final methodChannel = const MethodChannel('fullstory_flutter');
 
-  FSStatusListener? statusListener;
+  final List<FSStatusListener> _statusListeners = [];
 
   MethodChannelFullstoryFlutter() {
     WidgetsFlutterBinding.ensureInitialized();
@@ -24,7 +24,9 @@ class MethodChannelFullstoryFlutter extends FullstoryFlutterPlatform {
     // );
     switch (call.method) {
       case 'onSession':
-        statusListener?.onFSSession(call.arguments as String);
+        for (final statusListener in _statusListeners) {
+          statusListener.onFSSession(call.arguments as String);
+        }
       // case 'onStop':
       //   statusListener?.onFSShutdown();
       // case 'onError':
@@ -39,7 +41,21 @@ class MethodChannelFullstoryFlutter extends FullstoryFlutterPlatform {
 
   @override
   void setStatusListener(FSStatusListener? listener) {
-    statusListener = listener;
+    if (listener == null) {
+      _statusListeners.clear();
+    } else {
+      _statusListeners.add(listener);
+    }
+  }
+
+  @override
+  void addStatusListener(FSStatusListener listener) {
+    _statusListeners.add(listener);
+  }
+
+  @override
+  void removeStatusListener(FSStatusListener listener) {
+    _statusListeners.remove(listener);
   }
 
   @override

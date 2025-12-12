@@ -85,6 +85,15 @@ abstract class FullstoryFlutterPlatform extends PlatformInterface {
   void setStatusListener(FSStatusListener? listener) {
     throw UnimplementedError('setStatusListener() has not been implemented.');
   }
+
+  void addStatusListener(FSStatusListener listener) {
+    throw UnimplementedError('addStatusListener() has not been implemented.');
+  }
+
+  void removeStatusListener(FSStatusListener listener) {
+    throw UnimplementedError(
+        'removeStatusListener() has not been implemented.');
+  }
   // todo: webview injection disable
 
   Future<int> page(String pageName, Map<String, Object?> properties) {
