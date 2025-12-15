@@ -81,7 +81,7 @@ jobs:
               -scheme Runner \
               -configuration Debug \
               -sdk iphonesimulator \
-              -destination 'platform=iOS Simulator,name=iPhone 16e,OS=18.5' \
+              -destination 'platform=iOS Simulator,name=iPhone 16,OS=26.1' \
               -disableAutomaticPackageResolution \
               CODE_SIGNING_ALLOWED='NO'
 
