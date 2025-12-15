@@ -77,7 +77,7 @@ class Contents extends StatelessWidget {
     final mediaInfo = MediaQuery.of(context);
 
     var listener = _StatusListener();
-    FS.setStatusListener(listener);
+    FS.addStatusListener(listener);
 
     return SizedBox.expand(
       child: Stack(
