@@ -82,7 +82,6 @@ jobs:
               -configuration Debug \
               -sdk iphonesimulator \
               -disableAutomaticPackageResolution \
-              -destination 'platform=iOS Simulator,OS=26.1,name=iPhone Air' \
               CODE_SIGNING_ALLOWED='NO'
 
       # Revert the file that get's mutated by pod install
