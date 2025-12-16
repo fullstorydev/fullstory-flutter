@@ -230,7 +230,7 @@ class FS {
   /// Use the FSStatusListener mixin and override the onFSSession method to know when Fullstory is ready for events, logs, etc.
   ///
   /// For more information, see https://developer.fullstory.com/mobile/flutter/fullcapture/callbacks-and-delegates/
-  @Deprecated('Use addStatusListener instead to allow multiple delegates.')
+  @Deprecated('Use addStatusListener instead to allow multiple delegates. Will be removed in a future release.')
   static void setStatusListener(FSStatusListener? listener) {
     FullstoryFlutterPlatform.instance.setStatusListener(listener);
   }
