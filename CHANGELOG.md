@@ -1,3 +1,12 @@
+## 0.6.0
+
+- Fixed an issue with some event APIs in release builds
+- Added `FS.consent(bool)` to indicate from Flutter when user has consented to
+Fullstory capture.
+- Replaced `FS.setStatusListener()` with `FS.addStatusListener()` and
+`FS.removeStatusListener()`, allowing multiple listeners to be set. `setStatusListener`
+will be removed in a future release, it is marked deprecated now.
+
 ## 0.5.0
 
 - Added support for page autocapture using `FSNavigatorObserver` for named routes
