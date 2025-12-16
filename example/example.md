@@ -56,14 +56,14 @@ class _CaptureStatusState extends State<CaptureStatus> with FSStatusListener {
         }));
 
     // set the status listener to handle future changes
-    FS.setStatusListener(this);
+    FS.addStatusListener(this);
   }
 
   @override
   void dispose() {
     super.dispose();
     // clear the current status listener (there can be only one!)
-    FS.setStatusListener(null);
+    FS.removeStatusListener(this);
   }
 
   // This comes from FSStatusListener - the default implementation is a no-op

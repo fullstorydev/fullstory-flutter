@@ -81,8 +81,8 @@ jobs:
               -scheme Runner \
               -configuration Debug \
               -sdk iphonesimulator \
+              -destination 'platform=iOS Simulator,name=iPhone 16,OS=26.1' \
               -disableAutomaticPackageResolution \
-              -destination 'platform=iOS Simulator,name=iPhone 16,OS=latest' \
               CODE_SIGNING_ALLOWED='NO'
 
       # Revert the file that get's mutated by pod install
