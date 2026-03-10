@@ -1,43 +1,43 @@
-group = "com.example.fullstory_flutter"
+group = "com.fullstory.flutter.fullstory_capture"
 version = "1.0-SNAPSHOT"
 
 buildscript {
-    ext.kotlin_version = "1.8.22"
+    ext.kotlin_version = "2.1.0"
     repositories {
         google()
         mavenCentral()
     }
 
     dependencies {
-        classpath("com.android.tools.build:gradle:8.1.0")
+        classpath("com.android.tools.build:gradle:8.7.3")
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version")
     }
 }
 
-repositories {
-    google()
-    mavenCentral()
-    mavenLocal()
-    maven { url "https://maven.fullstory.com" }
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
+        mavenLocal()
+        maven { url "https://maven.fullstory.com" }
+    }
 }
 
 apply plugin: "com.android.library"
 apply plugin: "kotlin-android"
 
 android {
-    if (project.android.hasProperty("namespace")) {
-        namespace = "com.example.fullstory_flutter"
-    }
+    namespace = "com.fullstory.flutter.fullstory_capture"
 
-    compileSdk = 34
+    compileSdk = 35
 
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_1_8
-        targetCompatibility = JavaVersion.VERSION_1_8
+        sourceCompatibility = JavaVersion.VERSION_11
+        targetCompatibility = JavaVersion.VERSION_11
     }
 
     kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_1_8
+        jvmTarget = JavaVersion.VERSION_11
     }
 
     sourceSets {
@@ -46,6 +46,7 @@ android {
     }
 
     defaultConfig {
+        consumerProguardFiles = ['proguard-rules.pro']
         minSdk = 21
     }
 
@@ -73,18 +74,16 @@ android {
     }
 
     dependencies {
-        testImplementation "org.powermock:powermock-module-junit4:2.0.2"
-        testImplementation "org.powermock:powermock-api-mockito2:2.0.9"
-        testImplementation "junit:junit:4.13.2"
-        testImplementation "com.fullstory:instrumentation-full:$fsVersion@aar"
+        testImplementation("org.jetbrains.kotlin:kotlin-test")
+        testImplementation("org.mockito:mockito-core:5.0.0")
+        testImplementation("com.fullstory:instrumentation-full:$fsVersion@aar")
 
-        compileOnly "com.fullstory:instrumentation-full:$fsVersion@aar"
+        implementation("com.fullstory:instrumentation-full:$fsVersion@aar")
     }
 
     testOptions {
         unitTests.all {
-            useJUnit()
-            jvmArgs '--add-opens', 'java.base/java.lang=ALL-UNNAMED'
+            useJUnitPlatform()
 
             testLogging {
                events "passed", "skipped", "failed", "standardOut", "standardError"
@@ -180,5 +179,5 @@ class FSVersion {
 class FSConstants {
     static final FLUTTER_GRADLE_PLUGIN_ID = "dev.flutter.flutter-gradle-plugin"
     static final ANDROID_LIBRARY_PLUGIN_ID = "com.android.library"
-    static final MIN_FS_VERSION = new FSVersion(1, 54, 0)
+    static final MIN_FS_VERSION = new FSVersion(1, 66, 0)
 }

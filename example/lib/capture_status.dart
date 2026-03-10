@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:fullstory_flutter/fs.dart';
+import 'package:fullstory_flutter/fullstory_flutter.dart';
 
 // This uses FS.getCurrentSessionURL() to check if the session has already started
 // and creates a FSStatusListener to be notified when a session starts

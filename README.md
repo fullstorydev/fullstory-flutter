@@ -1,48 +1,64 @@
-# Fullstory Flutter Package
+# fullstory_flutter
 
-[![.github/workflows/ci.yml](https://github.com/fullstorydev/fullstory-flutter/actions/workflows/ci.yml/badge.svg)](https://github.com/fullstorydev/fullstory-flutter/actions/workflows/ci.yml)
+`fullstory_flutter` provides Fullstory autocapture capabilities to support
+session replay by integrating with the existing Fullstory Native Mobile SDKs.
 
-Fullstory's Flutter package exposes access to the Fullstory Native Mobile SDK from within a Flutter app. This plug-in is intended to be used in conjunction with [Fullstory for Mobile Apps](https://www.fullstory.com/mobile-apps/).
+This plug-in is intended to be used in conjunction with [Fullstory for Mobile Apps](https://www.fullstory.com/mobile-apps/).
 
-⚠️ This is a preview release, some breaking changes are possible before the 1.0.0 release.
+⚠️ *This plugin is currently in Early Access.* Some breaking changes are possible before the 1.0.0 release. You may encounter bugs in visual session replay during the Early Access.
 
 ## Quick Links
 
-- [Getting Started guide](https://help.fullstory.com/hc/en-us/articles/27461129353239)
-- [Usage examples](https://github.com/fullstorydev/fullstory-flutter/tree/main/example/lib)
-- [Fullstory API](https://developer.fullstory.com/mobile/flutter/)
 - [Email us](mailto:mobile-support@fullstory.com)
+- `fullstory_flutter` documentation
+  - [Getting Started guide](https://help.fullstory.com/hc/en-us/articles/27461129353239)
+  - [Usage examples](https://github.com/fullstorydev/fullstory-flutter/tree/main/example/lib)
+  - [Fullstory API](https://developer.fullstory.com/mobile/flutter/)
 
-## What's supported
+## Setting up Flutter session replay
 
-Most non-visual Fullstory APIs are supported:
+1. Update to Flutter 3.32 or higher.
+2. Follow the
+   [directions](https://help.fullstory.com/hc/en-us/articles/27461129353239)
+   to set up the public `fullstory_flutter` plugin and ensure it is working as
+   expected.
+3. Update Android and iOS SDKs to a minimum version of 1.68.0.
 
-- `FS.event(String name, [Map<String, Object?> properties = const {}])`
-- `FS.page(String pageName, {Map<String, Object?>? properties})` → `FSPage`
-- `FS.log({FSLogLevel level = FSLogLevel.info, required String message})`
-- `FS.identify(String uid, [Map<String, Object?>? userVars])`
-- `FS.setUserVars(Map<String, Object?> userVars)`
-- `FS.anonymize()`
-- `FS.shutdown()`
-- `FS.restart()`
-- `FS.setStatusListener(FSStatusListener? listener)`
-- `FS.currentSession` → `Future<String?>`
-- `FS.currentSessionURL({bool now = false})` → `Future<String?>`
-- `FS.fsVersion` → `Future<String?>`
-- `FS.resetIdleTimer()`
-- `FS.consent({bool consented})`
-- `FS.networkEvent({String url, String method, int? statusCode, int? durationMs, int? requestSize, int? responseSize})`
-- `FS.crashEvent({String name, Object? exception, StackTrace? stackTrace,})`
-- `FS.captureErrors({void Function(Object? exception, StackTrace? stack)? errorHandler})`
+5. In the app's `main.dart` (or wherever the app is started) replace
+   `runApp($YourAppHere$)` with `runFullstoryApp($YourAppHere$)` and add
+   `import 'package:fullstory_flutter/fullstory_flutter.dart';`. If you use
+   `runWidget`, `runFullstoryWidget` should be used instead.
+6. Run the app again and ensure that a session is successfully captured.
 
-Additionally, interceptors are available to autocapture network requests with
-popular libraries using `FSInterceptor`, and page navigation can be captured
-with `FSNavigatorObserver`.
+## Optional additional setup
 
-Visual session replay is not currently supported, but is planned for a future release.
+If you wish to enable additional data capture, such as pages, crashes, and
+network requests, please follow the steps in our
+[developer documentation](https://developer.fullstory.com/mobile/flutter/).
 
-## Getting Started
+## Custom classes and attributes
 
-See [Getting started with Fullstory for Flutter Mobile Apps](https://help.fullstory.com/hc/en-us/articles/27461129353239)
+Use `FSCustomAttributes` to add custom classes or attributes to your widgets.
+Wrap the widget you want to annotate with `FSCustomAttributes` and add any
+classes or attributes you wish to include.
 
-Also see our [example app](https://github.com/fullstorydev/fullstory-flutter/tree/main/example) for working API usage examples.
+### Example usage
+
+```dart
+FSCustomAttributes {
+  classes: ['class1', 'class2'],
+  attributes: {'field1': 'value1'},
+  child: YourAnnotatedWidget(),
+}
+```
+
+## Known Issues
+
+- Not compatible with tools and frameworks like
+  [Patrol](https://patrol.leancode.co/), which also use custom bindings. 
+  Please contact us to determine a way to
+  combine our binding with your framework’s.
+- Recovery for Flutter is not currently supported, so if a session is recovered,
+  flutter elements may not be available for some part of a session.
+- Apps which have multiple FlutterViews on screen at the same time aren’t
+  supported yet. Please contact us if you use multiple FlutterViews.

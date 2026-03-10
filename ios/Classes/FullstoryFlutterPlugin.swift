@@ -1,6 +1,39 @@
 import Flutter
-import UIKit
 import FullStory
+import shared_flutter
+import UIKit
+
+@objc class FlutterCaptureResult: NSObject {
+    @objc public var viewData: NSData
+    @objc public var viewId: NSNumber
+    @objc public var canvases: NSData
+    @objc public var strings: [NSString]
+    @objc public var error: NSString?
+
+    public init(viewData: NSData, viewId: NSNumber, canvases: NSData, strings: [NSString], error: NSString?) {
+        self.viewData = viewData
+        self.viewId = viewId
+        self.canvases = canvases
+        self.strings = strings
+        self.error = error
+        super.init()
+    }
+}
+
+@objc class FlutterDelegate: NSObject {
+    var plugin: FullstoryFlutterPlugin
+    public init(plugin: FullstoryFlutterPlugin) {
+        self.plugin = plugin
+        super.init()
+    }
+
+    @objc public func captureFlutterView(_ viewId: UInt64, scanMode: Int, consented: Bool, onResult: @escaping (FlutterCaptureResult) -> Void) {
+        plugin.scanUi(scanMode: Int32(scanMode), consent: consented) { (viewData, canvases, strings, error) in
+            let result = FlutterCaptureResult(viewData: viewData, viewId: NSNumber(value: viewId), canvases: canvases, strings: strings as [NSString], error: error as NSString?)
+            onResult(result)
+        }
+    }
+}
 
 public class FullstoryFlutterPlugin: NSObject, FlutterPlugin, FSDelegate {
     var channel: FlutterMethodChannel
@@ -190,9 +223,69 @@ public class FullstoryFlutterPlugin: NSObject, FlutterPlugin, FSDelegate {
             } else {
                 result(FlutterError(code: "INVALID_ARGUMENT", message: "Invalid argument for flutterEvent", details: "Expected Map<String, Any>, got \(String(describing: call.arguments))"))
             }
+        case "register":
+        guard let args = call.arguments as? [String: Any],
+            let canvasDefinition = args["canvasDefinition"] as? FlutterStandardTypedData
+            else {
+            result(FlutterError(code: "INVALID_ARGUMENTS",
+                            message: "Invalid arguments for register: expected canvasDefinition, got \(String(describing: call.arguments))",
+                            details: nil))
+            return
+        }
+        let sel = NSSelectorFromString("__registerFlutter:withCanvas:")
+        guard let FS = NSClassFromString("FS"),
+            let clazz = FS as AnyObject as? NSObjectProtocol,
+            clazz.responds(to: sel) else {
+                result(FlutterError(code: "INVALID_FULLSTORY", message: "Unable to find Flutter APIs in Fullstory iOS SDK. Try updating the FullStory pod.", details: nil))
+                return
+        }
+
+        let delegate = FlutterDelegate(plugin: self)
+        clazz.perform(sel, with: delegate, with: canvasDefinition.data)
+        result(nil)
+        case "fetchSessionData":
+        if let FS = NSClassFromString("FS") {
+            let sel = NSSelectorFromString("__fetchSessionData")
+            if let clazz = FS as AnyObject as? NSObjectProtocol {
+                if clazz.responds(to: sel) {
+                    let obj = clazz.perform(sel)
+                    if let rules = obj?.takeUnretainedValue() as? NSData {
+                        result(rules)
+                        return
+                    } else {
+                        result(FlutterError(code: "INVALID_FULLSTORY", message: "Unexpected return value for session data", details: String(describing: obj)))
+                        return
+                    }
+                }
+            }
+        }
         default:
             result(FlutterMethodNotImplemented)
         }
+    }
+
+    public func scanUi(scanMode: Int32, consent: Bool, onResult: @escaping (NSData, NSData, [String], String?) -> Void) {
+        channel.invokeMethod("scanUi", arguments: ["mode": scanMode, "consent": consent], result: { (response) in
+            if let dict = response as? [String: Any] {
+                if let error = dict["error"] as? String, !error.isEmpty {
+                    // note: there is no way to send and error and capture data, it's one or the other
+                    onResult(NSData(), NSData(), [], error)
+                    return
+                }
+                if let views = dict["views"] as? FlutterStandardTypedData,
+                    let canvases = dict["canvases"] as? FlutterStandardTypedData,
+                    let strings = dict["strings"] as? [String] {
+                    onResult(views.data as NSData, canvases.data as NSData, strings, nil)
+                }
+            } else {
+                onResult(NSData(), NSData(), [], "Empty scan response")
+            }
+        })
+    }
+
+    /// This is a hack to keep the compiler from tree-shaking flutter-only libs.
+    public func doNotTreeShakeFsEncoder() {
+        dont_shake_me()
     }
 
     // FSDelegate methods to receive status events from Fullstory

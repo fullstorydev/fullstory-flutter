@@ -1,19 +1,27 @@
 PODS:
   - Flutter (1.0.0)
-  - FullStory (1.60.0)
+  - FullStory (1.65.0)
+  - fullstory_capture (0.0.1):
+    - Flutter
+    - FullStory (~> 1.65)
   - fullstory_flutter (0.0.1):
     - Flutter
     - FullStory (~> 1.60)
   - integration_test (0.0.1):
     - Flutter
+  - path_provider_foundation (0.0.1):
+    - Flutter
+    - FlutterMacOS
   - webview_flutter_wkwebview (0.0.1):
     - Flutter
     - FlutterMacOS
 
 DEPENDENCIES:
   - Flutter (from `Flutter`)
+  - fullstory_capture (from `.symlinks/plugins/fullstory_capture/ios`)
   - fullstory_flutter (from `.symlinks/plugins/fullstory_flutter/ios`)
   - integration_test (from `.symlinks/plugins/integration_test/ios`)
+  - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/darwin`)
   - webview_flutter_wkwebview (from `.symlinks/plugins/webview_flutter_wkwebview/darwin`)
 
 SPEC REPOS:
@@ -23,20 +31,26 @@ SPEC REPOS:
 EXTERNAL SOURCES:
   Flutter:
     :path: Flutter
+  fullstory_capture:
+    :path: ".symlinks/plugins/fullstory_capture/ios"
   fullstory_flutter:
     :path: ".symlinks/plugins/fullstory_flutter/ios"
   integration_test:
     :path: ".symlinks/plugins/integration_test/ios"
+  path_provider_foundation:
+    :path: ".symlinks/plugins/path_provider_foundation/darwin"
   webview_flutter_wkwebview:
     :path: ".symlinks/plugins/webview_flutter_wkwebview/darwin"
 
 SPEC CHECKSUMS:
   Flutter: cabc95a1d2626b1b06e7179b784ebcf0c0cde467
-  FullStory: 6b5dd3fe8d75280286223f6fbdf4f402409ef5a0
-  fullstory_flutter: d3bdd2e378f3414b0b4972d869546c0d77f24070
-  integration_test: 4a889634ef21a45d28d50d622cf412dc6d9f586e
-  webview_flutter_wkwebview: 44d4dee7d7056d5ad185d25b38404436d56c547c
+  FullStory: 9d28b22bfa75657b5e7ac443588ed5d3677517d3
+  fullstory_capture: 1f9f38ac4136dc15b9b2cba51225d73143b8dc8d
+  fullstory_flutter: 72bbe5176a409e732a363b01f1acbfdeaea8fa61
+  integration_test: 252f60fa39af5e17c3aa9899d35d908a0721b573
+  path_provider_foundation: 0b743cbb62d8e47eab856f09262bb8c1ddcfe6ba
+  webview_flutter_wkwebview: 29eb20d43355b48fe7d07113835b9128f84e3af4
 
-PODFILE CHECKSUM: 9c46fd01abff66081b39f5fa5767b3f1d0b11d76
+PODFILE CHECKSUM: 53a6aebc29ccee84c41f92f409fc20cd4ca011f1
 
 COCOAPODS: 1.16.2

@@ -50,14 +50,15 @@ class FSNavigatorObserver extends NavigatorObserver {
 
   @override
   void didChangeTop(Route<dynamic> topRoute, Route<dynamic>? previousTopRoute) {
-    final cached = _namedPages[topRoute.settings.name];
+    final name = namePage(topRoute);
+    final cached = _namedPages[name];
+
     if (cached != null) {
       final properties = updateProperties(topRoute, previousTopRoute);
       cached.start(propertyUpdates: properties);
       return;
     }
 
-    final name = namePage(topRoute);
     final properties = initialProperties(topRoute, previousTopRoute);
     final page = FS.page(name, properties: properties);
     _namedPages[name] = page;
