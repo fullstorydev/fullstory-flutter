@@ -1,0 +1,82 @@
+apply plugin: 'com.android.application'
+
+apply plugin: 'kotlin-android'
+
+apply plugin: 'fullstory'
+
+def localProperties = new Properties()
+localProperties.load(new FileInputStream(rootProject.file("local.properties")))
+if (!localProperties.containsKey('FSOrgId')) {
+    throw new GradleException('Please add a FSOrgId=<Your Fullstory OrgID> line to example/android/local.properties');
+}
+
+fullstory {
+  org localProperties['FSOrgId']
+  enabledVariants 'all'
+  logcatLevel 'error'
+  logLevel 'log'
+  if (localProperties.containsKey('FSServerUrl')) {
+    // This is for Fullstory internal testing and should not be needed when building your own app.
+    serverUrl localProperties['FSServerUrl']
+  }
+  verboseLogging true
+}
+
+android {
+    compileSdk 35
+    defaultConfig {
+        applicationId "dev.flutter.example.androidusingprebuiltmodule"
+        minSdkVersion 21
+        targetSdkVersion 35
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+        }
+    }
+    compileOptions {
+        sourceCompatibility 17
+        targetCompatibility 17
+    }
+    kotlinOptions {
+        jvmTarget = '17'
+    }
+    namespace 'dev.flutter.example.androidusingprebuiltmodule'
+}
+
+repositories {
+    maven {
+        // This maven repo is created when you run `flutter build aar`. It contains compiled code
+        // and resources for flutter_module itself.
+        url '../../flutter_module/build/host/outputs/repo'
+    }
+    maven {
+        // This maven repo contains artifacts for Flutter's Android embedding.
+        url 'https://storage.googleapis.com/download.flutter.io'
+    }
+}
+
+dependencies {
+    releaseImplementation ('dev.flutter.example.flutter_module:flutter_release:1.0@aar') {
+        transitive = true
+    }
+
+    debugImplementation ('dev.flutter.example.flutter_module:flutter_debug:1.0@aar') {
+        transitive = true
+    }
+
+    implementation 'androidx.multidex:multidex:2.0.1'
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    implementation 'androidx.appcompat:appcompat:1.7.0'
+    implementation 'androidx.core:core-ktx:1.13.1'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation "com.google.truth:truth:1.1.3"
+    androidTestImplementation 'androidx.test:runner:1.1.1'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.1'
+    api 'androidx.test:core:1.2.1'
+}
