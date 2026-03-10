@@ -1,1 +1,0 @@
-Use of this software is subject to the terms and conditions of the Fullstory Terms and Conditions located at https://www.fullstory.com/legal/terms-and-conditions-2023/, the Fullstory Privacy Policy located at https://www.fullstory.com/legal/privacy-policy, and any other requirements you may receive as part of the Fullstory SDK archive.
