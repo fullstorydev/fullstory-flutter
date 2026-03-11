@@ -2,7 +2,6 @@ name: fullstory_flutter
 description: 'Visual capture support for Fullstory session replay'
 version: 0.7.0
 homepage: 'https://www.fullstory.com/platform/mobile-apps/'
-publish_to: 'none' # Prevents accidental publishing to pub.dev
 
 environment:
   sdk: ^3.8.0
@@ -33,79 +32,3 @@ flutter:
         pluginClass: FullstoryFlutterPlugin
       ios:
         pluginClass: FullstoryFlutterPlugin
-
-ffigen:
-  name: EncoderBindings
-  description: |
-    Bindings for shared-flutter encoder.
-
-    Regenerate bindings with `dart run ffigen`.
-  output: 'lib/src/shared_flutter_bindings_generated.dart'
-  headers:
-    entry-points:
-      - '../shared/shared-flutter/includes/shared_flutter.h'
-  preamble: |
-    // ignore_for_file: always_specify_types
-    // ignore_for_file: camel_case_types
-    // ignore_for_file: non_constant_identifier_names
-  comments:
-    style: any
-    length: full
-  exclude-all-by-default: true
-  functions:
-    include:
-      # General utilities
-      - 'free_byte_array'
-      # ScanEncoder support
-      - 'start_capture'
-      - 'finish_capture'
-      - 'free_in_progress_data'
-      - 'view_metadata'
-      - 'view'
-      - 'view_id'
-      - 'scan_output'
-      # DrawingEncoder support
-      - 'canvas_definition'
-      - 'start_drawing'
-      - 'get_drawing'
-      - 'free_drawing'
-      - 'add_view_id'
-      - 'clip_rect'
-      - 'draw_circle'
-      - 'draw_line'
-      - 'draw_text'
-      - 'draw_rect'
-      - 'draw_round_rect'
-      - 'restore'
-      - 'rotate'
-      - 'save'
-      - 'scale'
-      - 'translate'
-      # DrawingBundler support
-      - 'create_drawing_bundler'
-      - 'add_drawing_to_bundle'
-      - 'read_bundle'
-      - 'finish_bundle'
-      # BlockRules support
-      - 'decode_block_rules'
-      - 'decode_keep_rules'
-      - 'free_block_rules'
-      - 'free_eval_result'
-      - 'free_keep_rules'
-      - 'free_keep_result'
-      - 'eval_view_path'
-      - 'eval_keep_rule'
-      - 'randomize_string'
-      - 'decode_block_rules_from_session_data'
-      - 'decode_keep_rules_from_session_data'
-    symbol-address:
-      include:
-        - 'free_byte_array'
-        - 'free_drawing'
-        - 'free_in_progress_data'
-  typedefs:
-    include:
-      - 'ByteArray'
-      - 'View'
-      - 'EvalResult'
-
