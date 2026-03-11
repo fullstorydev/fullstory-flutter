@@ -54,9 +54,8 @@ class _MyAppState extends State<MyApp> {
   //
   // Manual calls like this can be intermixed with the
   // [FSNavigatorObserver].
-  static final List<FSPage> _pages = _screens
-      .map((s) => FS.page(s.toString()))
-      .toList();
+  static final List<FSPage> _pages =
+      _screens.map((s) => FS.page(s.toString())).toList();
 
   _MyAppState() {
     _pages[_selectedIndex].start();

@@ -100,15 +100,16 @@ class FS {
     int? durationMs,
     int? requestSize,
     int? responseSize,
-  }) => FullstoryFlutterPlatform.instance.captureEvent({
-    "eventType": _EventType.network.value,
-    "url": url,
-    "method": method,
-    "statusCode": statusCode ?? 0,
-    "durationMS": durationMs ?? 0,
-    "requestSize": requestSize ?? 0,
-    "responseSize": responseSize ?? 0,
-  });
+  }) =>
+      FullstoryFlutterPlatform.instance.captureEvent({
+        "eventType": _EventType.network.value,
+        "url": url,
+        "method": method,
+        "statusCode": statusCode ?? 0,
+        "durationMS": durationMs ?? 0,
+        "requestSize": requestSize ?? 0,
+        "responseSize": responseSize ?? 0,
+      });
 
   /// Report a crash to Fullstory for display in playback.
   ///
@@ -121,15 +122,16 @@ class FS {
     String name = 'Flutter crash',
     Object? exception,
     StackTrace? stackTrace,
-  }) => FullstoryFlutterPlatform.instance.captureEvent({
-    // This event type is assigned to crash events in host SDKs
-    'eventType': _EventType.crash.value,
-    'name': name,
-    'frames': <String>[
-      if (exception != null) exception.toString(),
-      if (stackTrace != null) stackTrace.toString(),
-    ],
-  });
+  }) =>
+      FullstoryFlutterPlatform.instance.captureEvent({
+        // This event type is assigned to crash events in host SDKs
+        'eventType': _EventType.crash.value,
+        'name': name,
+        'frames': <String>[
+          if (exception != null) exception.toString(),
+          if (stackTrace != null) stackTrace.toString(),
+        ],
+      });
 
   /// Configures Flutter to send errors to Fullstory for handling.
   ///

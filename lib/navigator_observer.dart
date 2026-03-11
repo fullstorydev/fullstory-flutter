@@ -5,11 +5,10 @@ import 'package:fullstory_flutter/fs.dart';
 /// when transitioning from [previous] to [current].
 ///
 /// [previous] will be null for the first page in the app.
-typedef PagePropertiesFactory =
-    Map<String, Object?>? Function(
-      Route<dynamic> current,
-      Route<dynamic>? previous,
-    );
+typedef PagePropertiesFactory = Map<String, Object?>? Function(
+  Route<dynamic> current,
+  Route<dynamic>? previous,
+);
 
 /// A [NavigatorObserver] that tracks [Navigator] page transitions
 /// and captures them in Fullstory.

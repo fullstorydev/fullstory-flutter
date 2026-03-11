@@ -55,14 +55,15 @@ Client fsHttpClient({
   RetryPolicy? retryPolicy,
   Client? client,
   bool captureFirst = true,
-}) => InterceptedClient.build(
-  interceptors: [
-    if (captureFirst) FSInterceptor(),
-    ...interceptors,
-    if (!captureFirst) FSInterceptor(),
-  ],
-  requestTimeout: requestTimeout,
-  onRequestTimeout: onRequestTimeout,
-  retryPolicy: retryPolicy,
-  client: client,
-);
+}) =>
+    InterceptedClient.build(
+      interceptors: [
+        if (captureFirst) FSInterceptor(),
+        ...interceptors,
+        if (!captureFirst) FSInterceptor(),
+      ],
+      requestTimeout: requestTimeout,
+      onRequestTimeout: onRequestTimeout,
+      retryPolicy: retryPolicy,
+      client: client,
+    );
