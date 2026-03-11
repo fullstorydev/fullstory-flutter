@@ -13,35 +13,24 @@ abstract class FullstoryFlutterPlatform extends PlatformInterface {
 
   static FullstoryFlutterPlatform _instance = MethodChannelFullstoryFlutter();
 
-
   static FullstoryFlutterPlatform get instance => _instance;
-
 
   static set instance(FullstoryFlutterPlatform instance) {
     PlatformInterface.verifyToken(instance, _token);
     _instance = instance;
   }
 
-
-
-
-
-
-
   Future<int?> register(Uint8List canvasDefinition) {
     throw UnimplementedError('register() has not been implemented.');
   }
+
   Future<Uint8List?> fetchSessionData() {
     throw UnimplementedError('fetchSessionData() has not been implemented.');
   }
 
-
-
   Future<Uint8List?> fetchBlockRules() {
     throw UnimplementedError('fetchBlockRules() has not been implemented.');
   }
-
-
 
   Future<Map<String, Uint8List?>?> fetchPrivacyRules() {
     throw UnimplementedError('fetchPrivacyRules() has not been implemented.');
@@ -152,6 +141,7 @@ abstract class FullstoryFlutterPlatform extends PlatformInterface {
 abstract class HostCallbacks {
   Future<FlutterScanResult> scanUi(ScanMode mode, bool consent);
 }
+
 class FlutterScanResult {
   final Uint8List views;
   final List<String> strings;
@@ -187,6 +177,7 @@ class FlutterScanResult {
     blockedRegions: [],
   );
 }
+
 enum ScanMode {
   unspecified(-1),
   first(0),
@@ -194,7 +185,6 @@ enum ScanMode {
   intermediate(2),
   idle(3),
   unload(4);
-
 
   final int channelValue;
 

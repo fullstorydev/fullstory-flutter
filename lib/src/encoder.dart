@@ -17,9 +17,6 @@ final encoderBindings = EncoderBindings(
       : DynamicLibrary.process(),
 );
 
-
-
-
 class ScanEncoder implements Finalizable {
   final EncoderBindings _bindings;
   final NativeInterface _native;
@@ -31,8 +28,6 @@ class ScanEncoder implements Finalizable {
         'Session not started. Ensure start() is called before any other '
         'operations.',
       ));
-
-
 
   final void Function(SerializedData, Pointer<ByteArray>)
   _attachByteArrayFinalizer;
@@ -83,12 +78,6 @@ class ScanEncoder implements Finalizable {
     NativeInterface? native,
   ]) : _native = native ?? Kernel.singleton().native;
 
-
-
-
-
-
-
   void start([HostPlatform? platform]) {
     if (_dataHandle != null) {
       throw StateError(
@@ -101,11 +90,8 @@ class ScanEncoder implements Finalizable {
     );
     _attachHandleFinalizer(this, _dataHandle!.cast());
   }
+
   bool get inProgress => _dataHandle != null;
-
-
-
-
 
   int viewMetadata({
     int alpha = 255,
@@ -154,12 +140,6 @@ class ScanEncoder implements Finalizable {
     }
   }
 
-
-
-
-
-
-
   int view({
     required int id,
     required bool viewCached,
@@ -205,8 +185,6 @@ class ScanEncoder implements Finalizable {
     }
   }
 
-
-
   SerializedData? finish(int id) {
     final handle = _checkedHandle;
     final resultPtr = _bindings.finish_capture(handle, id);
@@ -233,18 +211,15 @@ class SerializedData implements Finalizable {
 }
 
 extension Decoder on Pointer<ByteArray> {
-
-
-
   int get viewId => encoderBindings.view_id(this);
   Uint8List toUint8List() => ref.ptr.asTypedList(ref.len);
 }
-
 
 enum HostPlatform {
   unsupported(0),
   android(1),
   ios(2);
+
   final int _ffiId;
 
   const HostPlatform(this._ffiId);

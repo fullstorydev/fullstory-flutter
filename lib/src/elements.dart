@@ -77,15 +77,9 @@ const hiddenElements = {
   'FSCustomAttributes',
 };
 
-
-
 final _hiddenTypes = Expando<bool>('type hidden expando');
 
 extension HiddenElement on Element? {
-
-
-
-
   bool get isHidden {
     final element = this;
     if (element == null) return true;
@@ -100,5 +94,6 @@ extension HiddenElement on Element? {
     _hiddenTypes[element.widget.runtimeType] = hidden;
     return hidden;
   }
+
   bool get isIncluded => !isHidden;
 }

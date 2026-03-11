@@ -10,9 +10,6 @@ export 'package:fullstory_flutter/custom_attributes.dart';
 export 'package:fullstory_flutter/src/blocking/block.dart' show BlockType;
 
 class AttributeTracker {
-
-
-
   final Expando<_Properties> _propertiesExpando;
 
   final NativeInterface _native;
@@ -22,9 +19,7 @@ class AttributeTracker {
     : _propertiesExpando = Expando("attributes expando"),
       _masker = masker ?? Masker();
 
-
   bool needsAccumulating(Element el) {
-
     if (_propertiesExpando[el] != null) return false;
 
     _propertiesExpando[el] = _Properties();
@@ -41,9 +36,6 @@ class AttributeTracker {
     }
     return properties;
   }
-
-
-
 
   void computeLabel(Element el) {
     final widget = el.widget;
@@ -64,8 +56,6 @@ class AttributeTracker {
       properties.attributes['label'] = text;
     }
   }
-
-
 
   void updateLabelBlocking(Element el, BlockType blockType) {
     final properties = _checkedPropertiesFor(el);
@@ -100,10 +90,8 @@ class AttributeTracker {
     }
   }
 
-
   Map<String, String> attributesFor(Element element) =>
       _propertiesExpando[element]?.attributes ?? {};
-
 
   String? labelFor(Element element) {
     final properties = _propertiesExpando[element];
@@ -113,9 +101,6 @@ class AttributeTracker {
 
     return properties.attributes['label'];
   }
-
-
-
 
   SelectorAttributes selectorAttributesFor(Element el, String tag) {
     final properties = _propertiesExpando[el];
@@ -163,14 +148,11 @@ class AttributeTracker {
     return varints;
   }
 }
-class _Properties {
 
+class _Properties {
   final LinkedHashSet<String> classes = LinkedHashSet<String>();
 
-
-
   final Map<String, String> attributes = {};
-
 
   SelectorAttributes? selectorAttributes;
   BlockType blockType = BlockType.unmatched;

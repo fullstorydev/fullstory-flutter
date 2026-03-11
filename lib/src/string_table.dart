@@ -1,5 +1,3 @@
-
-
 class StringTable {
   final _table = <String, int>{};
   var _entries = <String>[];
@@ -9,8 +7,6 @@ class StringTable {
   }
 
   List<String> get entries => List.from(_entries);
-
-
 
   int idOf(String string) {
     final interned = _table[string];

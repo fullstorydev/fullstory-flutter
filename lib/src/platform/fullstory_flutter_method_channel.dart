@@ -3,6 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:fullstory_flutter/fs.dart';
 
 import 'fullstory_flutter_platform_interface.dart';
+
 class MethodChannelFullstoryFlutter extends FullstoryFlutterPlatform {
   @visibleForTesting
   final methodChannel = const MethodChannel('fullstory_flutter');
@@ -48,8 +49,6 @@ class MethodChannelFullstoryFlutter extends FullstoryFlutterPlatform {
           statusListener.onFSSession(call.arguments as String);
         }
         return null;
-
-
 
       case 'scanUi':
         final mode = ScanMode.fromChannelValue(call.arguments['mode']);
@@ -165,7 +164,6 @@ class MethodChannelFullstoryFlutter extends FullstoryFlutterPlatform {
       now,
     );
   }
-
 
   @override
   Future<int> page(String pageName, Map<String, Object?> properties) async {

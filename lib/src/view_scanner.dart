@@ -30,22 +30,14 @@ class ScanResult {
     required this.complete,
   });
 }
-class ViewCache {
 
+class ViewCache {
   bool viewCached = false;
   bool childrenCached = false;
 
-
-
-
-
   bool scanComplete = false;
 
-
-
   int? canvasId;
-
-
 
   Set<Element>? prevChildren;
 
@@ -59,19 +51,12 @@ class Scanner {
 
   static const _uniqueScalingId = 1;
 
-
-
   bool hideElements = true;
-
-
-
 
   final _renderObjectDemapExpando = Expando<Element>(
     "render object demap expando",
   );
   var _elementCacheExpando = Expando<ViewCache>("element cache properties");
-
-
 
   final _dirtyCallbackExpando = Expando<void Function(RenderObject, bool)>(
     "dirtycallback",
@@ -97,7 +82,6 @@ class Scanner {
        _drawingBundler = drawingBundler ?? DrawingBundler(encoderBindings),
        _scanEncoder = scanEncoder ?? ScanEncoder(kernel.native);
 
-
   int uniqueIdFor(Element el) {
     var id = _uniqueIdExpando[el];
     if (id != null) {
@@ -107,13 +91,12 @@ class Scanner {
     _uniqueIdExpando[el] = id;
     return id;
   }
+
   // ignore: unused_element
   Future<void> _dumpRenderTree() async {
     Logger.log(LogLevel.debug, "Render tree:");
 
     RenderObjectVisitor visit(String depth) => (RenderObject obj) {
-
-
       var transform = obj.getTransformTo(null);
 
       var tl = MatrixUtils.transformPoint(
@@ -152,7 +135,6 @@ class Scanner {
 
     required int previousId,
   }) async {
-
     if (!el.mounted) {
       return null;
     }
@@ -207,8 +189,6 @@ class Scanner {
 
     bool isTracking = _attributeTracker.needsAccumulating(el);
     if (isTracking) {
-
-
       _attributeTracker.computeLabel(el);
 
       for (FSCustomAttributes attr in enclosingAttributes) {
@@ -244,7 +224,6 @@ class Scanner {
     var sset = <RenderObject, int>{};
     var rset = <RenderObject>{};
     if (!viewCached || !childrenCached || !prevScanComplete) {
-
       List<FSCustomAttributes> attrList = [];
       void accumulateChildren(Element childEl) {
         if (includeElement(childEl)) {
@@ -340,7 +319,6 @@ class Scanner {
           _elementCacheExpando[el2]?.childrenCached = false;
         }
 
-
         if (forLayout) {
           r.visitChildrenForSemantics((child) {
             _dirtyCallbackExpando[child]?.call(child, true);
@@ -355,8 +333,6 @@ class Scanner {
       }
 
       for (RenderObject r in rset) {
-
-
         _dirtyCallbackExpando[r] = dirty;
       }
       if (cached && !childrenCached && !timedOut) cache?.childrenCached = true;
@@ -372,8 +348,6 @@ class Scanner {
         !timedOut) {
       children = [];
       for (Element el2 in csetmap.keys) {
-
-
         final usePreviousView = Platform.isAndroid || viewCached;
         final hasPrevChild = cache?.prevChildren?.contains(el2) ?? false;
         final cacheable = usePreviousView && hasPrevChild;
@@ -418,8 +392,6 @@ class Scanner {
     );
   }
 
-
-
   bool includeElement(Element childEl) {
     if (hideElements) {
       return childEl.isIncluded;
@@ -430,6 +402,7 @@ class Scanner {
     }
     return childEl.widget is! FSCustomAttributes;
   }
+
   bool includeRenderObject(RenderObject ro) {
     final element = elementFor(ro);
     if (element == null) {
@@ -446,8 +419,6 @@ class Scanner {
     if (renderObject.parent?.paintsChild(renderObject) == false) {
       return true;
     }
-
-
 
     if (renderObject.runtimeType.toString() == '_RenderTheater') {
       final diagnostic = DiagnosticPropertiesBuilder();
@@ -532,6 +503,7 @@ class Scanner {
       _metrics.reset();
     }
   }
+
   void _startBundle() {
     _resetViewCache();
     if (_drawingBundler.inProgress) {
@@ -539,6 +511,7 @@ class Scanner {
     }
     _drawingBundler.startBundle();
   }
+
   void _invalidateCache() {
     final owner = _binding.fsPipelineOwner;
     _metrics.startInvalidation();
@@ -547,7 +520,6 @@ class Scanner {
     });
     _metrics.finishInvalidation();
   }
-
 
   int? _injectScaling(ScanResult? topView) {
     var childId = topView?.uniqueId;
@@ -590,9 +562,6 @@ class Scanner {
   }
 
   Element? elementFor(RenderObject obj) => _renderObjectDemapExpando[obj];
-
-
-
 
   List<SelectorAttributes> getSelectorPathFor(Element element) {
     final cache = _elementCacheExpando[element];
@@ -650,10 +619,6 @@ class Scanner {
     return false;
   }
 
-
-
-
-
   double get _devicePixelRatio {
     final views = _binding.platformDispatcher.views;
     if (views.isEmpty) {
@@ -663,7 +628,6 @@ class Scanner {
     return views.first.devicePixelRatio;
   }
 
-
   Size? get _physicalSize {
     final views = _binding.platformDispatcher.views;
     if (views.isEmpty) {
@@ -672,11 +636,13 @@ class Scanner {
 
     return views.first.physicalSize;
   }
+
   bool get logMetrics => _metrics.tracking;
   set logMetrics(bool value) {
     _metrics.tracking = value;
   }
 }
+
 class ScanOutput {
   final Uint8List? views;
   final Uint8List? drawings;
@@ -725,15 +691,10 @@ class ScanOutput {
       'ScanOutput(${views?.length} view bytes, ${drawings?.length} drawing bytes, ${blockedRegions?.length} blocked regions)';
 }
 
-
-
-
 class _ScanMetrics {
-
   final _elMetrics = <String, (int, int)>{};
   final _elWatches = <Element, Stopwatch>{};
   final _invalidationWatch = Stopwatch();
-
 
   bool tracking = kDebugMode;
 
@@ -752,8 +713,6 @@ class _ScanMetrics {
       _elMetrics.clear();
     }
   }
-
-
 
   void startFor(Element el) {
     if (tracking) _elWatches[el] = Stopwatch()..start();
@@ -780,6 +739,7 @@ class _ScanMetrics {
     elWatch?.reset();
     _elWatches.remove(el);
   }
+
   void logMetrics(int countHierarchy, int countStructure, int startMs) {
     if (!tracking) return;
 
@@ -802,8 +762,6 @@ class _ScanMetrics {
     }
   }
 }
-
-
 
 ({int x1, int y1, int x2, int y2}) _safeBoundsFrom(
   Rect relativeBounds,

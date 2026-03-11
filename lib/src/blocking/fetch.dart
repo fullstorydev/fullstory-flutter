@@ -5,8 +5,6 @@ import 'package:fullstory_flutter/src/logging.dart';
 import 'package:fullstory_flutter/src/platform/fullstory_flutter_platform_interface.dart';
 import 'package:fullstory_flutter/src/view_scanner.dart';
 
-
-
 class BlockRulesFetcher {
   Completer<bool> _blockingConfigured = Completer();
   bool _retriedBlockingInit = false;
@@ -51,14 +49,6 @@ class BlockRulesFetcher {
       _blockingConfigured.complete(false);
     }
   }
-
-
-
-
-
-
-
-
 
   Future<bool> ensureReady(Scanner scanner) async {
     try {

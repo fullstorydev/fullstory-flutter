@@ -10,12 +10,6 @@ import 'logging.dart';
 import 'shared_flutter_bindings_generated.dart';
 import 'encoder.dart';
 
-
-
-
-
-
-
 class DrawingEncoder implements Finalizable {
   final EncoderBindings _bindings;
 
@@ -42,11 +36,6 @@ class DrawingEncoder implements Finalizable {
     }
     return _canvasDefinition!;
   }
-
-
-
-
-
 
   SerializedData? get canvas {
     final arrayPtr = _bindings.get_drawing(_checkedHandle);
@@ -95,8 +84,6 @@ class DrawingEncoder implements Finalizable {
     this._attachHandleFinalizer,
     this._detachHandleFinalizer,
   );
-
-
 
   void start() {
     if (_drawingHandle != null) {
@@ -149,16 +136,7 @@ class DrawingEncoder implements Finalizable {
     );
   }
 
-  void drawDRRect(RRect outer, RRect inner, Paint paint) {
-
-
-
-
-
-
-
-
-  }
+  void drawDRRect(RRect outer, RRect inner, Paint paint) {}
 
   void drawLine(Offset p1, Offset p2, Paint paint) {
     _bindings.draw_line(
@@ -193,13 +171,14 @@ class DrawingEncoder implements Finalizable {
       color.gU8,
       color.bU8,
       textSize,
- 0,
- 0,
+      0,
+      0,
       bounds.width.roundSafe(),
       bounds.height.roundSafe(),
       masked,
     );
   }
+
   void drawRect(Rect rect, Paint paint) {
     _bindings.draw_rect(
       _checkedHandle,
@@ -252,6 +231,7 @@ class DrawingEncoder implements Finalizable {
     _bindings.translate(_checkedHandle, dx, dy);
   }
 }
+
 extension _ColorExt on Color {
   int get aU8 => _colorU8(a);
   int get rU8 => _colorU8(r);
@@ -260,8 +240,6 @@ extension _ColorExt on Color {
 }
 
 extension _ClipOpExt on ClipOp {
-
-
   int get fsValue => switch (this) {
     ClipOp.difference => 0,
     ClipOp.intersect => 1,
@@ -296,10 +274,6 @@ class DrawingBundler {
     _handle = _bindings.create_drawing_bundler();
   }
 
-
-
-
-
   int addDrawing(DrawingEncoder encoder, int viewId) {
     return _bindings.add_drawing_to_bundle(
       _checkedHandle,
@@ -323,6 +297,7 @@ class DrawingBundler {
       token: resultPtr.cast(),
     );
   }
+
   Uint8List? finishBundle() {
     final resultPtr = _bindings.finish_bundle(_checkedHandle);
     final result = resultPtr.ref;
@@ -339,5 +314,6 @@ class DrawingBundler {
       token: resultPtr.cast(),
     );
   }
+
   bool get inProgress => _handle != null;
 }

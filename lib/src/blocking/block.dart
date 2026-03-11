@@ -10,14 +10,13 @@ import 'package:fullstory_flutter/src/shared_flutter_bindings_generated.dart'
     as ffi
     show SelectorAttributes;
 
-
-
 enum BlockType {
   excluded(false),
   masked(true),
   recorded(true),
   omitted(false),
   unmatched(false);
+
   final bool captureView;
 
   const BlockType(this.captureView);
@@ -161,14 +160,6 @@ class ViewBlocker {
     byteArray.ref.delegated = true;
     return byteArray;
   }
-
-
-
-
-
-
-
-
 
   BlockType evalBlockTypeFor(
     List<SelectorAttributes> selectors, {

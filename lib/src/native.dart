@@ -35,7 +35,6 @@ class NativeInterface {
     if (text != null) 'viewText': text,
   });
 
-
   Future<void> _sendEvent(Map<String, dynamic> args) async {
     assert(args.containsKey(keyEventType));
     FullstoryFlutterPlatform.instance.captureEvent(args);
@@ -43,9 +42,6 @@ class NativeInterface {
 }
 
 const keyEventType = 'eventType';
-
-
-
 
 enum InputType {
   tap(channelValue: 2, keepType: 1);
@@ -55,9 +51,6 @@ enum InputType {
 
   const InputType({required this.channelValue, required this.keepType});
 }
-
-
-
 
 enum _FlutterEventType {
   input(3);

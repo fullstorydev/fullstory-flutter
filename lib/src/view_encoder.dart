@@ -48,9 +48,7 @@ class CanvasEncoder {
       renderObject.paintBounds,
     );
 
-
     if (sset.containsKey(renderObject)) {
-
       return;
     }
 
@@ -142,6 +140,7 @@ class _ScanCanvas implements Canvas {
     Logger.log(LogLevel.verbose, "OP: UNSUPPORTED: drawDRRect");
     _drawEnc.drawDRRect(_absoluteRRect(outer), _absoluteRRect(inner), paint);
   }
+
   static const _standInColor = Colors.grey;
   Paint _standInPaint(Paint paint) => Paint.from(paint)..color = _standInColor;
   static final _defaultPaint = Paint()
@@ -224,7 +223,6 @@ class _ScanCanvas implements Canvas {
 
     final style = _currentSpan?.style;
 
-
     int firstIndex = 0;
     for (final metric in paragraph.computeLineMetrics()) {
       final range = paragraph.getLineBoundary(TextPosition(offset: firstIndex));
@@ -254,7 +252,6 @@ class _ScanCanvas implements Canvas {
     required bool masked,
     TextStyle? style,
   }) {
-
     final color = style?.color ?? Colors.black;
     final size = style?.fontSize ?? 12;
 
@@ -495,11 +492,8 @@ class _ScanPaintingContext extends PaintingContext {
     );
     return this;
   }
+
   static const _skippedRenderObjects = [
-
-
-
-
     'RenderVisibilityDetector',
     'RenderSliverVisibilityDetector',
   ];
@@ -516,7 +510,6 @@ class _ScanPaintingContext extends PaintingContext {
     }
 
     if (_sset.containsKey(child)) {
-
       final id = _sset[child];
       if (id != null) {
         _tokenEnc.addViewId(id);
@@ -570,13 +563,11 @@ class _ScanPaintingContext extends PaintingContext {
     Offset offset, {
     Rect? childPaintBounds,
   }) {
-
     Logger.log(
       LogLevel.debug,
       "UNSUPPORTED: PaintingContext.pushLayer($childLayer)",
     );
     painter(this, offset);
-
   }
 
   @override

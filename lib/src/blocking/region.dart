@@ -1,11 +1,11 @@
 import 'dart:ui';
 
 import 'package:fullstory_flutter/src/numbers.dart';
+
 class BlockedRegions {
   final _regions = <Rect>{};
 
   void clear() => _regions.clear();
-
 
   void add(Rect region) {
     if (_regions.any((existing) => existing.containsRect(region))) {
@@ -16,10 +16,6 @@ class BlockedRegions {
   }
 
   bool contains(Offset pt) => _regions.any((r) => r.contains(pt));
-
-
-
-
 
   List<List<int>> toHostList(double scaleFactor) => _regions
       .map(

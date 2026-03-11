@@ -1,10 +1,12 @@
 import 'package:flutter/foundation.dart';
+
 enum LogLevel {
   error('  ERROR', 0),
   warning('WARNING', 1),
   note('   Note', 2),
   debug('  debug', 3),
   verbose('  noisy', 4);
+
   final String indicator;
 
   final int verbosity;
@@ -16,10 +18,7 @@ enum LogLevel {
   void logLess(String message) => Logger.logLess(this, message);
 }
 
-
 class Logger {
-
-
   static LogLevel minLogged = LogLevel.note;
 
   static void log(LogLevel level, String message) {
@@ -28,10 +27,6 @@ class Logger {
   }
 
   static final _loggedMessages = <String>{};
-
-
-
-
 
   static void logLess(LogLevel level, String message) {
     if (level.verbosity <= minLogged.verbosity) {

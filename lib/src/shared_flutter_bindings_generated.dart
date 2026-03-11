@@ -2,12 +2,8 @@
 // ignore_for_file: camel_case_types
 // ignore_for_file: non_constant_identifier_names
 
-
-
 // ignore_for_file: type=lint
 import 'dart:ffi' as ffi;
-
-
 
 class EncoderBindings {
   final ffi.Pointer<T> Function<T extends ffi.NativeType>(String symbolName)
@@ -66,13 +62,6 @@ class EncoderBindings {
       _decode_keep_rules_from_session_dataPtr
           .asFunction<ffi.Pointer<KeepRulesHandle> Function(ByteArray)>();
 
-
-
-
-
-
-
-
   int randomize_string(
     ffi.Pointer<ffi.Char> s,
     int render_object_hash,
@@ -97,16 +86,6 @@ class EncoderBindings {
       .asFunction<
         int Function(ffi.Pointer<ffi.Char>, int, ffi.Pointer<ffi.Char>, int)
       >();
-
-
-
-
-
-
-
-
-
-
 
   ffi.Pointer<BlockResult> eval_view_path(
     ffi.Pointer<BlockRulesHandle> handle,
@@ -147,10 +126,6 @@ class EncoderBindings {
         )
       >();
 
-
-
-
-
   ffi.Pointer<KeepResult> eval_keep_rule(
     ffi.Pointer<KeepRulesHandle> handle,
     int event_type,
@@ -190,7 +165,6 @@ class EncoderBindings {
         )
       >();
 
-
   void free_block_rules(ffi.Pointer<BlockRulesHandle> data) {
     return _free_block_rules(data);
   }
@@ -201,7 +175,6 @@ class EncoderBindings {
       >('free_block_rules');
   late final _free_block_rules = _free_block_rulesPtr
       .asFunction<void Function(ffi.Pointer<BlockRulesHandle>)>();
-
 
   void free_keep_rules(ffi.Pointer<KeepRulesHandle> data) {
     return _free_keep_rules(data);
@@ -246,10 +219,6 @@ class EncoderBindings {
   late final _create_drawing_bundler = _create_drawing_bundlerPtr
       .asFunction<ffi.Pointer<DrawingBundlerHandle> Function()>();
 
-
-
-
-
   int add_drawing_to_bundle(
     ffi.Pointer<DrawingBundlerHandle> bundler_handle,
     ffi.Pointer<DrawingHandle> drawing_handle,
@@ -277,9 +246,6 @@ class EncoderBindings {
         )
       >();
 
-
-
-
   ffi.Pointer<ByteArray> finish_bundle(
     ffi.Pointer<DrawingBundlerHandle> bundler_handle,
   ) {
@@ -296,9 +262,6 @@ class EncoderBindings {
       .asFunction<
         ffi.Pointer<ByteArray> Function(ffi.Pointer<DrawingBundlerHandle>)
       >();
-
-
-
 
   ffi.Pointer<ByteArray> read_bundle(
     ffi.Pointer<DrawingBundlerHandle> bundler_handle,
@@ -349,8 +312,6 @@ class EncoderBindings {
   late final _start_drawing = _start_drawingPtr
       .asFunction<ffi.Pointer<DrawingHandle> Function()>();
 
-
-
   ffi.Pointer<ByteArray> get_drawing(ffi.Pointer<DrawingHandle> handle) {
     return _get_drawing(handle);
   }
@@ -366,7 +327,6 @@ class EncoderBindings {
         ffi.Pointer<ByteArray> Function(ffi.Pointer<DrawingHandle>)
       >();
 
-
   void free_drawing(ffi.Pointer<DrawingHandle> data) {
     return _free_drawing(data);
   }
@@ -377,8 +337,6 @@ class EncoderBindings {
       >('free_drawing');
   late final _free_drawing = _free_drawingPtr
       .asFunction<void Function(ffi.Pointer<DrawingHandle>)>();
-
-
 
   void add_view_id(ffi.Pointer<DrawingHandle> handle, int view_id) {
     return _add_view_id(handle, view_id);
@@ -392,8 +350,6 @@ class EncoderBindings {
       >('add_view_id');
   late final _add_view_id = _add_view_idPtr
       .asFunction<void Function(ffi.Pointer<DrawingHandle>, int)>();
-
-
 
   void clip_rect(
     ffi.Pointer<DrawingHandle> handle,
@@ -423,8 +379,6 @@ class EncoderBindings {
       .asFunction<
         void Function(ffi.Pointer<DrawingHandle>, int, int, int, int, int)
       >();
-
-
 
   void draw_circle(
     ffi.Pointer<DrawingHandle> handle,
@@ -480,8 +434,6 @@ class EncoderBindings {
           int,
         )
       >();
-
-
 
   void draw_line(
     ffi.Pointer<DrawingHandle> handle,
@@ -541,8 +493,6 @@ class EncoderBindings {
           int,
         )
       >();
-
-
 
   void draw_text(
     ffi.Pointer<DrawingHandle> handle,
@@ -619,8 +569,6 @@ class EncoderBindings {
         )
       >();
 
-
-
   void draw_rect(
     ffi.Pointer<DrawingHandle> handle,
     int left,
@@ -679,8 +627,6 @@ class EncoderBindings {
           int,
         )
       >();
-
-
 
   void draw_round_rect(
     ffi.Pointer<DrawingHandle> handle,
@@ -749,8 +695,6 @@ class EncoderBindings {
         )
       >();
 
-
-
   void restore(ffi.Pointer<DrawingHandle> handle) {
     return _restore(handle);
   }
@@ -761,8 +705,6 @@ class EncoderBindings {
       >('restore');
   late final _restore = _restorePtr
       .asFunction<void Function(ffi.Pointer<DrawingHandle>)>();
-
-
 
   void rotate(ffi.Pointer<DrawingHandle> handle, double degrees) {
     return _rotate(handle, degrees);
@@ -777,8 +719,6 @@ class EncoderBindings {
   late final _rotate = _rotatePtr
       .asFunction<void Function(ffi.Pointer<DrawingHandle>, double)>();
 
-
-
   void save(ffi.Pointer<DrawingHandle> handle) {
     return _save(handle);
   }
@@ -789,9 +729,6 @@ class EncoderBindings {
       >('save');
   late final _save = _savePtr
       .asFunction<void Function(ffi.Pointer<DrawingHandle>)>();
-
-
-
 
   void scale(
     ffi.Pointer<DrawingHandle> handle,
@@ -810,8 +747,6 @@ class EncoderBindings {
   late final _scale = _scalePtr
       .asFunction<void Function(ffi.Pointer<DrawingHandle>, double, double)>();
 
-
-
   void translate(ffi.Pointer<DrawingHandle> handle, double x, double y) {
     return _translate(handle, x, y);
   }
@@ -824,7 +759,6 @@ class EncoderBindings {
       >('translate');
   late final _translate = _translatePtr
       .asFunction<void Function(ffi.Pointer<DrawingHandle>, double, double)>();
-
 
   void free_in_progress_data(ffi.Pointer<InProgressDataHandle> data) {
     return _free_in_progress_data(data);
@@ -850,10 +784,6 @@ class EncoderBindings {
   late final _start_capture = _start_capturePtr
       .asFunction<ffi.Pointer<InProgressDataHandle> Function(int)>();
 
-
-
-
-
   ffi.Pointer<ByteArray> finish_capture(
     ffi.Pointer<InProgressDataHandle> handle,
     int root_id,
@@ -874,10 +804,6 @@ class EncoderBindings {
       .asFunction<
         ffi.Pointer<ByteArray> Function(ffi.Pointer<InProgressDataHandle>, int)
       >();
-
-
-
-
 
   int view_metadata(
     ffi.Pointer<InProgressDataHandle> session_handle,
@@ -941,11 +867,6 @@ class EncoderBindings {
           int,
         )
       >();
-
-
-
-
-
 
   int view(
     ffi.Pointer<InProgressDataHandle> session_handle,
@@ -1051,11 +972,6 @@ final class ByteArray extends ffi.Struct {
 
 final class KeepRulesHandle extends ffi.Opaque {}
 
-
-
-
-
-
 final class BlockResult extends ffi.Struct {
   @ffi.Uint32()
   external int block_type;
@@ -1064,9 +980,6 @@ final class BlockResult extends ffi.Struct {
 
   external ffi.Pointer<ffi.Char> matched_selector;
 }
-
-
-
 
 final class SelectorAttributes extends ffi.Struct {
   external ffi.Pointer<ffi.Char> tag;
@@ -1084,11 +997,6 @@ final class SelectorAttributes extends ffi.Struct {
   external int attrs_len;
 }
 
-
-
-
-
-
 final class KeepResult extends ffi.Struct {
   @ffi.Bool()
   external bool matched;
@@ -1097,5 +1005,7 @@ final class KeepResult extends ffi.Struct {
 
   external ffi.Pointer<ffi.Char> matched_selector;
 }
+
 final class DrawingHandle extends ffi.Opaque {}
+
 final class InProgressDataHandle extends ffi.Opaque {}

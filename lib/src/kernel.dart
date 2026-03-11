@@ -12,9 +12,6 @@ import 'native.dart';
 import 'pointers.dart';
 import 'view_scanner.dart';
 
-
-
-
 class Kernel implements HostCallbacks, FSStatusListener {
   final native = NativeInterface();
   final _ruleFetcher = BlockRulesFetcher(FullstoryFlutterPlatform.instance);
@@ -31,15 +28,8 @@ class Kernel implements HostCallbacks, FSStatusListener {
   bool _initialized = false;
   bool _registered = false;
 
-
-
-
   bool _firstFlutterFrame = true;
   bool _scanning = false;
-
-
-
-
 
   bool get hideElements => _hideElements;
   set hideElements(bool value) {
@@ -115,6 +105,7 @@ class Kernel implements HostCallbacks, FSStatusListener {
       _scanning = false;
     }
   }
+
   @override
   void onFSSession(String url) {
     Logger.log(LogLevel.note, 'FS Session started with URL: $url');
@@ -130,6 +121,7 @@ class Kernel implements HostCallbacks, FSStatusListener {
     FS.addStatusListener(this);
     _registerIfReady();
   }
+
   Future<void> _registerIfReady() async {
     final url = await FS.currentSessionURL();
     if (url != null && url.isNotEmpty) {

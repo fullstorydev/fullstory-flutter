@@ -3,12 +3,12 @@ import 'dart:ffi';
 import 'package:ffi/ffi.dart';
 import 'package:fullstory_flutter/src/encoder.dart';
 import 'package:fullstory_flutter/src/shared_flutter_bindings_generated.dart';
+
 class Masker {
   final EncoderBindings _encoderBindings;
 
   Masker([EncoderBindings? bindings])
     : _encoderBindings = bindings ?? encoderBindings;
-
 
   String maskText(String line, int? renderObjectHash) {
     if (line.isEmpty) {

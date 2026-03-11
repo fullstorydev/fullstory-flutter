@@ -22,7 +22,6 @@ class _PointerState {
   int presses;
   int lastSeen;
 
-
   HitTestResult downHit;
   Offset downOffset;
   bool wasTap;

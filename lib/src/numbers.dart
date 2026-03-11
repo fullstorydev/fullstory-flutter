@@ -1,9 +1,6 @@
 import 'package:fullstory_flutter/src/logging.dart';
 
 extension SafeDouble on double {
-
-
-
   int toIntSafe([String? context, String? widgetType]) {
     if (isFinite) {
       return toInt();
@@ -19,10 +16,8 @@ extension SafeDouble on double {
       return this > 0 ? _approxInfinity : -_approxInfinity;
     }
 
-
     return 0;
   }
-
 
   int roundSafe() {
     if (isFinite) {
@@ -34,11 +29,10 @@ extension SafeDouble on double {
       return this > 0 ? _approxInfinity : -_approxInfinity;
     }
 
-
     return 0;
   }
+
   int roundOr(int fallback) => isFinite ? round() : fallback;
 }
-
 
 const _approxInfinity = 102115;
