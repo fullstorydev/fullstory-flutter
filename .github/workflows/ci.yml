@@ -59,31 +59,31 @@ jobs:
       - name: Analyze project source
         run: dart analyze --fatal-infos
 
-    #  - name: Run library tests
-    #    run: flutter test
+      - name: Run library tests
+        run: flutter test
 
-    #  - name: Run example app tests
-    #    run: cd example && flutter test
+      - name: Run example app tests
+        run: cd example && flutter test
 
-    #  - name: Run Android unit tests
-        # the 'build apk --config-only' is a workaround for 
-        # https://github.com/flutter/flutter/issues/169336
-    #    run: cd example && flutter build apk --config-only && cd android && ./gradlew test
-          
-    #  - name: Install Dependencies
-    #    run: cd example/ios && pod install
+      - name: Run Android unit tests
+          the 'build apk --config-only' is a workaround for 
+          https://github.com/flutter/flutter/issues/169336
+        run: cd example && flutter build apk --config-only && cd android && ./gradlew test
 
-    #  - name: Run iOS unit tests
-    #    run: |
-    #      cd example/ios && \
-    #        xcodebuild test \
-    #          -workspace Runner.xcworkspace \
-    #          -scheme Runner \
-    #          -configuration Debug \
-    #          -sdk iphonesimulator \
-    #          -destination 'platform=iOS Simulator,name=iPhone 16,OS=26.1' \
-    #          -disableAutomaticPackageResolution \
-    #          CODE_SIGNING_ALLOWED='NO'
+      - name: Install Dependencies
+        run: cd example/ios && pod install
+
+      - name: Run iOS unit tests
+        run: |
+          cd example/ios && \
+            xcodebuild test \
+              -workspace Runner.xcworkspace \
+              -scheme Runner \
+              -configuration Debug \
+              -sdk iphonesimulator \
+              -destination 'platform=iOS Simulator,name=iPhone 16,OS=26.1' \
+              -disableAutomaticPackageResolution \
+              CODE_SIGNING_ALLOWED='NO'
 
       # Revert the file that get's mutated by pod install
       # to avoid angering flutter pub publish
