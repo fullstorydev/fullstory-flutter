@@ -29,7 +29,7 @@
 		<key>LogLevel</key>
 		<string>debug</string>
 		<key>OrgId</key>
-		<string>Your org here</string>
+		<string>Your Fullstory OrgID here</string>
 		<key>VerboseLogging</key>
 		<string>2</string>
 	</dict>
