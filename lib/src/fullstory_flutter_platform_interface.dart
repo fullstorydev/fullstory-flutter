@@ -37,8 +37,10 @@ abstract class FullstoryFlutterPlatform extends PlatformInterface {
     throw UnimplementedError('restart() has not been implemented.');
   }
 
-  Future<void> log(
-      {FSLogLevel level = FSLogLevel.info, required String message}) {
+  Future<void> log({
+    FSLogLevel level = FSLogLevel.info,
+    required String message,
+  }) {
     throw UnimplementedError('log() has not been implemented.');
   }
 
@@ -79,7 +81,8 @@ abstract class FullstoryFlutterPlatform extends PlatformInterface {
 
   Future<String?> getCurrentSessionURL([bool now = false]) {
     throw UnimplementedError(
-        'getCurrentSessionURL() has not been implemented.');
+      'getCurrentSessionURL() has not been implemented.',
+    );
   }
 
   void setStatusListener(FSStatusListener? listener) {
@@ -92,7 +95,8 @@ abstract class FullstoryFlutterPlatform extends PlatformInterface {
 
   void removeStatusListener(FSStatusListener listener) {
     throw UnimplementedError(
-        'removeStatusListener() has not been implemented.');
+      'removeStatusListener() has not been implemented.',
+    );
   }
   // todo: webview injection disable
 
@@ -109,7 +113,9 @@ abstract class FullstoryFlutterPlatform extends PlatformInterface {
   }
 
   Future<void> updatePageProperties(
-      int pageId, Map<String, Object?> properties) {
+    int pageId,
+    Map<String, Object?> properties,
+  ) {
     throw UnimplementedError();
   }
 

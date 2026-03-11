@@ -28,17 +28,16 @@ void main() {
 
   testWidgets('Verify FS Version', (WidgetTester tester) async {
     // Build our app and trigger a frame.
-    await tester.pumpWidget(const MaterialApp(
-      home: FSVersion(),
-    ));
+    await tester.pumpWidget(const MaterialApp(home: FSVersion()));
 
     // Verify that platform version is retrieved.
     expect(
       find.byWidgetPredicate(
         (Widget widget) =>
             widget is Text &&
-            widget.data!
-                .startsWith('Fullstory version'), // Fullstory version: Unknown
+            widget.data!.startsWith(
+              'Fullstory version',
+            ), // Fullstory version: Unknown
       ),
       findsOneWidget,
     );

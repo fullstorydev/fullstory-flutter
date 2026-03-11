@@ -55,8 +55,9 @@ void main() {
       expect(event['frames'], contains(stackTrace.toString()));
     });
 
-    testWidgets('captureErrors allows capture of flutter build errors',
-        (tester) async {
+    testWidgets('captureErrors allows capture of flutter build errors', (
+      tester,
+    ) async {
       // Otherwise, our auto-callthrough will call the default, which fails
       // the test.
       FlutterError.onError = null;
@@ -64,11 +65,13 @@ void main() {
       FS.captureErrors();
 
       var exception = Exception('Test exception message');
-      await tester.pumpWidget(Builder(
-        builder: (context) {
-          throw exception;
-        },
-      ));
+      await tester.pumpWidget(
+        Builder(
+          builder: (context) {
+            throw exception;
+          },
+        ),
+      );
 
       // Reset to the default error handler.
       FlutterError.onError = FlutterError.presentError;

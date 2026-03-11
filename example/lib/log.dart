@@ -18,35 +18,42 @@ class _LogState extends State<Log> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(children: [
-      TextField(
-        decoration: const InputDecoration(
-          border: OutlineInputBorder(),
-          hintText: 'Log message...',
-        ),
-        onChanged: (value) => message = value,
-        // allow the keyboard to be hidden - why is this not the default behavior?
-        onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
-      ),
-      Row(
-        children: [
-          const Text("Level:"),
-          DropdownMenu(
-            dropdownMenuEntries: FSLogLevel.values
-                .map<DropdownMenuEntry<FSLogLevel>>((FSLogLevel level) {
-              return DropdownMenuEntry<FSLogLevel>(
-                  value: level, label: level.name);
-            }).toList(),
-            initialSelection: level,
-            onSelected: (value) => level = value!,
+    return Column(
+      children: [
+        TextField(
+          decoration: const InputDecoration(
+            border: OutlineInputBorder(),
+            hintText: 'Log message...',
           ),
-          TextButton(
+          onChanged: (value) => message = value,
+          // allow the keyboard to be hidden - why is this not the default behavior?
+          onTapOutside: (event) =>
+              FocusManager.instance.primaryFocus?.unfocus(),
+        ),
+        Row(
+          children: [
+            const Text("Level:"),
+            DropdownMenu(
+              dropdownMenuEntries: FSLogLevel.values
+                  .map<DropdownMenuEntry<FSLogLevel>>((FSLogLevel level) {
+                    return DropdownMenuEntry<FSLogLevel>(
+                      value: level,
+                      label: level.name,
+                    );
+                  })
+                  .toList(),
+              initialSelection: level,
+              onSelected: (value) => level = value!,
+            ),
+            TextButton(
               onPressed: () {
                 FS.log(message: message, level: level);
               },
-              child: const Text('Log'))
-        ],
-      ),
-    ]);
+              child: const Text('Log'),
+            ),
+          ],
+        ),
+      ],
+    );
   }
 }

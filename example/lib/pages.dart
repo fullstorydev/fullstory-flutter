@@ -5,9 +5,7 @@ import 'package:fullstory_flutter/fs.dart';
 // See _pages in main.dart for a more typical usage.
 
 class Pages extends StatefulWidget {
-  const Pages({
-    super.key,
-  });
+  const Pages({super.key});
 
   @override
   State<Pages> createState() => _PagesState();
@@ -28,8 +26,10 @@ class _PagesState extends State<Pages> {
     setState(() {
       // Dispose of the current page before creating a new one
       _currentPage?.dispose();
-      _currentPage = FS.page('DemoPage$_pageCounter',
-          properties: {'initialKey': 'initialValue'});
+      _currentPage = FS.page(
+        'DemoPage$_pageCounter',
+        properties: {'initialKey': 'initialValue'},
+      );
       _pageCounter++;
     });
   }
@@ -63,9 +63,7 @@ class _PagesState extends State<Pages> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Fullstory Pages API'),
-      ),
+      appBar: AppBar(title: const Text('Fullstory Pages API')),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,

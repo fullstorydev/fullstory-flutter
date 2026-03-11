@@ -44,8 +44,10 @@ class MockFullstoryFlutterPlatform
   }
 
   @override
-  Future<void> log(
-      {FSLogLevel level = FSLogLevel.info, required String message}) {
+  Future<void> log({
+    FSLogLevel level = FSLogLevel.info,
+    required String message,
+  }) {
     throw UnimplementedError();
   }
 
@@ -96,7 +98,9 @@ class MockFullstoryFlutterPlatform
 
   @override
   Future<void> updatePageProperties(
-      int pageId, Map<String, Object?> properties) {
+    int pageId,
+    Map<String, Object?> properties,
+  ) {
     throw UnimplementedError();
   }
 }

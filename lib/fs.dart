@@ -16,7 +16,8 @@ class FS {
   // This is dead code, but it prevents `dart doc` from making up a FS() constructor.
   FS._() {
     throw UnsupportedError(
-        "FS is a static class, do not create instances of it.");
+      "FS is a static class, do not create instances of it.",
+    );
   }
 
   /// Version of the underlying native Fullstory framework, e.g. '1.54.0'
@@ -45,10 +46,14 @@ class FS {
   /// Capture is dependant on the logLevel setting in the Android and iOS settings.
   ///
   /// For more information, see https://developer.fullstory.com/mobile/flutter/fullcapture/logging/
-  static Future<void> log(
-      {FSLogLevel level = FSLogLevel.info, required String message}) {
-    return FullstoryFlutterPlatform.instance
-        .log(level: level, message: message);
+  static Future<void> log({
+    FSLogLevel level = FSLogLevel.info,
+    required String message,
+  }) {
+    return FullstoryFlutterPlatform.instance.log(
+      level: level,
+      message: message,
+    );
   }
 
   /// Reset the idle timer and prevent Fullstory from going into a lower-fidelity mode that conserves power and bandwidth.
@@ -74,10 +79,14 @@ class FS {
   /// Create a custom event that will appear in the event list in playback and can be used in segments, funnels, etc.
   ///
   /// For more information, see https://developer.fullstory.com/mobile/flutter/capture-events/analytics-events/
-  static Future<void> event(String name,
-      [Map<String, Object?> properties = const {}]) {
-    return FullstoryFlutterPlatform.instance
-        .event(name: name, properties: properties);
+  static Future<void> event(
+    String name, [
+    Map<String, Object?> properties = const {},
+  ]) {
+    return FullstoryFlutterPlatform.instance.event(
+      name: name,
+      properties: properties,
+    );
   }
 
   /// Create a network event in the Dev Log in playback.
@@ -91,16 +100,15 @@ class FS {
     int? durationMs,
     int? requestSize,
     int? responseSize,
-  }) =>
-      FullstoryFlutterPlatform.instance.captureEvent({
-        "eventType": _EventType.network.value,
-        "url": url,
-        "method": method,
-        "statusCode": statusCode ?? 0,
-        "durationMS": durationMs ?? 0,
-        "requestSize": requestSize ?? 0,
-        "responseSize": responseSize ?? 0,
-      });
+  }) => FullstoryFlutterPlatform.instance.captureEvent({
+    "eventType": _EventType.network.value,
+    "url": url,
+    "method": method,
+    "statusCode": statusCode ?? 0,
+    "durationMS": durationMs ?? 0,
+    "requestSize": requestSize ?? 0,
+    "responseSize": responseSize ?? 0,
+  });
 
   /// Report a crash to Fullstory for display in playback.
   ///
@@ -113,16 +121,15 @@ class FS {
     String name = 'Flutter crash',
     Object? exception,
     StackTrace? stackTrace,
-  }) =>
-      FullstoryFlutterPlatform.instance.captureEvent({
-        // This event type is assigned to crash events in host SDKs
-        'eventType': _EventType.crash.value,
-        'name': name,
-        'frames': <String>[
-          if (exception != null) exception.toString(),
-          if (stackTrace != null) stackTrace.toString(),
-        ],
-      });
+  }) => FullstoryFlutterPlatform.instance.captureEvent({
+    // This event type is assigned to crash events in host SDKs
+    'eventType': _EventType.crash.value,
+    'name': name,
+    'frames': <String>[
+      if (exception != null) exception.toString(),
+      if (stackTrace != null) stackTrace.toString(),
+    ],
+  });
 
   /// Configures Flutter to send errors to Fullstory for handling.
   ///
@@ -231,7 +238,8 @@ class FS {
   ///
   /// For more information, see https://developer.fullstory.com/mobile/flutter/fullcapture/callbacks-and-delegates/
   @Deprecated(
-      'Use addStatusListener instead to allow multiple delegates. Will be removed in a future release.')
+    'Use addStatusListener instead to allow multiple delegates. Will be removed in a future release.',
+  )
   static void setStatusListener(FSStatusListener? listener) {
     FullstoryFlutterPlatform.instance.setStatusListener(listener);
   }
@@ -259,7 +267,8 @@ class FS {
   /// For more information, see https://help.fullstory.com/hc/en-us/articles/14795945510295-Mobile-App-Pages-in-Fullstory
   static FSPage page(String pageName, {Map<String, Object?>? properties}) {
     return FSPage._(
-        FullstoryFlutterPlatform.instance.page(pageName, properties ?? {}));
+      FullstoryFlutterPlatform.instance.page(pageName, properties ?? {}),
+    );
   }
 }
 
@@ -285,8 +294,10 @@ class FSPage {
 
   /// Start the current page. May be called multiple times if the page is visited more than once.
   Future<void> start({Map<String, Object?>? propertyUpdates}) async {
-    return FullstoryFlutterPlatform.instance
-        .startPage(await _id, propertyUpdates ?? {});
+    return FullstoryFlutterPlatform.instance.startPage(
+      await _id,
+      propertyUpdates ?? {},
+    );
   }
 
   /// End the current page. Optional. Starting a different page implicitly ends the current one.
@@ -296,8 +307,10 @@ class FSPage {
 
   /// Merge the given properties into the page's existing properties (if any).
   Future<void> updateProperties(Map<String, Object?> properties) async {
-    return FullstoryFlutterPlatform.instance
-        .updatePageProperties(await _id, properties);
+    return FullstoryFlutterPlatform.instance.updatePageProperties(
+      await _id,
+      properties,
+    );
   }
 
   /// Free the native Fullstory Android/iOS SDK FSPage object that is linked to this Dart object.

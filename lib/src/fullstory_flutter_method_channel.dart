@@ -34,7 +34,8 @@ class MethodChannelFullstoryFlutter extends FullstoryFlutterPlatform {
       default:
         // ignore: avoid_print
         print(
-            "WARNING: unhandled command sent from native Fullstory SDK to Flutter library: $call");
+          "WARNING: unhandled command sent from native Fullstory SDK to Flutter library: $call",
+        );
     }
     return Future.value(null);
   }
@@ -75,10 +76,14 @@ class MethodChannelFullstoryFlutter extends FullstoryFlutterPlatform {
   }
 
   @override
-  Future<void> log(
-      {FSLogLevel level = FSLogLevel.info, required String message}) async {
-    await methodChannel
-        .invokeMethod<void>('log', {'level': level.index, 'message': message});
+  Future<void> log({
+    FSLogLevel level = FSLogLevel.info,
+    required String message,
+  }) async {
+    await methodChannel.invokeMethod<void>('log', {
+      'level': level.index,
+      'message': message,
+    });
   }
 
   @override
@@ -128,7 +133,9 @@ class MethodChannelFullstoryFlutter extends FullstoryFlutterPlatform {
   @override
   Future<String?> getCurrentSessionURL([bool now = false]) async {
     return await methodChannel.invokeMethod<String>(
-        'getCurrentSessionURL', now);
+      'getCurrentSessionURL',
+      now,
+    );
   }
 
   // FS Pages apis
@@ -159,7 +166,9 @@ class MethodChannelFullstoryFlutter extends FullstoryFlutterPlatform {
 
   @override
   Future<void> updatePageProperties(
-      int pageId, Map<String, Object?> properties) {
+    int pageId,
+    Map<String, Object?> properties,
+  ) {
     return methodChannel.invokeMethod('updatePageProperties', {
       'pageId': pageId,
       'properties': properties,

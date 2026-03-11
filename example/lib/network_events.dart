@@ -44,9 +44,7 @@ class NetworkEvents extends StatelessWidget {
     final response = await dio.get('https://fullstory.com');
     if (context.mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Dio got response: ${response.statusCode}'),
-        ),
+        SnackBar(content: Text('Dio got response: ${response.statusCode}')),
       );
     }
   }
