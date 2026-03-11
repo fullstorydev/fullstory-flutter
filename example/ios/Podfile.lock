@@ -1,27 +1,19 @@
 PODS:
   - Flutter (1.0.0)
-  - FullStory (1.65.0)
-  - fullstory_capture (0.0.1):
-    - Flutter
-    - FullStory (~> 1.65)
+  - FullStory (1.68.2)
   - fullstory_flutter (0.0.1):
     - Flutter
-    - FullStory (~> 1.60)
+    - FullStory (~> 1.66)
   - integration_test (0.0.1):
     - Flutter
-  - path_provider_foundation (0.0.1):
-    - Flutter
-    - FlutterMacOS
   - webview_flutter_wkwebview (0.0.1):
     - Flutter
     - FlutterMacOS
 
 DEPENDENCIES:
   - Flutter (from `Flutter`)
-  - fullstory_capture (from `.symlinks/plugins/fullstory_capture/ios`)
   - fullstory_flutter (from `.symlinks/plugins/fullstory_flutter/ios`)
   - integration_test (from `.symlinks/plugins/integration_test/ios`)
-  - path_provider_foundation (from `.symlinks/plugins/path_provider_foundation/darwin`)
   - webview_flutter_wkwebview (from `.symlinks/plugins/webview_flutter_wkwebview/darwin`)
 
 SPEC REPOS:
@@ -31,25 +23,19 @@ SPEC REPOS:
 EXTERNAL SOURCES:
   Flutter:
     :path: Flutter
-  fullstory_capture:
-    :path: ".symlinks/plugins/fullstory_capture/ios"
   fullstory_flutter:
     :path: ".symlinks/plugins/fullstory_flutter/ios"
   integration_test:
     :path: ".symlinks/plugins/integration_test/ios"
-  path_provider_foundation:
-    :path: ".symlinks/plugins/path_provider_foundation/darwin"
   webview_flutter_wkwebview:
     :path: ".symlinks/plugins/webview_flutter_wkwebview/darwin"
 
 SPEC CHECKSUMS:
   Flutter: cabc95a1d2626b1b06e7179b784ebcf0c0cde467
-  FullStory: 9d28b22bfa75657b5e7ac443588ed5d3677517d3
-  fullstory_capture: 1f9f38ac4136dc15b9b2cba51225d73143b8dc8d
-  fullstory_flutter: 72bbe5176a409e732a363b01f1acbfdeaea8fa61
-  integration_test: 252f60fa39af5e17c3aa9899d35d908a0721b573
-  path_provider_foundation: 0b743cbb62d8e47eab856f09262bb8c1ddcfe6ba
-  webview_flutter_wkwebview: 29eb20d43355b48fe7d07113835b9128f84e3af4
+  FullStory: 400bf677270c76af814e61c6c48088b63f935f11
+  fullstory_flutter: 898187abc84d1b49bb7242741a393353c3cc0757
+  integration_test: 4a889634ef21a45d28d50d622cf412dc6d9f586e
+  webview_flutter_wkwebview: 8ebf4fded22593026f7dbff1fbff31ea98573c8d
 
 PODFILE CHECKSUM: 53a6aebc29ccee84c41f92f409fc20cd4ca011f1
 
