@@ -5,9 +5,7 @@ import 'package:fullstory_flutter/fs.dart';
 // and creates a FSStatusListener to be notified when a session starts
 
 class CaptureStatus extends StatefulWidget {
-  const CaptureStatus({
-    super.key,
-  });
+  const CaptureStatus({super.key});
 
   @override
   State<CaptureStatus> createState() => _CaptureStatusState();
@@ -25,16 +23,20 @@ class _CaptureStatusState extends State<CaptureStatus> with FSStatusListener {
     super.initState();
 
     // grab the current session URL & ID in case it has already started
-    FS.currentSessionURL().then((url) => setState(() {
-          if (url != null) {
-            // if there is a url, we know the session started
-            this.url = url;
-            status = "Started";
-          }
-        }));
-    FS.currentSession.then((id) => setState(() {
-          this.id = id ?? "";
-        }));
+    FS.currentSessionURL().then(
+          (url) => setState(() {
+            if (url != null) {
+              // if there is a url, we know the session started
+              this.url = url;
+              status = "Started";
+            }
+          }),
+        );
+    FS.currentSession.then(
+      (id) => setState(() {
+        this.id = id ?? "";
+      }),
+    );
 
     // set the status listener to handle future changes
     FS.addStatusListener(this);
@@ -53,9 +55,11 @@ class _CaptureStatusState extends State<CaptureStatus> with FSStatusListener {
     setState(() {
       status = "Started";
       this.url = url;
-      FS.currentSession.then((id) => setState(() {
-            this.id = id ?? "";
-          }));
+      FS.currentSession.then(
+        (id) => setState(() {
+          this.id = id ?? "";
+        }),
+      );
     });
   }
   // Other events (session ended, disabled, error, etc.) are not currently supported, but may be added in a future version of the library
@@ -67,24 +71,28 @@ class _CaptureStatusState extends State<CaptureStatus> with FSStatusListener {
         Wrap(
           children: [
             TextButton(
-                onPressed: () {
-                  FS.shutdown();
-                  // manually do this one since only the iOS SDK has a callback for it
-                  setState(() {
-                    status = "Shutdown";
-                    url = "";
-                    id = "";
-                  });
-                },
-                child: const Text("Shutdown")),
+              onPressed: () {
+                FS.shutdown();
+                // manually do this one since only the iOS SDK has a callback for it
+                setState(() {
+                  status = "Shutdown";
+                  url = "";
+                  id = "";
+                });
+              },
+              child: const Text("Shutdown"),
+            ),
             const TextButton(onPressed: FS.restart, child: Text("Restart")),
             TextButton(
-                onPressed: () {
-                  FS.currentSessionURL(now: true).then((url) => setState(() {
+              onPressed: () {
+                FS.currentSessionURL(now: true).then(
+                      (url) => setState(() {
                         urlNow = url ?? "";
-                      }));
-                },
-                child: const Text("Update Timestamped URL"))
+                      }),
+                    );
+              },
+              child: const Text("Update Timestamped URL"),
+            ),
           ],
         ),
         SelectableText("Status: $status\nURL: $url\nNow: $urlNow\nID: $id"),

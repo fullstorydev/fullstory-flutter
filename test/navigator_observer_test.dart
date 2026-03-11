@@ -27,7 +27,7 @@ void main() {
         expect(fakePlatform.startedPages, ['test_page']);
         expect(fakePlatform.pageProperties.length, 1);
         expect(fakePlatform.pageProperties, {
-          'test_page': {'key': 'value'}
+          'test_page': {'key': 'value'},
         });
       });
     });
@@ -88,7 +88,9 @@ class FakeFullstoryFlutterPlatform
 
   @override
   Future<void> startPage(
-      int pageId, Map<String, Object?> propertyUpdates) async {
+    int pageId,
+    Map<String, Object?> propertyUpdates,
+  ) async {
     final name = _nameFor(pageId);
     if (propertyUpdates.isNotEmpty) {
       pageProperties[name] = propertyUpdates;
@@ -99,7 +101,9 @@ class FakeFullstoryFlutterPlatform
 
   @override
   Future<void> updatePageProperties(
-      int pageId, Map<String, Object?> properties) async {
+    int pageId,
+    Map<String, Object?> properties,
+  ) async {
     final name = _nameFor(pageId);
     pageProperties[name] = properties;
   }

@@ -24,9 +24,7 @@ import 'package:fullstory_flutter/fs.dart';
 // and creates a FSStatusListener to be notified when a session starts
 
 class CaptureStatus extends StatefulWidget {
-  const CaptureStatus({
-    super.key,
-  });
+  const CaptureStatus({super.key});
 
   @override
   State<CaptureStatus> createState() => _CaptureStatusState();
@@ -44,16 +42,20 @@ class _CaptureStatusState extends State<CaptureStatus> with FSStatusListener {
     super.initState();
 
     // grab the current session URL & ID in case it has already started
-    FS.currentSessionURL().then((url) => setState(() {
-          if (url != null) {
-            // if there is a url, we know the session started
-            this.url = url;
-            status = "Started";
-          }
-        }));
-    FS.currentSession.then((id) => setState(() {
-          this.id = id ?? "";
-        }));
+    FS.currentSessionURL().then(
+          (url) => setState(() {
+            if (url != null) {
+              // if there is a url, we know the session started
+              this.url = url;
+              status = "Started";
+            }
+          }),
+        );
+    FS.currentSession.then(
+      (id) => setState(() {
+        this.id = id ?? "";
+      }),
+    );
 
     // set the status listener to handle future changes
     FS.addStatusListener(this);
@@ -72,9 +74,11 @@ class _CaptureStatusState extends State<CaptureStatus> with FSStatusListener {
     setState(() {
       status = "Started";
       this.url = url;
-      FS.currentSession.then((id) => setState(() {
-            this.id = id ?? "";
-          }));
+      FS.currentSession.then(
+        (id) => setState(() {
+          this.id = id ?? "";
+        }),
+      );
     });
   }
   // Other events (session ended, disabled, error, etc.) are not currently supported, but may be added in a future version of the library
@@ -86,24 +90,28 @@ class _CaptureStatusState extends State<CaptureStatus> with FSStatusListener {
         Wrap(
           children: [
             TextButton(
-                onPressed: () {
-                  FS.shutdown();
-                  // manually do this one since only the iOS SDK has a callback for it
-                  setState(() {
-                    status = "Shutdown";
-                    url = "";
-                    id = "";
-                  });
-                },
-                child: const Text("Shutdown")),
+              onPressed: () {
+                FS.shutdown();
+                // manually do this one since only the iOS SDK has a callback for it
+                setState(() {
+                  status = "Shutdown";
+                  url = "";
+                  id = "";
+                });
+              },
+              child: const Text("Shutdown"),
+            ),
             const TextButton(onPressed: FS.restart, child: Text("Restart")),
             TextButton(
-                onPressed: () {
-                  FS.currentSessionURL(now: true).then((url) => setState(() {
+              onPressed: () {
+                FS.currentSessionURL(now: true).then(
+                      (url) => setState(() {
                         urlNow = url ?? "";
-                      }));
-                },
-                child: const Text("Update Timestamped URL"))
+                      }),
+                    );
+              },
+              child: const Text("Update Timestamped URL"),
+            ),
           ],
         ),
         SelectableText("Status: $status\nURL: $url\nNow: $urlNow\nID: $id"),
@@ -153,9 +161,7 @@ import 'package:fullstory_flutter/fs.dart';
 // These will show up in the event list on the right side of session replays
 
 class Events extends StatelessWidget {
-  const Events({
-    super.key,
-  });
+  const Events({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -198,7 +204,7 @@ class Events extends StatelessWidget {
             ],
           }),
           child: const Text('Order Completed event'),
-        )
+        ),
       ],
     );
   }
@@ -275,81 +281,86 @@ class _IdentityState extends State<Identity> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(children: [
-      TextField(
-        decoration: const InputDecoration(
-          border: OutlineInputBorder(),
-          hintText: 'displayName',
+    return Column(
+      children: [
+        TextField(
+          decoration: const InputDecoration(
+            border: OutlineInputBorder(),
+            hintText: 'displayName',
+          ),
+          onChanged: (value) => setState(() {
+            displayName = value;
+          }),
+          // allow the keyboard to be hidden - why is this not the default behavior?
+          onTapOutside: (event) =>
+              FocusManager.instance.primaryFocus?.unfocus(),
         ),
-        onChanged: (value) => setState(() {
-          displayName = value;
-        }),
-        // allow the keyboard to be hidden - why is this not the default behavior?
-        onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
-      ),
-      TextField(
-        decoration: const InputDecoration(
-          border: OutlineInputBorder(),
-          hintText: 'email',
+        TextField(
+          decoration: const InputDecoration(
+            border: OutlineInputBorder(),
+            hintText: 'email',
+          ),
+          onChanged: (value) => setState(() {
+            email = value;
+          }),
+          onTapOutside: (event) =>
+              FocusManager.instance.primaryFocus?.unfocus(),
         ),
-        onChanged: (value) => setState(() {
-          email = value;
-        }),
-        onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
-      ),
-      TextField(
-        decoration: const InputDecoration(
-          border: OutlineInputBorder(),
-          hintText: 'uid',
+        TextField(
+          decoration: const InputDecoration(
+            border: OutlineInputBorder(),
+            hintText: 'uid',
+          ),
+          onChanged: (value) => setState(() {
+            uid = value;
+          }),
+          onTapOutside: (event) =>
+              FocusManager.instance.primaryFocus?.unfocus(),
         ),
-        onChanged: (value) => setState(() {
-          uid = value;
-        }),
-        onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
-      ),
-      Wrap(
-        children: [
-          TextButton(
-            child: const Text('Identify'),
-            onPressed: () {
-              FS.identify(uid);
-            },
-          ),
-          TextButton(
-            child: const Text('Identify w/ userVars'),
-            onPressed: () {
-              FS.identify(uid, {
-                // email and displayName are used by Fullstory, everything else is arbitrary
-                'source': 'identify',
-                'when': DateTime.now().toString(),
-                'displayName': displayName,
-                'email': email,
-                'extraInfo': 'foo'
-              });
-            },
-          ),
-          TextButton(
-            child: const Text('setUserVars'),
-            onPressed: () {
-              FS.setUserVars({
-                // ditto above: email and displayName are used by Fullstory, everything else is arbitrary
-                'source': 'setUserVars',
-                'when': DateTime.now().toString(),
-                'displayName': displayName,
-                'email': email,
-                'membershipLevel': 'bar'
-              });
-            },
-          ),
-          TextButton(
-            child: const Text('Anonymize'),
-            onPressed: () {
-              FS.anonymize();
-            },
-          ),
-        ],
-      ),
-    ]);
+        Wrap(
+          children: [
+            TextButton(
+              child: const Text('Identify'),
+              onPressed: () {
+                FS.identify(uid);
+              },
+            ),
+            TextButton(
+              child: const Text('Identify w/ userVars'),
+              onPressed: () {
+                FS.identify(uid, {
+                  // email and displayName are used by Fullstory, everything else is arbitrary
+                  'source': 'identify',
+                  'when': DateTime.now().toString(),
+                  'displayName': displayName,
+                  'email': email,
+                  'extraInfo': 'foo',
+                });
+              },
+            ),
+            TextButton(
+              child: const Text('setUserVars'),
+              onPressed: () {
+                FS.setUserVars({
+                  // ditto above: email and displayName are used by Fullstory, everything else is arbitrary
+                  'source': 'setUserVars',
+                  'when': DateTime.now().toString(),
+                  'displayName': displayName,
+                  'email': email,
+                  'membershipLevel': 'bar',
+                });
+              },
+            ),
+            TextButton(
+              child: const Text('Anonymize'),
+              onPressed: () {
+                FS.anonymize();
+              },
+            ),
+          ],
+        ),
+      ],
+    );
   }
 }
 ```
@@ -376,36 +387,42 @@ class _LogState extends State<Log> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(children: [
-      TextField(
-        decoration: const InputDecoration(
-          border: OutlineInputBorder(),
-          hintText: 'Log message...',
-        ),
-        onChanged: (value) => message = value,
-        // allow the keyboard to be hidden - why is this not the default behavior?
-        onTapOutside: (event) => FocusManager.instance.primaryFocus?.unfocus(),
-      ),
-      Row(
-        children: [
-          const Text("Level:"),
-          DropdownMenu(
-            dropdownMenuEntries: FSLogLevel.values
-                .map<DropdownMenuEntry<FSLogLevel>>((FSLogLevel level) {
-              return DropdownMenuEntry<FSLogLevel>(
-                  value: level, label: level.name);
-            }).toList(),
-            initialSelection: level,
-            onSelected: (value) => level = value!,
+    return Column(
+      children: [
+        TextField(
+          decoration: const InputDecoration(
+            border: OutlineInputBorder(),
+            hintText: 'Log message...',
           ),
-          TextButton(
+          onChanged: (value) => message = value,
+          // allow the keyboard to be hidden - why is this not the default behavior?
+          onTapOutside: (event) =>
+              FocusManager.instance.primaryFocus?.unfocus(),
+        ),
+        Row(
+          children: [
+            const Text("Level:"),
+            DropdownMenu(
+              dropdownMenuEntries: FSLogLevel.values
+                  .map<DropdownMenuEntry<FSLogLevel>>((FSLogLevel level) {
+                return DropdownMenuEntry<FSLogLevel>(
+                  value: level,
+                  label: level.name,
+                );
+              }).toList(),
+              initialSelection: level,
+              onSelected: (value) => level = value!,
+            ),
+            TextButton(
               onPressed: () {
                 FS.log(message: message, level: level);
               },
-              child: const Text('Log'))
-        ],
-      ),
-    ]);
+              child: const Text('Log'),
+            ),
+          ],
+        ),
+      ],
+    );
   }
 }
 ```
@@ -430,11 +447,13 @@ import 'pages.dart';
 // Example app that demonstrates use of most Fullstory APIs
 
 void main() {
-  FS.captureErrors(errorHandler: (exception, __) {
-    // At this point, the error is captured and FS has shut down.
-    // No other FS methods can be called, but other behavior like
-    // graceful shutdown or user notification can be done here.
-  });
+  FS.captureErrors(
+    errorHandler: (exception, __) {
+      // At this point, the error is captured and FS has shut down.
+      // No other FS methods can be called, but other behavior like
+      // graceful shutdown or user notification can be done here.
+    },
+  );
   runApp(const MyApp());
 }
 
@@ -483,9 +502,7 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      routes: {
-        '/navDemo': (_) => const NavDemo(),
-      },
+      routes: {'/navDemo': (_) => const NavDemo()},
       navigatorObservers: [
         FSNavigatorObserver(
           initialProperties: (current, previous) => {
@@ -495,7 +512,7 @@ class _MyAppState extends State<MyApp> {
             if (current.settings.name == '/navDemo') 'navDemoFirstVisit': false,
             'navDemoLaterVisit': true,
           },
-        )
+        ),
       ],
       home: Scaffold(
         appBar: AppBar(
@@ -512,31 +529,33 @@ class _MyAppState extends State<MyApp> {
           ),
         ),
         body: _screens[_selectedIndex],
-        drawer: Builder(builder: (context) {
-          return Drawer(
-            // Add a ListView to the drawer. This ensures the user can scroll
-            // through the options in the drawer if there isn't enough vertical
-            // space to fit everything.
-            child: ListView(
-              // Important: Remove any padding from the ListView.
-              //padding: EdgeInsets.zero,
-              children: [
-                // generate a list of menu entries from the list of pages
-                for (var i = 0; i < _screens.length; i++)
-                  ListTile(
-                    title: Text(_screens[i].toString()),
-                    selected: _selectedIndex == i,
-                    onTap: () {
-                      // Update the state of the app
-                      _onItemTapped(i);
-                      // Then close the drawer
-                      Navigator.pop(context);
-                    },
-                  ),
-              ],
-            ),
-          );
-        }),
+        drawer: Builder(
+          builder: (context) {
+            return Drawer(
+              // Add a ListView to the drawer. This ensures the user can scroll
+              // through the options in the drawer if there isn't enough vertical
+              // space to fit everything.
+              child: ListView(
+                // Important: Remove any padding from the ListView.
+                //padding: EdgeInsets.zero,
+                children: [
+                  // generate a list of menu entries from the list of pages
+                  for (var i = 0; i < _screens.length; i++)
+                    ListTile(
+                      title: Text(_screens[i].toString()),
+                      selected: _selectedIndex == i,
+                      onTap: () {
+                        // Update the state of the app
+                        _onItemTapped(i);
+                        // Then close the drawer
+                        Navigator.pop(context);
+                      },
+                    ),
+                ],
+              ),
+            );
+          },
+        ),
       ),
     );
   }
@@ -554,13 +573,13 @@ class NavDemo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Navigator Observer Demo'),
-      ),
+      appBar: AppBar(title: const Text('Navigator Observer Demo')),
       body: Container(
         margin: const EdgeInsets.symmetric(horizontal: 24),
-        child: const Text('Welcome to the Navigator Observer Demo!\n'
-            'Hit back to return to the main screen.'),
+        child: const Text(
+          'Welcome to the Navigator Observer Demo!\n'
+          'Hit back to return to the main screen.',
+        ),
       ),
     );
   }
@@ -633,9 +652,7 @@ class NetworkEvents extends StatelessWidget {
     final response = await dio.get('https://fullstory.com');
     if (context.mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Dio got response: ${response.statusCode}'),
-        ),
+        SnackBar(content: Text('Dio got response: ${response.statusCode}')),
       );
     }
   }
@@ -651,9 +668,7 @@ import 'package:fullstory_flutter/fs.dart';
 // See _pages in main.dart for a more typical usage.
 
 class Pages extends StatefulWidget {
-  const Pages({
-    super.key,
-  });
+  const Pages({super.key});
 
   @override
   State<Pages> createState() => _PagesState();
@@ -674,8 +689,10 @@ class _PagesState extends State<Pages> {
     setState(() {
       // Dispose of the current page before creating a new one
       _currentPage?.dispose();
-      _currentPage = FS.page('DemoPage$_pageCounter',
-          properties: {'initialKey': 'initialValue'});
+      _currentPage = FS.page(
+        'DemoPage$_pageCounter',
+        properties: {'initialKey': 'initialValue'},
+      );
       _pageCounter++;
     });
   }
@@ -709,9 +726,7 @@ class _PagesState extends State<Pages> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Fullstory Pages API'),
-      ),
+      appBar: AppBar(title: const Text('Fullstory Pages API')),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,

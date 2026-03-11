@@ -7,13 +7,13 @@ class NavDemo extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Navigator Observer Demo'),
-      ),
+      appBar: AppBar(title: const Text('Navigator Observer Demo')),
       body: Container(
         margin: const EdgeInsets.symmetric(horizontal: 24),
-        child: const Text('Welcome to the Navigator Observer Demo!\n'
-            'Hit back to return to the main screen.'),
+        child: const Text(
+          'Welcome to the Navigator Observer Demo!\n'
+          'Hit back to return to the main screen.',
+        ),
       ),
     );
   }

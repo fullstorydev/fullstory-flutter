@@ -5,9 +5,7 @@ import 'package:fullstory_flutter/fs.dart';
 // These will show up in the event list on the right side of session replays
 
 class Events extends StatelessWidget {
-  const Events({
-    super.key,
-  });
+  const Events({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +48,7 @@ class Events extends StatelessWidget {
             ],
           }),
           child: const Text('Order Completed event'),
-        )
+        ),
       ],
     );
   }
