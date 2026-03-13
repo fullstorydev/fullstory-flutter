@@ -65,8 +65,11 @@ jobs:
       - name: Run example app tests
         run: cd example && flutter test
 
+      - name: Accept android licenses
+        run: yes | flutter doctor --android-licenses
+
       - name: Run Android unit tests
-        #  the 'build apk --config-only' is a workaround for 
+        # the 'build apk --config-only' is a workaround for 
         # https://github.com/flutter/flutter/issues/169336
         run: cd example && flutter build apk --config-only && cd android && ./gradlew test
 
