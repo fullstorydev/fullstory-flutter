@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:fullstory_flutter/fs.dart';
+import 'package:fullstory_flutter/fullstory_flutter.dart';
 
 // This uses FS.getCurrentSessionURL() to check if the session has already started
 // and creates a FSStatusListener to be notified when a session starts
@@ -24,14 +24,14 @@ class _CaptureStatusState extends State<CaptureStatus> with FSStatusListener {
 
     // grab the current session URL & ID in case it has already started
     FS.currentSessionURL().then(
-          (url) => setState(() {
-            if (url != null) {
-              // if there is a url, we know the session started
-              this.url = url;
-              status = "Started";
-            }
-          }),
-        );
+      (url) => setState(() {
+        if (url != null) {
+          // if there is a url, we know the session started
+          this.url = url;
+          status = "Started";
+        }
+      }),
+    );
     FS.currentSession.then(
       (id) => setState(() {
         this.id = id ?? "";
@@ -85,7 +85,9 @@ class _CaptureStatusState extends State<CaptureStatus> with FSStatusListener {
             const TextButton(onPressed: FS.restart, child: Text("Restart")),
             TextButton(
               onPressed: () {
-                FS.currentSessionURL(now: true).then(
+                FS
+                    .currentSessionURL(now: true)
+                    .then(
                       (url) => setState(() {
                         urlNow = url ?? "";
                       }),

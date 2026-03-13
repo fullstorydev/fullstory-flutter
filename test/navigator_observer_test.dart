@@ -1,7 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:fullstory_flutter/navigator_observer.dart';
-import 'package:fullstory_flutter/src/fullstory_flutter_platform_interface.dart';
+import 'package:fullstory_flutter/src/platform/fullstory_flutter_platform_interface.dart';
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 import 'package:fake_async/fake_async.dart';
 
@@ -18,7 +18,7 @@ void main() {
       fakeAsync((async) {
         final observer = FSNavigatorObserver(
           namePage: (route) => 'test_page',
-          initialProperties: (_, __) => {'key': 'value'},
+          initialProperties: (_, _) => {'key': 'value'},
         );
 
         observer.didChangeTop(FakeRoute(), null);
@@ -37,8 +37,8 @@ void main() {
         final observer = FSNavigatorObserver(
           // Use route.settings.name for pages names since we're using
           // the default namePage
-          initialProperties: (_, __) => {'key': 'value'},
-          updateProperties: (_, __) => {'new_key': 'new_value'},
+          initialProperties: (_, _) => {'key': 'value'},
+          updateProperties: (_, _) => {'new_key': 'new_value'},
         );
 
         observer.didChangeTop(FakeRoute(name: 'one'), null);

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:fullstory_flutter/fs.dart';
+import 'package:fullstory_flutter/fullstory_flutter.dart';
 
 // Get the version of the underlying native Fullstory SDK (e.g. '1.54.0')
 

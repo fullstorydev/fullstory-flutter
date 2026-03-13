@@ -1,3 +1,9 @@
+## 0.7.0
+
+- Added session replay capability. To use, replace your existing `runApp()`
+with `runFullstoryApp()`. See [dartdoc](https://pub.dev/documentation/fullstory_flutter/latest/)
+for further information on setup.
+
 ## 0.6.0
 
 - Fixed an issue with some event APIs in release builds

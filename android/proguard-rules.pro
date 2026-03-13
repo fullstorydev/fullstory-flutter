@@ -1,2 +1,6 @@
+-keep class com.fullstory.FSCaptureViolatorKt {*;}
+-keep class io.flutter.embedding.android.FlutterView {*;}
+-keep class io.flutter.embedding.android.FlutterSurfaceView {*;}
+-keep class io.flutter.embedding.android.FlutterTextureView {*;}
+-keep class com.fullstory.flutter.fullstory_capture.FullstoryCapturePlugin {*;}
 -keep class com.fullstory.FSViolatorKt {*;}
-

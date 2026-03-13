@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:fullstory_flutter/fs.dart';
-import 'package:fullstory_flutter/navigator_observer.dart';
+import 'package:fullstory_flutter/fullstory_flutter.dart';
 import 'package:fullstory_flutter_example/crashes.dart';
 import 'package:fullstory_flutter_example/nav_demo.dart';
 
@@ -16,14 +15,7 @@ import 'pages.dart';
 // Example app that demonstrates use of most Fullstory APIs
 
 void main() {
-  FS.captureErrors(
-    errorHandler: (exception, __) {
-      // At this point, the error is captured and FS has shut down.
-      // No other FS methods can be called, but other behavior like
-      // graceful shutdown or user notification can be done here.
-    },
-  );
-  runApp(const MyApp());
+  runFullstoryApp(const MyApp());
 }
 
 class MyApp extends StatefulWidget {
@@ -54,8 +46,9 @@ class _MyAppState extends State<MyApp> {
   //
   // Manual calls like this can be intermixed with the
   // [FSNavigatorObserver].
-  static final List<FSPage> _pages =
-      _screens.map((s) => FS.page(s.toString())).toList();
+  static final List<FSPage> _pages = _screens
+      .map((s) => FS.page(s.toString()))
+      .toList();
 
   _MyAppState() {
     _pages[_selectedIndex].start();

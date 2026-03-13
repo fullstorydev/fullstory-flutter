@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:fullstory_flutter/fs.dart';
+import 'package:fullstory_flutter/fullstory_flutter.dart';
 
 class Log extends StatefulWidget {
   const Log({super.key});
@@ -36,11 +36,12 @@ class _LogState extends State<Log> {
             DropdownMenu(
               dropdownMenuEntries: FSLogLevel.values
                   .map<DropdownMenuEntry<FSLogLevel>>((FSLogLevel level) {
-                return DropdownMenuEntry<FSLogLevel>(
-                  value: level,
-                  label: level.name,
-                );
-              }).toList(),
+                    return DropdownMenuEntry<FSLogLevel>(
+                      value: level,
+                      label: level.name,
+                    );
+                  })
+                  .toList(),
               initialSelection: level,
               onSelected: (value) => level = value!,
             ),

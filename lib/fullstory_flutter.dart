@@ -1,3 +1,4 @@
-// This file exists for pub.dev, because otherwise it doesn't know which file to instruct users to import at https://pub.dev/packages/fullstory_flutter/install
-// It's functionally equivalent to importing fs.dart directly.
+export 'custom_attributes.dart';
+export 'src/binding.dart';
 export 'fs.dart';
+export 'navigator_observer.dart';

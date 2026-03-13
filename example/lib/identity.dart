@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:fullstory_flutter/fs.dart';
+import 'package:fullstory_flutter/fullstory_flutter.dart';
 
 class Identity extends StatefulWidget {
   const Identity({super.key});

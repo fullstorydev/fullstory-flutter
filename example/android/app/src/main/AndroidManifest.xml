@@ -1,9 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <application
-        android:label="fullstory_flutter_example"
-        android:name="App"
+        android:label="fullstory_capture_example"
+        android:name=".App"
         android:icon="@mipmap/ic_launcher">
-        <!-- android:name="${applicationName}" ("android.app.Application") -->
         <activity
             android:name=".MainActivity"
             android:exported="true"

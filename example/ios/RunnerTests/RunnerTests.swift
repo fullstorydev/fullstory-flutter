@@ -21,7 +21,7 @@ class RunnerTests: XCTestCase {
     let resultExpectation = expectation(description: "result block must be called.")
     plugin.handle(call) { result in
       // This value comes from the underlying iOS FS implementation
-      XCTAssertEqual(result as! String, "1.60.0")
+      XCTAssertEqual(result as! String, "1.68.2")
       resultExpectation.fulfill()
     }
     waitForExpectations(timeout: 1)
