@@ -1,7 +1,6 @@
-package com.example.fullstory_flutter
+package com.fullstory.flutter.fullstory_capture
 
 import com.fullstory.FS
-import com.fullstory.fullstory_flutter.FullstoryFlutterPlugin
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 import org.junit.Before
