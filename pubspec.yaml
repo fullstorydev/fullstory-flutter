@@ -1,6 +1,6 @@
 name: fullstory_flutter
 description: 'Visual capture support for Fullstory session replay'
-version: 0.7.0
+version: 0.7.1
 homepage: 'https://www.fullstory.com/platform/mobile-apps/'
 
 environment:
