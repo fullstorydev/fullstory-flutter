@@ -4,6 +4,7 @@
 From https://github.com/fullstorydev/fullstory-flutter/tree/main/example/lib
 
 * [capture_status.dart](#capture_statusdart)
+* [consent_toggle_widget.dart](#consent_toggle_widgetdart)
 * [crashes.dart](#crashesdart)
 * [events.dart](#eventsdart)
 * [fs_version.dart](#fs_versiondart)
@@ -18,7 +19,7 @@ From https://github.com/fullstorydev/fullstory-flutter/tree/main/example/lib
 ## capture_status.dart
 ```dart
 import 'package:flutter/material.dart';
-import 'package:fullstory_flutter/fs.dart';
+import 'package:fullstory_flutter/fullstory_flutter.dart';
 
 // This uses FS.getCurrentSessionURL() to check if the session has already started
 // and creates a FSStatusListener to be notified when a session starts
@@ -43,14 +44,14 @@ class _CaptureStatusState extends State<CaptureStatus> with FSStatusListener {
 
     // grab the current session URL & ID in case it has already started
     FS.currentSessionURL().then(
-          (url) => setState(() {
-            if (url != null) {
-              // if there is a url, we know the session started
-              this.url = url;
-              status = "Started";
-            }
-          }),
-        );
+      (url) => setState(() {
+        if (url != null) {
+          // if there is a url, we know the session started
+          this.url = url;
+          status = "Started";
+        }
+      }),
+    );
     FS.currentSession.then(
       (id) => setState(() {
         this.id = id ?? "";
@@ -104,7 +105,9 @@ class _CaptureStatusState extends State<CaptureStatus> with FSStatusListener {
             const TextButton(onPressed: FS.restart, child: Text("Restart")),
             TextButton(
               onPressed: () {
-                FS.currentSessionURL(now: true).then(
+                FS
+                    .currentSessionURL(now: true)
+                    .then(
                       (url) => setState(() {
                         urlNow = url ?? "";
                       }),
@@ -117,6 +120,159 @@ class _CaptureStatusState extends State<CaptureStatus> with FSStatusListener {
         SelectableText("Status: $status\nURL: $url\nNow: $urlNow\nID: $id"),
       ],
     );
+  }
+}
+```
+
+## consent_toggle_widget.dart
+```dart
+import 'package:flutter/material.dart';
+// import 'package:fullstory_flutter/fullstory_flutter.dart';
+
+class ConsentToggleWidget extends StatefulWidget {
+  const ConsentToggleWidget({super.key});
+
+  @override
+  State<ConsentToggleWidget> createState() => _ConsentToggleWidgetState();
+}
+
+class _ConsentToggleWidgetState extends State<ConsentToggleWidget> {
+  // ignore: prefer_final_fields
+  bool _consentStatus = false;
+  // ignore: prefer_final_fields
+  bool _isLoading = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      margin: const EdgeInsets.all(16),
+      child: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              'FullStory Consent Toggle',
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 16),
+            Row(
+              children: [
+                Expanded(
+                  child: Text(
+                    'Consent Status: ${_consentStatus ? "Granted" : "Denied"}',
+                    style: TextStyle(
+                      fontSize: 16,
+                      color: _consentStatus ? Colors.green : Colors.red,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 16),
+                Switch(
+                  value: _consentStatus,
+                  onChanged: _isLoading
+                      ? null
+                      : (value) => _toggleConsent(value),
+                  thumbColor: WidgetStateProperty.resolveWith((states) {
+                    if (states.contains(WidgetState.selected)) {
+                      return Colors.green;
+                    }
+                    return Colors.red;
+                  }),
+                  trackColor: WidgetStateProperty.resolveWith((states) {
+                    if (states.contains(WidgetState.selected)) {
+                      return const Color(0x8000FF00); // green with 50% opacity
+                    }
+                    return const Color(0x80FF0000); // red with 50% opacity
+                  }),
+                ),
+              ],
+            ),
+            const SizedBox(height: 16),
+            SizedBox(
+              width: double.infinity,
+              child: ElevatedButton.icon(
+                onPressed: _isLoading ? null : () => _toggleConsent(null),
+                icon: _isLoading
+                    ? const SizedBox(
+                        width: 16,
+                        height: 16,
+                        child: CircularProgressIndicator(strokeWidth: 2),
+                      )
+                    : Icon(_consentStatus ? Icons.block : Icons.check_circle),
+                label: Text(
+                  _consentStatus ? 'Revoke Consent' : 'Grant Consent',
+                ),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: _consentStatus ? Colors.red : Colors.green,
+                  foregroundColor: Colors.white,
+                ),
+              ),
+            ),
+            const SizedBox(height: 8),
+            Text(
+              _consentStatus
+                  ? 'FullStory is currently capturing data with user consent.'
+                  : 'FullStory is not capturing data due to lack of consent.',
+              style: const TextStyle(
+                fontSize: 12,
+                color: Colors.grey,
+                fontStyle: FontStyle.italic,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Future<void> _toggleConsent(bool? newValue) async {
+    // TODO: MOCA-10303 - once fullstory_flutter 0.6.0 is available, uncomment this.
+    // final consentValue = newValue ?? !_consentStatus;
+
+    // setState(() {
+    //   _isLoading = true;
+    // });
+
+    // try {
+    //   // Call FS.consent with the new value
+    //   FS.consent(consentValue);
+
+    //   setState(() {
+    //     _consentStatus = consentValue;
+    //     _isLoading = false;
+    //   });
+
+    //   // Show a snackbar to confirm the action
+    //   if (mounted) {
+    //     ScaffoldMessenger.of(context).showSnackBar(
+    //       SnackBar(
+    //         content: Text(
+    //           consentValue
+    //               ? 'Consent granted - FullStory will capture data'
+    //               : 'Consent revoked - FullStory will stop capturing data',
+    //         ),
+    //         backgroundColor: consentValue ? Colors.green : Colors.red,
+    //         duration: const Duration(seconds: 2),
+    //       ),
+    //     );
+    //   }
+    // } catch (e) {
+    //   setState(() {
+    //     _isLoading = false;
+    //   });
+
+    //   if (mounted) {
+    //     ScaffoldMessenger.of(context).showSnackBar(
+    //       SnackBar(
+    //         content: Text('Error updating consent: $e'),
+    //         backgroundColor: Colors.red,
+    //         duration: const Duration(seconds: 3),
+    //       ),
+    //     );
+    //   }
+    // }
   }
 }
 ```
@@ -155,7 +311,7 @@ class Crashes extends StatelessWidget {
 ## events.dart
 ```dart
 import 'package:flutter/material.dart';
-import 'package:fullstory_flutter/fs.dart';
+import 'package:fullstory_flutter/fullstory_flutter.dart';
 
 // Send custom events to Fullstory
 // These will show up in the event list on the right side of session replays
@@ -215,7 +371,7 @@ class Events extends StatelessWidget {
 ```dart
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:fullstory_flutter/fs.dart';
+import 'package:fullstory_flutter/fullstory_flutter.dart';
 
 // Get the version of the underlying native Fullstory SDK (e.g. '1.54.0')
 
@@ -264,7 +420,7 @@ class _FSVersionState extends State<FSVersion> {
 ## identity.dart
 ```dart
 import 'package:flutter/material.dart';
-import 'package:fullstory_flutter/fs.dart';
+import 'package:fullstory_flutter/fullstory_flutter.dart';
 
 class Identity extends StatefulWidget {
   const Identity({super.key});
@@ -368,7 +524,7 @@ class _IdentityState extends State<Identity> {
 ## log.dart
 ```dart
 import 'package:flutter/material.dart';
-import 'package:fullstory_flutter/fs.dart';
+import 'package:fullstory_flutter/fullstory_flutter.dart';
 
 class Log extends StatefulWidget {
   const Log({super.key});
@@ -405,11 +561,12 @@ class _LogState extends State<Log> {
             DropdownMenu(
               dropdownMenuEntries: FSLogLevel.values
                   .map<DropdownMenuEntry<FSLogLevel>>((FSLogLevel level) {
-                return DropdownMenuEntry<FSLogLevel>(
-                  value: level,
-                  label: level.name,
-                );
-              }).toList(),
+                    return DropdownMenuEntry<FSLogLevel>(
+                      value: level,
+                      label: level.name,
+                    );
+                  })
+                  .toList(),
               initialSelection: level,
               onSelected: (value) => level = value!,
             ),
@@ -430,8 +587,7 @@ class _LogState extends State<Log> {
 ## main.dart
 ```dart
 import 'package:flutter/material.dart';
-import 'package:fullstory_flutter/fs.dart';
-import 'package:fullstory_flutter/navigator_observer.dart';
+import 'package:fullstory_flutter/fullstory_flutter.dart';
 import 'package:fullstory_flutter_example/crashes.dart';
 import 'package:fullstory_flutter_example/nav_demo.dart';
 
@@ -447,14 +603,7 @@ import 'pages.dart';
 // Example app that demonstrates use of most Fullstory APIs
 
 void main() {
-  FS.captureErrors(
-    errorHandler: (exception, __) {
-      // At this point, the error is captured and FS has shut down.
-      // No other FS methods can be called, but other behavior like
-      // graceful shutdown or user notification can be done here.
-    },
-  );
-  runApp(const MyApp());
+  runFullstoryApp(const MyApp());
 }
 
 class MyApp extends StatefulWidget {
@@ -485,8 +634,9 @@ class _MyAppState extends State<MyApp> {
   //
   // Manual calls like this can be intermixed with the
   // [FSNavigatorObserver].
-  static final List<FSPage> _pages =
-      _screens.map((s) => FS.page(s.toString())).toList();
+  static final List<FSPage> _pages = _screens
+      .map((s) => FS.page(s.toString()))
+      .toList();
 
   _MyAppState() {
     _pages[_selectedIndex].start();

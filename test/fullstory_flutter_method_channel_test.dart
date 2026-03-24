@@ -1,6 +1,6 @@
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:fullstory_flutter/src/fullstory_flutter_method_channel.dart';
+import 'package:fullstory_flutter/src/platform/fullstory_flutter_method_channel.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
@@ -11,8 +11,8 @@ void main() {
   setUp(() {
     TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
         .setMockMethodCallHandler(channel, (MethodCall methodCall) async {
-      return '42';
-    });
+          return '42';
+        });
   });
 
   tearDown(() {

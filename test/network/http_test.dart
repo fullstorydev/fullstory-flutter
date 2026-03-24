@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:fullstory_flutter/network/http.dart';
-import 'package:fullstory_flutter/src/fullstory_flutter_platform_interface.dart';
+import 'package:fullstory_flutter/src/platform/fullstory_flutter_platform_interface.dart';
 import 'package:http/http.dart';
 import 'package:plugin_platform_interface/plugin_platform_interface.dart';
 

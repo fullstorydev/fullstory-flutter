@@ -5,18 +5,26 @@
 Pod::Spec.new do |s|
   s.name             = 'fullstory_flutter'
   s.version          = '0.0.1'
-  s.summary          = 'Fullstory for Flutter Mobile Apps'
+  s.summary          = 'Fullstory support for Flutter on iOS.'
   s.description      = <<-DESC
-Fullstory for Flutter Mobile Apps.
+A new Flutter plugin project.
                        DESC
-  s.homepage         = 'https://www.fullstory.com'
+  s.homepage         = 'http://example.com'
   s.license          = { :file => '../LICENSE' }
-  s.author           = { 'Fullstory, Inc.' => 'mobile-support@fullstory.com' }
+  s.author           = { 'Your Company' => 'email@example.com' }
   s.source           = { :path => '.' }
   s.source_files = 'Classes/**/*'
   s.dependency 'Flutter'
-  s.dependency 'FullStory', '~> 1.60'
-  s.platform = :ios, '12.0'
+  s.dependency 'FullStory', '~> 1.66'
+  s.platform = :ios, '13.0'
+  s.static_framework = true
+  s.vendored_frameworks = 'Frameworks/shared_flutter.xcframework'
+  s.user_target_xcconfig = {
+    # Prevents stripping of all symbols, keeps dynamic symbols.
+    'STRIP_STYLE' => 'non-global',
+    # Disables stripping of unused code.
+    'DEAD_CODE_STRIPPING' => 'NO'
+  }
 
   # Flutter.framework does not contain a i386 slice.
   s.pod_target_xcconfig = { 'DEFINES_MODULE' => 'YES', 'EXCLUDED_ARCHS[sdk=iphonesimulator*]' => 'i386' }

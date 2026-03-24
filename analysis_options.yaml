@@ -1,7 +1,9 @@
 include: package:flutter_lints/flutter.yaml
 
-linter:
-  rules:
-    - public_member_api_docs
 # Additional information about this file can be found at
 # https://dart.dev/guides/language/analysis-options
+
+linter:
+  rules:
+    # connerkasten@ thinks this is less readable to non-dart specialists
+    use_null_aware_elements: false

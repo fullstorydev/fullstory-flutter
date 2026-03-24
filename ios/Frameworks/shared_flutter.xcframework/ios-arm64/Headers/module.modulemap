@@ -1,0 +1,4 @@
+module shared_flutter {
+    header "shared_flutter.h"
+    export *
+}

@@ -5,10 +5,11 @@ import 'package:fullstory_flutter/fs.dart';
 /// when transitioning from [previous] to [current].
 ///
 /// [previous] will be null for the first page in the app.
-typedef PagePropertiesFactory = Map<String, Object?>? Function(
-  Route<dynamic> current,
-  Route<dynamic>? previous,
-);
+typedef PagePropertiesFactory =
+    Map<String, Object?>? Function(
+      Route<dynamic> current,
+      Route<dynamic>? previous,
+    );
 
 /// A [NavigatorObserver] that tracks [Navigator] page transitions
 /// and captures them in Fullstory.
@@ -50,14 +51,15 @@ class FSNavigatorObserver extends NavigatorObserver {
 
   @override
   void didChangeTop(Route<dynamic> topRoute, Route<dynamic>? previousTopRoute) {
-    final cached = _namedPages[topRoute.settings.name];
+    final name = namePage(topRoute);
+    final cached = _namedPages[name];
+
     if (cached != null) {
       final properties = updateProperties(topRoute, previousTopRoute);
       cached.start(propertyUpdates: properties);
       return;
     }
 
-    final name = namePage(topRoute);
     final properties = initialProperties(topRoute, previousTopRoute);
     final page = FS.page(name, properties: properties);
     _namedPages[name] = page;
