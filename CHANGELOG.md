@@ -1,3 +1,7 @@
+## 0.7.1
+
+- Addressed a Proguard bug affecting Android's ability to capture sessions.
+
 ## 0.7.0
 
 - Added session replay capability. To use, replace your existing `runApp()`

@@ -1,4 +1,4 @@
--keep class com.fullstory.FSCaptureViolatorKt {*;}
+-keep class com.fullstory.FSViolatorKt {*;}
 -keep class io.flutter.embedding.android.FlutterView {*;}
 -keep class io.flutter.embedding.android.FlutterSurfaceView {*;}
 -keep class io.flutter.embedding.android.FlutterTextureView {*;}
