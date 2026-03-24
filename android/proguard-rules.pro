@@ -2,5 +2,5 @@
 -keep class io.flutter.embedding.android.FlutterView {*;}
 -keep class io.flutter.embedding.android.FlutterSurfaceView {*;}
 -keep class io.flutter.embedding.android.FlutterTextureView {*;}
--keep class com.fullstory.flutter.fullstory_capture.FullstoryCapturePlugin {*;}
+-keep class com.fullstory.flutter.fullstory_capture.FullstoryFlutterPlugin {*;}
 -keep class com.fullstory.FSViolatorKt {*;}
