@@ -13,12 +13,13 @@ A new Flutter plugin project.
   s.license          = { :file => '../LICENSE' }
   s.author           = { 'Your Company' => 'email@example.com' }
   s.source           = { :path => '.' }
-  s.source_files = 'Classes/**/*'
+  s.source_files = 'fullstory_flutter/Sources/fullstory_flutter/**/*.swift'
   s.dependency 'Flutter'
-  s.dependency 'FullStory', '~> 1.66'
+  # Keep this version in sync with ios/fullstory_flutter/Package.swift.
+  s.dependency 'FullStory', '1.72.1'
   s.platform = :ios, '13.0'
   s.static_framework = true
-  s.vendored_frameworks = 'Frameworks/shared_flutter.xcframework'
+  s.vendored_frameworks = 'fullstory_flutter/shared_flutter.xcframework'
   s.user_target_xcconfig = {
     # Prevents stripping of all symbols, keeps dynamic symbols.
     'STRIP_STYLE' => 'non-global',
@@ -34,5 +35,5 @@ A new Flutter plugin project.
   # required reason APIs, update the PrivacyInfo.xcprivacy file to describe your
   # plugin's privacy impact, and then uncomment this line. For more information,
   # see https://developer.apple.com/documentation/bundleresources/privacy_manifest_files
-  # s.resource_bundles = {'fullstory_flutter_privacy' => ['Resources/PrivacyInfo.xcprivacy']}
+  # s.resource_bundles = {'fullstory_flutter_privacy' => ['fullstory_flutter/Sources/fullstory_flutter/Resources/PrivacyInfo.xcprivacy']}
 end

@@ -4,6 +4,7 @@
 # documentation.
 
 on:
+  workflow_dispatch:
   push:
     branches: ["main"]
     tags:
@@ -31,7 +32,7 @@ jobs:
         uses: subosito/flutter-action@v2
         with:
           channel: stable
-          flutter-version: 3.x
+          flutter-version: 3.44.7
       - run: flutter --version
 
       - name: Set up JDK
@@ -65,13 +66,31 @@ jobs:
       - name: Run example app tests
         run: cd example && flutter test
 
-      - name: Accept android licenses
-        run: yes | flutter doctor --android-licenses
+      - name: Build iOS example with Swift Package Manager
+        run: |
+          # Flutter uses the checkout directory as the identity for local Swift
+          # packages. Mirror pub's underscore-based package directory so the
+          # repository slug (fullstory-flutter) does not change that identity.
+          git clone --local "$GITHUB_WORKSPACE" "$RUNNER_TEMP/fullstory_flutter"
+          cd "$RUNNER_TEMP/fullstory_flutter/example"
+          flutter pub get
+          flutter config --enable-swift-package-manager
+          if ! flutter build ios --simulator; then
+            echo "Generated plugin package:"
+            cat ios/Flutter/ephemeral/Packages/FlutterGeneratedPluginSwiftPackage/Package.swift || true
+            echo "Plugin package symlinks:"
+            find ios/Flutter/ephemeral/Packages/.packages -maxdepth 1 -print -exec ls -ld {} \; || true
+            exit 1
+          fi
+          flutter build ios --simulator -t integration_test/plugin_integration_test.dart
 
-      - name: Run Android unit tests
-        # the 'build apk --config-only' is a workaround for 
-        # https://github.com/flutter/flutter/issues/169336
-        run: cd example && flutter build apk --config-only && cd android && ./gradlew :fullstory_flutter:test
+      - name: Build iOS example with CocoaPods
+        working-directory: example
+        run: |
+          flutter config --no-enable-swift-package-manager
+          flutter clean
+          flutter pub get
+          flutter build ios --simulator
 
       - name: Install Dependencies
         run: cd example/ios && pod install
@@ -88,10 +107,18 @@ jobs:
               -disableAutomaticPackageResolution \
               CODE_SIGNING_ALLOWED='NO'
 
-      # Revert the file that get's mutated by pod install
+      - name: Accept android licenses
+        run: yes | flutter doctor --android-licenses
+
+      - name: Run Android unit tests
+        # the 'build apk --config-only' is a workaround for
+        # https://github.com/flutter/flutter/issues/169336
+        run: cd example && flutter build apk --config-only && cd android && ./gradlew :fullstory_flutter:test
+
+      # Revert files mutated by the native builds and pod install
       # to avoid angering flutter pub publish
-      - name: iOS Cleanup
-        run: git restore example/ios/Podfile.lock
+      - name: Native build cleanup
+        run: git restore example/android/gradle.properties example/ios/Podfile.lock example/ios/Runner.xcodeproj/project.pbxproj
 
       - name: Test docs generation
         run: dart doc --dry-run
