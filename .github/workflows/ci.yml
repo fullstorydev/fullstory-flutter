@@ -32,7 +32,6 @@ jobs:
         uses: subosito/flutter-action@v2
         with:
           channel: stable
-          flutter-version: 3.44.7
       - run: flutter --version
 
       - name: Set up JDK
@@ -66,23 +65,41 @@ jobs:
       - name: Run example app tests
         run: cd example && flutter test
 
-      - name: Build iOS example with Swift Package Manager
+      - name: Build iOS Git consumer for a device with Swift Package Manager
         run: |
-          # Flutter uses the checkout directory as the identity for local Swift
-          # packages. Mirror pub's underscore-based package directory so the
-          # repository slug (fullstory-flutter) does not change that identity.
+          # Resolve the plugin through pub's Git source instead of renaming the
+          # repository. Pub checks Git dependencies out under the declared Dart
+          # package name, just as it does for hosted packages.
+          consumer_dir="$RUNNER_TEMP/fullstory_flutter_consumer"
+          flutter config --enable-swift-package-manager
+          flutter create \
+            --empty \
+            --no-pub \
+            --org com.fullstory \
+            --platforms ios \
+            "$consumer_dir"
+          cd "$consumer_dir"
+          dart pub add \
+            "fullstory_flutter:{git:{url: file://$GITHUB_WORKSPACE, ref: $GITHUB_SHA}}"
+          flutter build ios --release --no-codesign
+
+      - name: Build iOS integration test with Swift Package Manager
+        run: |
+          # The example uses a path dependency to the repository root. Flutter
+          # 3.44.x incorrectly derives its Swift package identity from that
+          # directory's basename, so stage it under the Dart package name.
+          # https://github.com/flutter/flutter/issues/186881
           git clone --local "$GITHUB_WORKSPACE" "$RUNNER_TEMP/fullstory_flutter"
           cd "$RUNNER_TEMP/fullstory_flutter/example"
           flutter pub get
           flutter config --enable-swift-package-manager
-          if ! flutter build ios --simulator; then
+          if ! flutter build ios --simulator -t integration_test/plugin_integration_test.dart; then
             echo "Generated plugin package:"
             cat ios/Flutter/ephemeral/Packages/FlutterGeneratedPluginSwiftPackage/Package.swift || true
             echo "Plugin package symlinks:"
             find ios/Flutter/ephemeral/Packages/.packages -maxdepth 1 -print -exec ls -ld {} \; || true
             exit 1
           fi
-          flutter build ios --simulator -t integration_test/plugin_integration_test.dart
 
       - name: Build iOS example with CocoaPods
         working-directory: example
@@ -128,10 +145,51 @@ jobs:
       - run: cat example/example.md
       - run: flutter pub publish --dry-run
 
+  swiftpm-minimum:
+    name: SwiftPM (Flutter 3.44.7 minimum)
+    runs-on: macos-latest
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - name: Set up Flutter 3.44.7
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          flutter-version: 3.44.7
+      - run: flutter --version
+
+      - name: Build iOS Git consumer for a device
+        run: |
+          consumer_dir="$RUNNER_TEMP/fullstory_flutter_consumer"
+          flutter config --enable-swift-package-manager
+          flutter create \
+            --empty \
+            --no-pub \
+            --org com.fullstory \
+            --platforms ios \
+            "$consumer_dir"
+          cd "$consumer_dir"
+          dart pub add \
+            "fullstory_flutter:{git:{url: file://$GITHUB_WORKSPACE, ref: $GITHUB_SHA}}"
+          flutter build ios --release --no-codesign
+
+      - name: Build iOS integration-test target
+        run: |
+          # Work around https://github.com/flutter/flutter/issues/186881 for
+          # the example's path dependency.
+          git clone --local "$GITHUB_WORKSPACE" "$RUNNER_TEMP/fullstory_flutter"
+          cd "$RUNNER_TEMP/fullstory_flutter/example"
+          flutter pub get
+          flutter config --enable-swift-package-manager
+          flutter build ios --simulator -t integration_test/plugin_integration_test.dart
+
   publish:
     # only run tags, after the tests have passed
     if: startsWith(github.ref, 'refs/tags/v')
-    needs: [test]
+    needs: [test, swiftpm-minimum]
 
     permissions:
       id-token: write # Required for authentication using OIDC

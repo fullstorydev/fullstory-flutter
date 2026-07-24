@@ -10,8 +10,8 @@ let package = Package(
   dependencies: [
     .package(
       url: "https://github.com/fullstorydev/fullstory-swift-package-ios.git",
-      // Keep this version in sync with the FullStory dependency in
-      // ../fullstory_flutter.podspec.
+      // The Flutter capture bridge is released and tested in lockstep with
+      // the native SDK. Update this exact pin and the podspec together.
       exact: "1.72.1"
     ),
   ],

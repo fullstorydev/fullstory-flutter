@@ -15,7 +15,8 @@ A new Flutter plugin project.
   s.source           = { :path => '.' }
   s.source_files = 'fullstory_flutter/Sources/fullstory_flutter/**/*.swift'
   s.dependency 'Flutter'
-  # Keep this version in sync with ios/fullstory_flutter/Package.swift.
+  # The Flutter capture bridge is released and tested in lockstep with the
+  # native SDK. Update this exact pin and Package.swift together.
   s.dependency 'FullStory', '1.72.1'
   s.platform = :ios, '13.0'
   s.static_framework = true
