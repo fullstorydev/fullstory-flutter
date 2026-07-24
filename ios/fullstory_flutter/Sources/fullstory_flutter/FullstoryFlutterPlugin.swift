@@ -47,6 +47,9 @@ public class FullstoryFlutterPlugin: NSObject, FlutterPlugin, FSDelegate {
     }
 
     public static func register(with registrar: FlutterPluginRegistrar) {
+        // Dart resolves the capture bridge's C API at runtime, so keep the
+        // static archive linked even though Swift does not call that API.
+        dont_shake_me()
         let channel = FlutterMethodChannel(name: "fullstory_flutter", binaryMessenger: registrar.messenger())
         let instance = FullstoryFlutterPlugin(channel: channel)
         registrar.addMethodCallDelegate(instance, channel: channel)
