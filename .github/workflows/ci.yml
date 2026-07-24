@@ -209,6 +209,23 @@ jobs:
           flutter config --enable-swift-package-manager
           flutter build ios --simulator -t integration_test/plugin_integration_test.dart
 
+      - name: Run iOS unit tests with Swift Package Manager
+        run: |
+          example_dir="$RUNNER_TEMP/fullstory_flutter/example"
+          ruby \
+            "$GITHUB_WORKSPACE/.github/workflows/add_swiftpm_plugin_to_runner_tests.rb" \
+            "$example_dir/ios/Runner.xcodeproj" \
+            ../../ios/fullstory_flutter
+          cd "$example_dir/ios"
+          xcodebuild test \
+            -workspace Runner.xcworkspace \
+            -scheme Runner \
+            -configuration Debug \
+            -sdk iphonesimulator \
+            -destination 'platform=iOS Simulator,name=iPhone 17,OS=26.2' \
+            -only-testing:RunnerTests \
+            CODE_SIGNING_ALLOWED='NO'
+
   publish:
     # only run tags, after the tests have passed
     if: startsWith(github.ref, 'refs/tags/v')
