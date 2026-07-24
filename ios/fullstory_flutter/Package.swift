@@ -5,7 +5,14 @@ let package = Package(
   name: "fullstory_flutter",
   platforms: [.iOS("13.0")],
   products: [
-    .library(name: "fullstory-flutter", targets: ["fullstory_flutter"]),
+    // Dart resolves the capture bridge through DynamicLibrary.process().
+    // A dynamic product keeps the bridge's C API exported without requiring
+    // host-app strip settings that SwiftPM packages cannot configure.
+    .library(
+      name: "fullstory-flutter",
+      type: .dynamic,
+      targets: ["fullstory_flutter"]
+    ),
   ],
   dependencies: [
     .package(

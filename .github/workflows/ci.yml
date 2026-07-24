@@ -67,7 +67,7 @@ jobs:
 
       - name: Build hosted-style iOS consumer for a device with Swift Package Manager
         run: |
-          # Build from a clean archive in the directory shape used by hosted
+          # Archive a clean package in the directory shape used by hosted
           # packages. The publish dry-run below separately verifies its contents.
           plugin_version="$(awk '/^version:/ { print $2; exit }' "$GITHUB_WORKSPACE/pubspec.yaml")"
           plugin_dir="$RUNNER_TEMP/fullstory_flutter-$plugin_version"
@@ -85,9 +85,29 @@ jobs:
           flutter pub add "fullstory_flutter:{path: $plugin_dir}"
           grep -Eq '"name"[[:space:]]*:[[:space:]]*"fullstory_flutter"' \
             .flutter-plugins-dependencies
-          flutter build ios --release --no-codesign
+          flutter build ipa --release --no-codesign
           grep -F '.product(name: "fullstory-flutter", package: "fullstory_flutter")' \
             ios/Flutter/ephemeral/Packages/FlutterGeneratedPluginSwiftPackage/Package.swift
+
+          app="build/ios/archive/Runner.xcarchive/Products/Applications/Runner.app"
+          exported_symbols="$RUNNER_TEMP/exported-ios-symbols.txt"
+          required_symbols="$RUNNER_TEMP/required-ffi-symbols.txt"
+          : > "$exported_symbols"
+          while IFS= read -r -d '' candidate; do
+            if file "$candidate" | grep -q 'Mach-O'; then
+              xcrun nm -gjU "$candidate" >> "$exported_symbols" || true
+            fi
+          done < <(find "$app" -type f -print0)
+          sort -u -o "$exported_symbols" "$exported_symbols"
+          grep -oE "'[a-z][a-z0-9_]*'" \
+            "$plugin_dir/lib/src/shared_flutter_bindings_generated.dart" \
+            | tr -d "'" | sort -u > "$required_symbols"
+          while IFS= read -r symbol; do
+            grep -qx "_$symbol" "$exported_symbols" || {
+              echo "Missing exported FFI symbol: $symbol"
+              exit 1
+            }
+          done < "$required_symbols"
 
       - name: Build iOS integration test with Swift Package Manager
         run: |
@@ -185,9 +205,29 @@ jobs:
           flutter pub add "fullstory_flutter:{path: $plugin_dir}"
           grep -Eq '"name"[[:space:]]*:[[:space:]]*"fullstory_flutter"' \
             .flutter-plugins-dependencies
-          flutter build ios --release --no-codesign
+          flutter build ipa --release --no-codesign
           grep -F '.product(name: "fullstory-flutter", package: "fullstory_flutter")' \
             ios/Flutter/ephemeral/Packages/FlutterGeneratedPluginSwiftPackage/Package.swift
+
+          app="build/ios/archive/Runner.xcarchive/Products/Applications/Runner.app"
+          exported_symbols="$RUNNER_TEMP/exported-ios-symbols.txt"
+          required_symbols="$RUNNER_TEMP/required-ffi-symbols.txt"
+          : > "$exported_symbols"
+          while IFS= read -r -d '' candidate; do
+            if file "$candidate" | grep -q 'Mach-O'; then
+              xcrun nm -gjU "$candidate" >> "$exported_symbols" || true
+            fi
+          done < <(find "$app" -type f -print0)
+          sort -u -o "$exported_symbols" "$exported_symbols"
+          grep -oE "'[a-z][a-z0-9_]*'" \
+            "$plugin_dir/lib/src/shared_flutter_bindings_generated.dart" \
+            | tr -d "'" | sort -u > "$required_symbols"
+          while IFS= read -r symbol; do
+            grep -qx "_$symbol" "$exported_symbols" || {
+              echo "Missing exported FFI symbol: $symbol"
+              exit 1
+            }
+          done < "$required_symbols"
 
       - name: Build iOS integration-test target
         run: |
