@@ -65,12 +65,15 @@ jobs:
       - name: Run example app tests
         run: cd example && flutter test
 
-      - name: Build iOS Git consumer for a device with Swift Package Manager
+      - name: Build hosted-style iOS consumer for a device with Swift Package Manager
         run: |
-          # Resolve the plugin through pub's Git source instead of renaming the
-          # repository. Pub checks Git dependencies out under the declared Dart
-          # package name, just as it does for hosted packages.
+          # Build from a clean archive in the directory shape used by hosted
+          # packages. The publish dry-run below separately verifies its contents.
+          plugin_version="$(awk '/^version:/ { print $2; exit }' "$GITHUB_WORKSPACE/pubspec.yaml")"
+          plugin_dir="$RUNNER_TEMP/fullstory_flutter-$plugin_version"
           consumer_dir="$RUNNER_TEMP/fullstory_flutter_consumer"
+          mkdir -p "$plugin_dir"
+          git -C "$GITHUB_WORKSPACE" archive HEAD | tar -x -C "$plugin_dir"
           flutter config --enable-swift-package-manager
           flutter create \
             --empty \
@@ -79,9 +82,12 @@ jobs:
             --platforms ios \
             "$consumer_dir"
           cd "$consumer_dir"
-          dart pub add \
-            "fullstory_flutter:{git:{url: file://$GITHUB_WORKSPACE, ref: $GITHUB_SHA}}"
+          flutter pub add "fullstory_flutter:{path: $plugin_dir}"
+          grep -Eq '"name"[[:space:]]*:[[:space:]]*"fullstory_flutter"' \
+            .flutter-plugins-dependencies
           flutter build ios --release --no-codesign
+          grep -F '.product(name: "fullstory-flutter", package: "fullstory_flutter")' \
+            ios/Flutter/ephemeral/Packages/FlutterGeneratedPluginSwiftPackage/Package.swift
 
       - name: Build iOS integration test with Swift Package Manager
         run: |
@@ -145,8 +151,8 @@ jobs:
       - run: cat example/example.md
       - run: flutter pub publish --dry-run
 
-  swiftpm-minimum:
-    name: SwiftPM (Flutter 3.44.7 minimum)
+  swiftpm-baseline:
+    name: SwiftPM (Flutter 3.44.7 baseline)
     runs-on: macos-latest
 
     steps:
@@ -161,9 +167,13 @@ jobs:
           flutter-version: 3.44.7
       - run: flutter --version
 
-      - name: Build iOS Git consumer for a device
+      - name: Build hosted-style iOS consumer for a device
         run: |
+          plugin_version="$(awk '/^version:/ { print $2; exit }' "$GITHUB_WORKSPACE/pubspec.yaml")"
+          plugin_dir="$RUNNER_TEMP/fullstory_flutter-$plugin_version"
           consumer_dir="$RUNNER_TEMP/fullstory_flutter_consumer"
+          mkdir -p "$plugin_dir"
+          git -C "$GITHUB_WORKSPACE" archive HEAD | tar -x -C "$plugin_dir"
           flutter config --enable-swift-package-manager
           flutter create \
             --empty \
@@ -172,9 +182,12 @@ jobs:
             --platforms ios \
             "$consumer_dir"
           cd "$consumer_dir"
-          dart pub add \
-            "fullstory_flutter:{git:{url: file://$GITHUB_WORKSPACE, ref: $GITHUB_SHA}}"
+          flutter pub add "fullstory_flutter:{path: $plugin_dir}"
+          grep -Eq '"name"[[:space:]]*:[[:space:]]*"fullstory_flutter"' \
+            .flutter-plugins-dependencies
           flutter build ios --release --no-codesign
+          grep -F '.product(name: "fullstory-flutter", package: "fullstory_flutter")' \
+            ios/Flutter/ephemeral/Packages/FlutterGeneratedPluginSwiftPackage/Package.swift
 
       - name: Build iOS integration-test target
         run: |
@@ -189,7 +202,7 @@ jobs:
   publish:
     # only run tags, after the tests have passed
     if: startsWith(github.ref, 'refs/tags/v')
-    needs: [test, swiftpm-minimum]
+    needs: [test, swiftpm-baseline]
 
     permissions:
       id-token: write # Required for authentication using OIDC
