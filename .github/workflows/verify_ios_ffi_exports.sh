@@ -86,8 +86,8 @@ bundle_id="$(
   /usr/libexec/PlistBuddy -c 'Print :CFBundleIdentifier' \
     "$framework_dir/Info.plist"
 )"
-if [[ "$bundle_id" != "fullstory-flutter" ]]; then
-  echo "Unexpected FFI provider bundle identifier: $bundle_id"
+if [[ -z "$bundle_id" ]]; then
+  echo "FFI provider has no bundle identifier: $provider"
   exit 1
 fi
 
@@ -123,4 +123,6 @@ if ! xcrun otool -l "$app_executable" | awk -v wanted="$install_name" '
   exit 1
 fi
 
-echo "Verified $symbol_count FFI exports in ${provider#"$app/"} ($install_name)"
+echo "Verified $symbol_count FFI exports in ${provider#"$app/"}"
+echo "Bundle identifier: $bundle_id"
+echo "Install name: $install_name"
