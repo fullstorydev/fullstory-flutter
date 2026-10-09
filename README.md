@@ -1,5 +1,10 @@
 # fullstory_flutter
 
+## ⚠️ ARCHIVAL IN PROGRESS ⚠️
+
+This repository is in the process of being archived, as we have moved development to an internal repository. 
+We're no longer accepting PRs here.
+
 `fullstory_flutter` provides Fullstory autocapture capabilities to support
 session replay by integrating with the existing Fullstory Native Mobile SDKs.
 
